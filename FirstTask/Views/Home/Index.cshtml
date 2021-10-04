@@ -1,0 +1,22 @@
+﻿@using FirstTask.Models;
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div>
+	@foreach (var service in ViewBag.Model)
+	{
+		<div style="display: flex;">
+			<p>@service.Name &trade;</p>
+			<p>@service.Code</p>
+		</div>
+	}
+
+	<div style="display: flex;">
+		@for (int i = 1; i <= ViewBag.PagesCount; i++)
+		{
+			<a href="/Home/Index/?page=@i">@i</a>
+		}
+	</div>
+</div>
