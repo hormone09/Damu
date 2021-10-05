@@ -5,10 +5,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using FirstTaskEntities.Models;
 using System.Configuration;
+using FirstTaskEntities.Enums;
+using FirstTaskEntities.Interfaces;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesRepository
+	public class ServicesRepository : IServicesRepository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
@@ -24,8 +26,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO Services (Name, Price, Code, DateOfBegin, DateOfFinish) VALUES (@Name, @Price, @Code, @DateOfBegin, null)";
-				connection.Query(query, new { Name = service.Name, Price = service.Price, Code = service.Code, DateOfBegin = service.DateOfBegin });
+				string query = "INSERT INTO Services (Name, Price, Code, DateOfBegin, DateOfFinish, Status) VALUES (@Name, @Price, @Code, @DateOfBegin, null, @Status)";
+				connection.Query(query, new { Name = service.Name, Price = service.Price, Code = service.Code, DateOfBegin = service.DateOfBegin, Status = service.Status });
 			}
 		}
 
@@ -33,8 +35,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, Price = @Price, Status = @Status WHERE Id= @Id";
-				connection.Query<Service>(query, new { Id = id, Name = service.Name, Code = service.Code, Date = service.DateOfBegin, Price = service.Price, Status = service.Status });
+				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, Price = @Price WHERE Id= @Id";
+				connection.Query<Service>(query, new { Id = id, Name = service.Name, Code = service.Code, Date = service.DateOfBegin, Price = service.Price });
 			}
 		}
 
@@ -42,8 +44,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Status = 2 WHERE Id = @Id";
-				connection.Query<Service>(query, new { Id = id });
+				string query = "UPDATE Services SET Status = @Status";
+				connection.Query<Service>(query, new { Id = id, ServiceStatuses.Disabled });
 			}
 		}
 	}

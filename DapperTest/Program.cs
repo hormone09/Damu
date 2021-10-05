@@ -7,45 +7,64 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using FirstTaskEntities.Models;
 using System.Configuration;
+using FirstTaskEntities.Repository;
+using FirstTaskEntities.Enums;
 
 namespace DapperTest
 {
 	class Program
 	{
 		static string connectionString = ConfigurationManager.AppSettings["connection"];
-		//static string connectionString = "Server=DESKTOP-8LKEMKN; Database=FirstTask; Trusted_Connection=True;";
+
+		static ServicesRepository serviceRep = new ServicesRepository();
+		static CompanyRepository companyRep = new CompanyRepository();
+		static EmployeeRepository employeeRep = new EmployeeRepository();
+		static ServiceProvidedRepository serviceProvidedRep = new ServiceProvidedRepository();
+		static ServicesHistoryRepository serviceHistoryRep = new ServicesHistoryRepository();
+
 
 		static void Main(string[] args)
 		{
-			Company company = new Company
-			{
-				BIN = "123456789101",
-				DateOfBegin = DateTime.Now,
-				Name = "new company",
-				Phone = "8-707-640-56-99"
-			};
 
-			for (int i = 1; i < 5; i++)
-				Add(company); 
-			 //Remove();
-
+			// AddServices();
+			AddEmployee();
 		}
 
-		public static void Add(Company company)
+		static void AddServices()
 		{
-			using (var connection = new SqlConnection(connectionString))
+			for (int i = 0; i < 5; i++)
 			{
-				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin) VALUES (@Name, @BIN, @Phone, @DateOfBegin)";
-				connection.Query<Company>(query, new { Name = company.Name, BIN = company.BIN, Phone = company.Phone, DateOfBegin = company.DateOfBegin });
+				var obj = new Service
+				{
+					Code = "12345",
+					DateOfBegin = DateTime.Now,
+					Name = "NewName",
+					Price = 5000,
+					Status = ServiceStatuses.Active
+				};
+
+				serviceRep.Add(obj);
 			}
 		}
-
-		public static void Remove()
+		static void AddEmployee()
 		{
-			using (var connection = new SqlConnection(connectionString))
+			int[] mas = companyRep.GetAll().Select(x => x.Id).Distinct().ToArray();
+			Random random = new Random();
+
+			for (int i = 0; i < 5; i++)
 			{
-				string query = "DELETE FROM Services WHERE Id > 0;";
-				connection.Query<Service>(query);
+				var obj = new Employee
+				{
+					Company = new Company { Id = random.Next(mas[0], mas[mas.Length - 1]) },
+					BirthdayDate = DateTime.Now,
+					DateOfBegin = DateTime.Now,
+					FullName = "Name",
+					PersonalNumber = "123456789101",
+					Phone = "123123",
+					Status = EmloyeeStatuses.Active
+				};
+
+				employeeRep.Add(obj);
 			}
 		}
 	}

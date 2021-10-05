@@ -1,5 +1,7 @@
 ﻿using Dapper;
 
+using FirstTaskEntities.Enums;
+using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 
 using System;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
-	public class EmployeeRepository
+	public class EmployeeRepository : IEmployeeRepository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
@@ -28,18 +30,19 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO Services (PersonalNumber, FullName, BirthdayDate, Phone) " +
-					"VALUES (@PersonalNumber, @FullName, @BirthdayDate, @Phone)";
-				connection.Query(query, new { PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone });
+				string query = "INSERT INTO Employee (PersonalNumber, FullName, BirthdayDate, Phone, DateOfBegin, CompanyID, Status) " +
+					"VALUES (@PersonalNumber, @FullName, @BirthdayDate, @Phone, @DateOfBegin, @CompanyID, @Status)";
+				connection.Query(query, new { Status = employee.Status, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, DateOfBegin = DateTime.Now, CompanyId = employee.Company.Id });
 			}
 		}
 
+		// TODO: Перенести ID в объект
 		public void Update(Employee employee, int id)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET PersonalNumber = @PersonalNumber, FullName = @FullName, BirthdayDate = @BirthdayDate, Phone = @Phone WHERE Id = @Id";
-				connection.Query<Employee>(query, new { Id = id, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone });
+				string query = "UPDATE Employee SET PersonalNumber = @PersonalNumber, FullName = @FullName, BirthdayDate = @BirthdayDate, Phone = @Phone Status = @Status WHERE Id = @Id";
+				connection.Query<Employee>(query, new { Id = id, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, Status = employee.Status});
 			}
 		}
 
@@ -47,8 +50,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "DELETE FROM Services WHERE Id = @Id";
-				connection.Query<Employee>(query, new { Id = id });
+				string query = "UPDATE Employee SET Status = @Status, DateOfFinish = @Finish WHERE Id = @Id";
+				connection.Query<Employee>(query, new { Id = id, Finish = DateTime.Now, EmloyeeStatuses.Disable });
 			}
 		}
 	}

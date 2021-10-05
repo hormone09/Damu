@@ -1,4 +1,6 @@
 ﻿using Dapper;
+
+using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Web;
 
 namespace FirstTaskEntities.Repository
 {
-	public class CompanyRepository
+	public class CompanyRepository : ICompanyRepository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
@@ -25,7 +27,7 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin) VALUES (@Name, @BIN, @Phone, @DateOfBegin)";
-				connection.Query<Company>(query, new {  Name = company.Name, BIN = company.BIN, Phone = company.Phone, DateOfBegin = company.DateOfBegin });
+				connection.Query<Company>(query, new {  company });
 			}
 		}
 
@@ -40,9 +42,16 @@ namespace FirstTaskEntities.Repository
 
 		public void Remove(int id)
 		{
+			// TODO: Перенести в менеджен
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "DELETE FROM Companies WHERE Id = @Id";
+				string query = "DELETE FROM ServicesProvided WHERE CompanyId = @Id";
+				connection.Query(query, new { Id = id });
+
+				query = "DELETE FROM Employee WHERE CompanyId = @Id";
+				connection.Query(query, new { Id = id });
+
+				query = "DELETE FROM Companies WHERE Id = @Id";
 				connection.Query<Company>(query, new { Id = id });
 			}
 		}

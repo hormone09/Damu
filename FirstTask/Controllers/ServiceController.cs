@@ -5,10 +5,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using FirstTaskEntities.Models;
 using FirstTask.Helpers;
+using FirstTaskEntities.Enums;
 
 namespace FirstTask.Controllers
 {
@@ -31,6 +30,58 @@ namespace FirstTask.Controllers
 			ViewBag.Model = pageResult;
 
 			return View();
+		}
+
+		[HttpPost]
+		public string FindCurrentServices(string name, ServiceStatuses? status)
+		{
+			string error = "none";
+			var result = new List<Service>();
+
+			try
+			{
+				result = serviceRep.GetAll().Where(x => x.Status == ServiceStatuses.Active).ToList();
+			}
+			catch(Exception ex)
+			{
+				error = $"Ошибка работы с БД: {ex.Message}";
+			}
+
+			if(string.IsNullOrEmpty(name) && status == null)
+			{
+				error = "Параметры для поиска не заданы!";
+			}
+			else
+			{
+				if (name != null)
+					result = result.Where(x => x.Name == name).ToList();
+				if (status != null)
+					result = result.Where(x => x.Status == status).ToList();
+			}
+
+			if(result.Any())
+			{
+				dynamic array = new JArray();
+
+				foreach(Service el in result)
+				{
+					dynamic temp = new JObject();
+					temp.Name = el.Name;
+					temp.Code = el.Code;
+					temp.Price = el.Price;
+					temp.Status = el.Status;
+
+					array.Add(temp);
+				}
+
+				return JsonHelper.SerializeSuccesList(array);
+			}
+			else
+			{
+				error = "По заданным параметрам ничего не найдено!";
+
+				return JsonHelper.SerializeErorr(error);
+			}
 		}
 
 		[HttpPost]
@@ -112,7 +163,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public string FinishService(int id)
+		public string RemoveService(int id)
 		{
 			bool IsSuccess = true;
 			string error = "none";
