@@ -8,7 +8,7 @@ using Autofac;
 using Autofac.Integration;
 using Autofac.Integration.Mvc;
 
-using FirstTask.Repository;
+using FirstTaskEntities.Repository;
 
 namespace FirstTask.App_Start
 {

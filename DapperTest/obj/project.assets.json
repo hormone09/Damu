@@ -1,0 +1,244 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "Dapper/2.0.90": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Dapper.dll": {}
+        }
+      },
+      "FirstTask/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "FirstTaskEntities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FirstTask.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTask.dll": {}
+        }
+      },
+      "FirstTaskEntities/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "Dapper": "2.0.90"
+        },
+        "compile": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win": {
+      "Dapper/2.0.90": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Dapper.dll": {}
+        }
+      },
+      "FirstTask/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "FirstTaskEntities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FirstTask.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTask.dll": {}
+        }
+      },
+      "FirstTaskEntities/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "Dapper": "2.0.90"
+        },
+        "compile": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x64": {
+      "Dapper/2.0.90": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Dapper.dll": {}
+        }
+      },
+      "FirstTask/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "FirstTaskEntities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FirstTask.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTask.dll": {}
+        }
+      },
+      "FirstTaskEntities/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "Dapper": "2.0.90"
+        },
+        "compile": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x86": {
+      "Dapper/2.0.90": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Dapper.dll": {}
+        }
+      },
+      "FirstTask/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "FirstTaskEntities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/FirstTask.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTask.dll": {}
+        }
+      },
+      "FirstTaskEntities/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.7.2",
+        "dependencies": {
+          "Dapper": "2.0.90"
+        },
+        "compile": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/FirstTaskEntities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Dapper/2.0.90": {
+      "sha512": "e4YjOLJptnpwHIbP8HxjaYf7So9lhUC43rvvGMEkH4Q4CiVlm4rOxYDo0HyuHlMQKj0U5Ob/nCMm52TUhTaZQg==",
+      "type": "package",
+      "path": "dapper/2.0.90",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Dapper.png",
+        "dapper.2.0.90.nupkg.sha512",
+        "dapper.nuspec",
+        "lib/net461/Dapper.dll",
+        "lib/net461/Dapper.xml",
+        "lib/net5.0/Dapper.dll",
+        "lib/net5.0/Dapper.xml",
+        "lib/netstandard2.0/Dapper.dll",
+        "lib/netstandard2.0/Dapper.xml"
+      ]
+    },
+    "FirstTask/1.0.0": {
+      "type": "project",
+      "path": "../FirstTask/FirstTask.csproj",
+      "msbuildProject": "../FirstTask/FirstTask.csproj"
+    },
+    "FirstTaskEntities/1.0.0": {
+      "type": "project",
+      "path": "../FirstTaskEntities/FirstTaskEntities.csproj",
+      "msbuildProject": "../FirstTaskEntities/FirstTaskEntities.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "Dapper >= 2.0.90",
+      "FirstTask >= 1.0.0",
+      "FirstTaskEntities >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Domu\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+      "projectName": "DapperTest",
+      "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+      "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\obj\\",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "configFilePaths": [
+        "C:\\Users\\Domu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "projectReferences": {
+            "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj"
+            },
+            "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj": {
+              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj"
+            }
+          }
+        }
+      }
+    },
+    "frameworks": {
+      "net472": {
+        "dependencies": {
+          "Dapper": {
+            "target": "Package",
+            "version": "[2.0.90, )"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

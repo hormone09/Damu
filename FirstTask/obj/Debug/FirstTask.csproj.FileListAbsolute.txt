@@ -108,3 +108,5 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Memory.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Numerics.Vectors.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\Domu\Desktop\Code\FirstTask\bin\FirstTaskEntities.dll
+C:\Users\Domu\Desktop\Code\FirstTask\bin\FirstTaskEntities.pdb
