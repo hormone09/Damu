@@ -2,7 +2,6 @@
 
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesHistoryRepository : IServicesHistoryRepository
+	public class ServicesHistoryRepository : IRepository<ServicesHistory>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
-		public List<ServicesHistory> GetAll()
+		public List<ServicesHistory> List(string query, object param)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -33,23 +32,23 @@ namespace FirstTaskEntities.Repository
 			}
 		}
 
-		public void Update(ServicesHistory history, int id)
+		public void Update(ServicesHistory history)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE ServicesHistory SET ServiceName = @Service, CompanyName = @Company, EmployeeName = @Employee";
-				connection.Query<ServicesHistory>(query, new { Id = id, Service = history.ServiceName, Company = history.CompanyName, Employee = history.EmployeeName });
+				connection.Query<ServicesHistory>(query, new { Id = history.Id, Service = history.ServiceName, Company = history.CompanyName, Employee = history.EmployeeName });
 			}
 		}
 
 		// TODO: ???
-		/*public void Remove(int id)
+		public void Remove(int id)
 		{
-			using (var connection = new SqlConnection(connectionString))
+			/*using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE ServicesHistory SET Status = @Status";
 				connection.Query<Service>(query, new { Id = id, ServiceStatuses.Disabled });
-			}
-		}*/
+			}*/
+		}
 	}
 }

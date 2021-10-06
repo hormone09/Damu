@@ -18,8 +18,11 @@ namespace FirstTask.Controllers
     {
 		private readonly EmployeeRepository rep;
 
-        public ActionResult Index(int? page)
+		public ActionResult Index(int? page)
 		{
+			return View();
+		}
+			/*
 			var emloyies = rep.GetAll();
 			int pagesCount = 0;
 			var pageResult = PageHelper<Employee>.GetPageResult(emloyies, page, out pagesCount);
@@ -162,7 +165,7 @@ namespace FirstTask.Controllers
 			}
 
 			return JsonHelper.SerializeSuccess("Сотрудник был переведен в 'Не активные'!");
-		}
+		}*/
 
 	}
 }

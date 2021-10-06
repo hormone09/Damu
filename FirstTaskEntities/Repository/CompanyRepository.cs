@@ -1,5 +1,6 @@
 ﻿using Dapper;
 
+using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using System;
@@ -11,11 +12,11 @@ using System.Web;
 
 namespace FirstTaskEntities.Repository
 {
-	public class CompanyRepository : ICompanyRepository
+	public class CompanyRepository : IRepository<Company>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Company> GetAll()
+		public List<Company> List(string query, object param)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
@@ -31,28 +32,29 @@ namespace FirstTaskEntities.Repository
 			}
 		}
 
-		public void Update(Company company, int id)
+		public void Update(Company company)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE Companies SET Name = @Name, BIN = @BIN, DateOfBegin = @Date, Phone = @Phone WHERE Id= @Id";
-				connection.Query<Company>(query, new { Id = id, Name = company.Name, BIN = company.BIN, Date = company.DateOfBegin, Phone = company.Phone });
+				connection.Query<Company>(query, new { Id = company.Id, Name = company.Name, BIN = company.BIN, Date = company.DateOfBegin, Phone = company.Phone });
 			}
 		}
 
 		public void Remove(int id)
 		{
-			// TODO: Перенести в менеджен
+			// TODO: Перенести в менеджер
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "DELETE FROM ServicesProvided WHERE CompanyId = @Id";
+				// Перенести в менеджер работу с 
+				/*string query = "DELETE FROM ServicesProvided WHERE CompanyId = @Id";
 				connection.Query(query, new { Id = id });
 
 				query = "DELETE FROM Employee WHERE CompanyId = @Id";
-				connection.Query(query, new { Id = id });
+				connection.Query(query, new { Id = id });*/
 
-				query = "DELETE FROM Companies WHERE Id = @Id";
-				connection.Query<Company>(query, new { Id = id });
+				var query = "UPDATE Companies SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
+				connection.Query<Company>(query, new { Id = id, Status = Statuses.Disabled, DateOfFinish = DateTime.Now });
 			}
 		}
 	}

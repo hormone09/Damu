@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Interfaces
 {
-	public interface IServicesHistoryRepository
+	public interface IRepository<T>
 	{
-		List<ServicesHistory> GetAll();
-		void Add(ServicesHistory history);
-		void Update(ServicesHistory history, int id);
-		//void Remove(int id);
+		List<T> List(string query, object param);
+		void Add(T company);
+		void Update(T company);
+		void Remove(int id);
 	}
 }

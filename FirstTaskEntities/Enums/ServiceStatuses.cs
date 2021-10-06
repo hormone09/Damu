@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Enums
 {
-	public enum ServiceStatuses 
+	/// <summary>
+	/// Статусы активности объектов
+	/// </summary>
+	public enum Statuses 
 	{ 
 		Active = 1, 
-		Disabled = 2, 
-		Pending = 3 
+		Disabled = 2
 	}
 }

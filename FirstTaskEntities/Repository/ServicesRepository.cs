@@ -10,15 +10,15 @@ using FirstTaskEntities.Interfaces;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesRepository : IServicesRepository
+	public class ServicesRepository : IRepository<Service>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Service> GetAll()
+		public List<Service> List(string query, object param)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Service>("SELECT * FROM Services").ToList();
+				return connection.Query<Service>(query, param).ToList();
 			}
 		}
 
@@ -31,12 +31,12 @@ namespace FirstTaskEntities.Repository
 			}
 		}
 
-		public void Update(Service service, int id)
+		public void Update(Service service)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, Price = @Price WHERE Id= @Id";
-				connection.Query<Service>(query, new { Id = id, Name = service.Name, Code = service.Code, Date = service.DateOfBegin, Price = service.Price });
+				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, Price = @Price WHERE Id = @Id";
+				connection.Query<Service>(query, new { Id = service.Id, Name = service.Name, Code = service.Code, Date = service.DateOfBegin, Price = service.Price });
 			}
 		}
 
@@ -44,8 +44,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Status = @Status";
-				connection.Query<Service>(query, new { Id = id, ServiceStatuses.Disabled });
+				string query = "UPDATE Services SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
+				connection.Query<Service>(query, new { Id = id, Status = Statuses.Disabled,  DateOfFinish = DateTime.Now});
 			}
 		}
 	}

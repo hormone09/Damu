@@ -110,3 +110,5 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Runtime.CompilerServices.Unsafe.
 C:\Users\Domu\Desktop\Code\FirstTask\bin\System.Threading.Tasks.Extensions.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\FirstTaskEntities.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\FirstTaskEntities.pdb
+C:\Users\Domu\Desktop\Code\FirstTask\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Domu\Desktop\Code\FirstTask\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml

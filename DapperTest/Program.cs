@@ -26,13 +26,13 @@ namespace DapperTest
 		static void Main(string[] args)
 		{
 
-			// AddServices();
-			AddEmployee();
+			AddServices();
+			//AddEmployee();
 		}
 
 		static void AddServices()
 		{
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				var obj = new Service
 				{
@@ -40,7 +40,7 @@ namespace DapperTest
 					DateOfBegin = DateTime.Now,
 					Name = "NewName",
 					Price = 5000,
-					Status = ServiceStatuses.Active
+					Status = Statuses.Active
 				};
 
 				serviceRep.Add(obj);
@@ -48,20 +48,20 @@ namespace DapperTest
 		}
 		static void AddEmployee()
 		{
-			int[] mas = companyRep.GetAll().Select(x => x.Id).Distinct().ToArray();
+			int[] mas = companyRep.List("SELECT * FROM Services", new { }).Select(x => x.Id).Distinct().ToArray();
 			Random random = new Random();
 
 			for (int i = 0; i < 5; i++)
 			{
 				var obj = new Employee
 				{
-					Company = new Company { Id = random.Next(mas[0], mas[mas.Length - 1]) },
+					CompanyId = random.Next(mas[0], mas[mas.Length - 1]),
 					BirthdayDate = DateTime.Now,
 					DateOfBegin = DateTime.Now,
 					FullName = "Name",
 					PersonalNumber = "123456789101",
 					Phone = "123123",
-					Status = EmloyeeStatuses.Active
+					Status = Statuses.Active
 				};
 
 				employeeRep.Add(obj);
