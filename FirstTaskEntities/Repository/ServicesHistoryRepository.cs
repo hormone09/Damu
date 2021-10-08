@@ -50,5 +50,9 @@ namespace FirstTaskEntities.Repository
 				connection.Query<Service>(query, new { Id = id, ServiceStatuses.Disabled });
 			}*/
 		}
+		public int GetCount(string query, object param)
+		{
+			return 1;
+		}
 	}
 }

@@ -53,5 +53,9 @@ namespace FirstTaskEntities.Repository
 				connection.Query<Employee>(query, new { Id = id, Finish = DateTime.Now, Statuses.Disabled });
 			}
 		}
+		public int GetCount(string query, object param)
+		{
+			return 1;
+		}
 	}
 }

@@ -1,45 +1,83 @@
-﻿using FirstTaskEntities.Enums;
-using FirstTaskEntities.Interfaces;
+﻿using FirstTask.ViewModels;
+using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
-
+using FirstTaskEntities.Query;
+using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
 namespace FirstTask.Managers
 {
 	public class ServiceManager
 	{
-		private IRepository<Service> rep;
 		private int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
+		private ServicesRepository rep = new ServicesRepository();
 
-		public ServiceManager(IRepository<Service> rep)
+		public ServiceViewModel GetPageResult(ServiceViewModel model)
 		{
-			this.rep = rep;
+			int skip = 0;
+
+			if (model.Page == null)
+				model.Page = 1;
+			else
+				skip = (int)model.Page * pageSize;
+
+			var query = new ServiceListQuery
+			{
+				Price = model.Price,
+				ServiceName = model.ServiceName,
+				Status = model.Status,
+				Date1 = model.Date1,
+				Date2 = model.Date2,
+				Skip = skip,
+				Limit = pageSize
+			};
+
+			model.RowNumber = 40;
+			model.Limit = pageSize;
+			model.Items = rep.List(query);
+
+			return model;
 		}
 
-		public List<Service> GetPageResult(int? page, out int pageCount)
+		public bool Edit(Service service)
 		{
-			pageCount = 1;
+			if (string.IsNullOrEmpty(service.Code) || string.IsNullOrEmpty(service.Name) || service.Price <= 0 || service.Id <= 0 )
+				return false;
 
-			List<Service> result;
-			int indent;
-
-			if (page == null)
+			try
 			{
-				indent = 0;
-				page = 1;
+				rep.Update(service);
+
+				return true;
 			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public bool Add(Service service)
+		{
+			if (string.IsNullOrEmpty(service.Code) || string.IsNullOrEmpty(service.Name) || service.Price <= 0)
+				return false;
+
+			if (service.DateOfBegin <= DateTime.Now)
+				service.Status = Statuses.Active;
 			else
-				indent = (int)page * pageSize;
+				service.Status = Statuses.Disabled;
 
-			string query = "SELECT * FROM Services WHERE Status = @Status ORDER BY Id OFFSET @Indent ROWS FETCH NEXT @PageSize ROWS ONLY";
-			object param = new { Status = Statuses.Active, Indent = indent, PageSize = pageSize};
-			result = rep.List(query, param);
+			try
+			{
+				rep.Add(service);
 
-			return result;
+				return true;
+			}
+			catch(Exception)
+			{
+				return false;
+			}
 		}
 
 		public bool Delete(int id)
@@ -54,6 +92,12 @@ namespace FirstTask.Managers
 			{
 				return false;
 			}
+		}
+
+
+		public void Test()
+		{
+
 		}
 	}
 }

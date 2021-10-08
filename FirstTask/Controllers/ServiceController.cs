@@ -10,11 +10,12 @@ using FirstTask.Helpers;
 using FirstTaskEntities.Enums;
 using FirstTask.Managers;
 using FirstTaskEntities.Interfaces;
+using FirstTask.ViewModels;
 
 namespace FirstTask.Controllers
 {
-    public class ServiceController : Controller
-    {
+	public class ServiceController : Controller
+	{
 		private ServiceManager manager;
 
 		public ServiceController(ServiceManager manager)
@@ -22,22 +23,47 @@ namespace FirstTask.Controllers
 			this.manager = manager;
 		}
 
-		public ActionResult Index(int? page)
+		public ActionResult Index()
 		{
-			int pageCount = 0;
-			ViewBag.Data = manager.GetPageResult(page, out pageCount);
-			ViewBag.Page = page;
-			ViewBag.PageCount = pageCount;
-
 			return View();
+		}
+
+		[HttpPost]
+		public JsonResult Index(ServiceViewModel model)
+		{
+			var result = manager.GetPageResult(model);
+
+			return Json(result, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
+		public string AddService(Service service)
+		{
+			var IsSucces = manager.Add(service);
+
+			if (IsSucces)
+				return JsonHelper.SerializeSuccess("Услуга успешно добавлена!");
+			else
+				return JsonHelper.SerializeErorr("Произошла ошибка!");
+		}
+
+		[HttpGet]
+		public string EditService(Service service)
+		{
+			var IsSucces = manager.Edit(service);
+
+			if (IsSucces)
+				return JsonHelper.SerializeSuccess("Услуга успешно отредактирована!");
+			else
+				return JsonHelper.SerializeErorr("Произошла ошибка!");
 		}
 
 		[HttpPost]
 		public string DeleteService(int id)
 		{
-			var result = manager.Delete(id);
+			var IsSucces = manager.Delete(id);
 
-			if (result)
+			if (IsSucces)
 				return JsonHelper.SerializeSuccess("Услуга успешно удалена!");
 			else
 				return JsonHelper.SerializeErorr("Произошла ошибка!");

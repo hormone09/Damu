@@ -1,12 +1,8 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -49,56 +45,14 @@ h1{
 	text-decoration: none;
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-.content-block{
+.flex-box-beetwen
+{
 	display: flex;
 	justify-content: space-between;
-	flex-wrap: wrap;
+	margin: 10px 0px;
+	font-size: 12px;
 }
-.content-block .content-item{
-	margin: 20px 0px;
-	width: 30%;
-	height: 150px;
-	border: 1px solid black;
-}
-.control-panel {
-	margin: 10%;
-	height: 50px;
-	width: 80%;
-	display: flex;
-	justify-content: space-around;
-}
-
-	.control-panel button {
-		width: 30%;
-		border: 2px solid black;
-		color: red;
-		font-size: 9px;
-	}
-.page-helper{
-	margin: 50px 0px;
-	padding: 2px;
-	display: flex;
-	width: auto;
-	height: 30px;
-	border: 2px solid black;
-}
-.page-helper a
+.flex-box-beetwen input
 {
-	text-decoration: none;
-}
-.page-helper a:hover div{
-	background-color: red;
-	color: black;
-}
-.page-helper a div
-{
-	text-align: center;
-	height: 20px;
-	width: 20px;
-	color: red;
-}
-	.popup-window {
-	width: 400px;
-	height: 550px;
-	background-color: black;
+	width: 200px;
 }

@@ -2,32 +2,48 @@
 	ViewBag.Title = "Services";
 }
 
-<table id="grid">
-	<thead>
-		<tr>
-			<th>Id</th>
-			<th>Название услуги</th>
-			<th>Цена</th>
-			<th>Начало оказания услуги</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var el in ViewBag.Data)
-		{
-			<tr>
-				<td>@el.Id</td>
-				<td>@el.Name</td>
-				<td>@el.Price</td>
-				<td>@el.DateOfBegin</td>
-				<td><input type="button" id="btn" value="@el.Id"/></td>
-			</tr>
-		}
-	</tbody>
-</table>
+
+<div id="grid">
+	<div id="toolbar">
+	</div>
+</div>
+<button type="button" id="btn-insert">Добавить</button>
+
+<div id="insert-window">
+	<form id="insert-form"></form>
+</div>
+
+<div id="edit-window">
+	<form id="edit-form">
+		<input type="hidden" id="edit-id" name="Id" />
+		<div class="flex-box-beetwen">
+			<label>Название услуги: </label>
+			<input type="text" id="edit-name" name="Name" />
+		</div>
+		<div class="flex-box-beetwen">
+			<label>Стоимость услуги: </label>
+			<input type="text" id="edit-price" name="Price" />
+		</div>
+		<div class="flex-box-beetwen">
+			<label>Дата начала действия услуги: </label>
+			<input type="date" id="edit-date" name="DateOfBegin" />
+		</div>
+		<div class="flex-box-beetwen">
+			<label>Код услуги: </label>
+			<input type="text" id="edit-code" name="Code" />
+		</div>
+	</form>
+</div>
 
 <div>
 	<div id="delete-window" style="text-align: center;">
 		<h3 style="margin: 20px 0px;">Вы действительно хотите удалить эту услугу?</h3>
 	</div>
+</div>
+
+<div>
+	@for(int i =0; i< ViewBag.PageCount; i++)
+	{
+		<a href="/Service/Index/?page=@i">@i</a>
+	}
 </div>

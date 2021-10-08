@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using FirstTask.ViewModels;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
@@ -10,13 +12,28 @@ namespace FirstTask.Helpers
 {
 	public static class JsonHelper
 	{
-		public static string SerializeSuccesList(JArray array)
+		public static string SerializeSeriviceViewModel(ServiceViewModel model)
 		{
 			dynamic obj = new JObject();
 
 			obj.IsSuccess = true;
 			obj.Error = "none";
-			obj.Items = array;
+			obj.RowNumber = model.RowNumber;
+			obj.PageSize = model.Limit;
+			obj.Page = model.Page;
+			obj.Items = new JArray();
+
+			foreach(var el in model.Items)
+			{
+				dynamic temp = new JObject();
+				temp.ServiceName = model.ServiceName;
+				temp.Price = model.Price;
+				temp.Status = model.Status;
+				temp.Date1 = model.Date1;
+				temp.Date2 = model.Date2;
+
+				obj.Items.Add(temp);
+			}
 
 			return JsonConvert.SerializeObject(obj);
 		}
