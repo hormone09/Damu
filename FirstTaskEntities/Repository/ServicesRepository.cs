@@ -18,25 +18,19 @@ namespace FirstTaskEntities.Repository
 
 		public List<Service> List(ServiceListQuery queryList)
 		{
-			string where = "WHERE";
-			if (!string.IsNullOrEmpty(queryList.ServiceName)) where += " Name LIKE " + queryList.ServiceName + "% AND ";
-
-			/*if (queryList.Date1 != null && queryList.Date2 == null)
-				where += "DateOfBegin >= @Date AND";
-			else if(queryList.Date1 != null && queryList.Date2 != null)
-				where += "DateOfBegin >= @Date1 AND DateOfBegin <= @Date2 AND";*/
-
-			if (queryList.Status != null)
-				where += "Status = @Status AND";
-
-			if (queryList.Price > 0)
-				where += "Price = @Price";
+			string where = "";
+			if (!string.IsNullOrEmpty(queryList.ServiceName) && queryList.Status == null)
+				where = "Name LIKE " + queryList.ServiceName + "%";
+			else if (!string.IsNullOrEmpty(queryList.ServiceName) || queryList.Status != null)
+				where = "Status = @Status AND Name Like '" + queryList.ServiceName + "%'";
+			else if(string.IsNullOrEmpty(queryList.ServiceName) && queryList.Status != null)
+				where = "Status = @Status";
 
 			if (where.Equals("WHERE")) where = string.Empty;
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Service>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services {where} WHERE Status = 1  ORDER BY Id OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", queryList).ToList();
+				return connection.Query<Service>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services WHERE {where} ORDER BY Id OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", queryList).ToList();
 			}
 		}
 

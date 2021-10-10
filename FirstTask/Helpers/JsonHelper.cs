@@ -29,8 +29,6 @@ namespace FirstTask.Helpers
 				temp.ServiceName = model.ServiceName;
 				temp.Price = model.Price;
 				temp.Status = model.Status;
-				temp.Date1 = model.Date1;
-				temp.Date2 = model.Date2;
 
 				obj.Items.Add(temp);
 			}

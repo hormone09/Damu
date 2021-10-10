@@ -11,6 +11,7 @@ $(document).ready(function () {
 		width: "400px",
 		closable: true,
 		visible: false,
+		title: "Добавление новой услуги"
 	});
 
 	var formInsert = $("#insert-form").kendoForm({
@@ -89,9 +90,9 @@ $(document).ready(function () {
 	$("#edit-window").kendoDialog({
 		modal: true,
 		width: "500px",
-		closable: false,
+		closable: true,
 		visible: false,
-		titile: "Редактирование"
+		title: "Редактирование"
 	});
 
 	function EditService(oldService) {
@@ -148,6 +149,28 @@ $(document).ready(function () {
 		});
 	};
 
+	$("#toolbar").kendoToolBar({
+	});
+	$("#kendoTextBox").kendoTextBox({
+		change: function () {
+			let grid = $("#grid").data("kendoGrid");
+			grid.dataSource.read();
+				//setTimeout(() => grid.dataSource.read(), 1000);
+		}
+	});
+	$("#dropdown").kendoDropDownList({
+		dataTextField: "text",
+		dataValueField: "value",
+		dataSource: [
+			{ text: "Активные", value: 1 },
+			{ text: "Отключенные", value: 2 },
+		],
+		select: function () {
+			let grid = $("#grid").data("kendoGrid");
+			setTimeout(() => grid.dataSource.read(), 1000);
+		}
+	});
+
 	var dataSource = new kendo.data.DataSource({
 		transport: {
 			read: {
@@ -155,8 +178,15 @@ $(document).ready(function () {
 				type: "POST",
 				contentType: "application/json; charset=utf-8",
 			},
-			parameterMap: function (data) {
-				return data.models;
+			parameterMap: function (options) {
+				let name = $("#kendoTextBox").val();
+
+				var data = {
+					ServiceName: name,
+					Page: options.page,
+					Status: $("#dropdown").val()
+				}
+				return kendo.stringify(data);
 			}
 		},
 		schema: {
@@ -168,9 +198,6 @@ $(document).ready(function () {
 		serverPaging: true,
 		serverSorting: true,
 	});
-
-	$("#toolbar").kendoToolBar({
-});
 
 	$("#grid").kendoGrid({
 		dataSource: dataSource,

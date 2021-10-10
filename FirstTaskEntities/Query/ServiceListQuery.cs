@@ -14,8 +14,6 @@ namespace FirstTaskEntities.Query
 		public string ServiceName { get; set; }
 		public decimal Price { get; set; }
 		public Statuses? Status { get; set; }
-		public DateTime Date1 { get; set; }
-		public DateTime Date2 { get; set; }
 		public int RowNumber { get; set; }
 	}
 }

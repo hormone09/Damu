@@ -6,3 +6,11 @@ C:\Users\Domu\Desktop\Code\FirstTaskEntities\obj\Debug\FirstTaskEntities.csproj.
 C:\Users\Domu\Desktop\Code\FirstTaskEntities\obj\Debug\FirstTaskEntities.csproj.CopyComplete
 C:\Users\Domu\Desktop\Code\FirstTaskEntities\obj\Debug\FirstTaskEntities.dll
 C:\Users\Domu\Desktop\Code\FirstTaskEntities\obj\Debug\FirstTaskEntities.pdb
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\bin\Debug\FirstTaskEntities.dll
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\bin\Debug\FirstTaskEntities.pdb
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\bin\Debug\Dapper.dll
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\obj\Debug\FirstTaskEntities.csproj.AssemblyReference.cache
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\obj\Debug\FirstTaskEntities.csproj.CoreCompileInputs.cache
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\obj\Debug\FirstTaskEntities.csproj.CopyComplete
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\obj\Debug\FirstTaskEntities.dll
+C:\Users\Владимир\Desktop\Code\Work\FirstTaskEntities\obj\Debug\FirstTaskEntities.pdb

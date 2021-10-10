@@ -1,8 +1,8 @@
-﻿body {
-}
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
+﻿
+body {
+	background-color: white;
+	font-family: 'Times New Roman';
+	min-height: 4000px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -10,6 +10,50 @@
 */
 .dl-horizontal dt {
     white-space: normal;
+}
+.fon {
+	background-color: black;
+	width: 75%;
+	border-radius: 2%;
+	animation: left-block;
+	animation-duration: 1.2s;
+}
+img {
+	border-radius: inherit;
+	opacity: 0.9;
+	object-fit: cover;
+	width: 100%;
+}
+.row{
+}
+.text {
+	margin: 35px 0px;
+	text-align: center;
+	animation-name: rigth-block;
+	animation-duration: 1.2s;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.text h3{
+	border-top: 3px solid green;
+	padding: 30px 20px;
+	text-align: justify;
+}
+.text .head{
+	font-size: 30px;
+	text-align: center;
+}
+.navbar {
+	border-bottom: 2px solid gray;
+}
+.nav a{
+	font-size: 15px;
+	color: silver;
+}
+.nav .nav-item:hover a{
+	color: black;
+}
+.nav {
+	font-family: 'Franklin Gothic';
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -55,4 +99,38 @@ h1{
 .flex-box-beetwen input
 {
 	width: 200px;
+}
+.footer{
+	color: gray;
+	width: 100%;
+	height: auto;
+	font-size: 15px;
+}
+#grid{
+	animation-name: table;
+	animation-duration: 2s;
+}
+
+@keyframes rigth-block {
+	from {
+		transform: translate(500px, 0%);
+	}
+	to {
+	}
+}
+@keyframes left-block {
+	from {
+		transform: translate(-500px, 0%);
+	}
+
+	to {
+	}
+}
+@keyframes table{
+	from{
+		opacity: 0%;
+	}
+	to{
+		opacity: 100%;
+	}
 }

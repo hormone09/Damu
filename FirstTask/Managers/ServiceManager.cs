@@ -28,15 +28,13 @@ namespace FirstTask.Managers
 				Price = model.Price,
 				ServiceName = model.ServiceName,
 				Status = model.Status,
-				Date1 = model.Date1,
-				Date2 = model.Date2,
 				Skip = skip,
 				Limit = pageSize
 			};
-
+			
+			model.Items = rep.List(query);
 			model.RowNumber = 40;
 			model.Limit = pageSize;
-			model.Items = rep.List(query);
 
 			return model;
 		}
