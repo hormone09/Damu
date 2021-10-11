@@ -49,7 +49,7 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin) VALUES (@Name, @BIN, @Phone, @DateOfBegin)";
-				connection.Query<Company>(query, new { company });
+				connection.Query<Company>(query, new { Name = company.Name, Code = service.Code, DateOfBegin = service.DateOfBegin, Status = service.Status });
 			}
 		}
 

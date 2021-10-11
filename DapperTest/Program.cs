@@ -40,7 +40,7 @@ namespace DapperTest
 					BIN = "123456789101",
 					DateOfBegin = DateTime.Now,
 					Name = $"Компания {i}",
-					Status = Statuses.Disabled
+					Status = Statuses.Disabled,
 				};
 
 				companyRep.Add(obj);
