@@ -9,7 +9,7 @@ namespace FirstTask.Models
 {
 	public class ServiceModel
 	{
-		public int Id { get; set; }
+		public int Id { get;}
 		public string Name { get; set; }
 		public string Code { get; set; }
 		public DateTime DateOfBegin { get; set; }

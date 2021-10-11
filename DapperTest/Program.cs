@@ -32,7 +32,7 @@ namespace DapperTest
 
 		static void AddServices()
 		{
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 15; i++)
 			{
 				var obj = new Service
 				{
@@ -40,7 +40,7 @@ namespace DapperTest
 					DateOfBegin = DateTime.Now,
 					Name = "NewName",
 					Price = 5000,
-					Status = Statuses.Active
+					Status = Statuses.Disabled
 				};
 
 				serviceRep.Add(obj);

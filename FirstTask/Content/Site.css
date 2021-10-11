@@ -2,7 +2,6 @@
 body {
 	background-color: white;
 	font-family: 'Times New Roman';
-	min-height: 4000px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

@@ -21,7 +21,7 @@ namespace FirstTask.Managers
 			if (model.Page == null)
 				model.Page = 1;
 			else
-				skip = (int)model.Page * pageSize;
+				skip = (int)(model.Page - 1) * pageSize;
 
 			var query = new ServiceListQuery
 			{
@@ -29,11 +29,27 @@ namespace FirstTask.Managers
 				ServiceName = model.ServiceName,
 				Status = model.Status,
 				Skip = skip,
-				Limit = pageSize
+				Limit = 20
 			};
 			
-			model.Items = rep.List(query);
-			model.RowNumber = 40;
+			var table = rep.List(query);
+			model.Items = new List<Service>();
+			foreach (var obj in table)
+			{
+				var temp = new Service
+				{
+					Id = obj.Id,
+					Name = obj.Name,
+					Price = obj.Price,
+					Status = (Statuses)obj.Status,
+					Code = obj.Code,
+					DateOfBegin = obj.DateOfBegin
+				};
+
+				model.RowNumber = obj.TotalRows;
+				model.Items.Add(temp);
+			}
+
 			model.Limit = pageSize;
 
 			return model;

@@ -16,9 +16,9 @@ namespace FirstTaskEntities.Repository
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 		//string query = "SELECT * FROM Services WHERE Status = @Status";
 
-		public List<Service> List(ServiceListQuery queryList)
+		public List<dynamic> List(ServiceListQuery queryList)
 		{
-			string where = "";
+			string where = string.Empty;
 			if (!string.IsNullOrEmpty(queryList.ServiceName) && queryList.Status == null)
 				where = "Name LIKE " + queryList.ServiceName + "%";
 			else if (!string.IsNullOrEmpty(queryList.ServiceName) || queryList.Status != null)
@@ -30,7 +30,7 @@ namespace FirstTaskEntities.Repository
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Service>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services WHERE {where} ORDER BY Id OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", queryList).ToList();
+				return connection.Query($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services WHERE {where} ORDER BY Id OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", queryList).ToList();
 			}
 		}
 
