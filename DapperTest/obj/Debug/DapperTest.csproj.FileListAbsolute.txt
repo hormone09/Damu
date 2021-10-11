@@ -5,7 +5,6 @@ C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\Dapper.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\FirstTask.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.Optimization.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.Mvc.dll
-C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\Microsoft.Web.Infrastructure.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.WebPages.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.WebPages.Razor.dll
@@ -15,7 +14,6 @@ C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\FirstTask.pdb
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\FirstTask.dll.config
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.Optimization.xml
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.Mvc.xml
-C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.WebPages.xml
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.WebPages.Razor.xml
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\System.Web.Razor.xml
@@ -98,3 +96,5 @@ C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.cspr
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.csproj.CopyComplete
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.exe
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.pdb
+C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.dll
+C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.xml

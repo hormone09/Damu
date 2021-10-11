@@ -3,6 +3,8 @@
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
+using FirstTaskEntities.Query;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,19 +18,38 @@ namespace FirstTaskEntities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Company> List(string query, object param)
+		public List<Company> List(object queryList)
 		{
+			CompanyQueryList query;
+
+			if (queryList is CompanyQueryList)
+				query = (CompanyQueryList)queryList;
+			else
+				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+
+			string where = "WHERE Status = @Status";
+			string orderType;
+
+			if (string.IsNullOrEmpty(query.SortingType))
+				orderType = "Id";
+			else
+				orderType = query.SortingType;
+
+			if (!string.IsNullOrEmpty(query.CompanyName))
+				where += " AND Name LIKE '" + query.CompanyName + "%'";
+
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Company>("SELECT * FROM Services").ToList();
+				return connection.Query<Company>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Companies {where} ORDER BY {orderType} OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", query).ToList();
 			}
 		}
+
 		public void Add(Company company)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin) VALUES (@Name, @BIN, @Phone, @DateOfBegin)";
-				connection.Query<Company>(query, new {  company });
+				connection.Query<Company>(query, new { company });
 			}
 		}
 
@@ -56,10 +77,6 @@ namespace FirstTaskEntities.Repository
 				var query = "UPDATE Companies SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
 				connection.Query<Company>(query, new { Id = id, Status = Statuses.Disabled, DateOfFinish = DateTime.Now });
 			}
-		}
-		public int GetCount(string query, object param)
-		{
-			return 1;
 		}
 	}
 }

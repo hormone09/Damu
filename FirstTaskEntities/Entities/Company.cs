@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -38,6 +39,10 @@ namespace FirstTaskEntities.Models
 		/// Дата удаления
 		/// </summary>
 		public DateTime DateOfFinish { get; set; }
+
 		public Statuses Status { get; set; }
+
+		[NotMapped]
+		public int TotalRows { get; set; }
 	}
 }

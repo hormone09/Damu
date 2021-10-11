@@ -17,62 +17,64 @@
 	<script src="~/Scripts/jquery-3.4.1.js"></script>
 	<script src="~/Content/kendoui.for.jquery.2021.3.914.trial/js/kendo.all.min.js"></script>
 </head>
-	<body>
+<body>
 
-		<nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
-			<a class="navbar-brand" href="/Home/Index">
-				<img src="~/Content/Images/logo.png" alt="Alternate Text" />
-			</a>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+		<a class="navbar-brand" href="/Home/Index">
+			<img src="~/Content/Images/logo.png" alt="Alternate Text" />
+		</a>
 
-				<ul class="nav"">
-					<li class="nav-item">
-						<a href="/Service/Index" class="nav-link">Реестр услуг</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link">Оказываемые услуги</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link">Реестр компаний</a>
-					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link">Сотрудники</a>
-					</li>
-				</ul>
-		</nav>
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="/Company/Index" class="nav-link">Реестр компаний</a>
+			</li>
+			<li class="nav-item">
+				<a href="/Service/Index" class="nav-link">Реестр услуг</a>
+			</li>
+			<li class="nav-item">
+				<a href="#" class="nav-link">Оказываемые услуги</a>
+			</li>
+			<li class="nav-item">
+				<a href="#" class="nav-link">Сотрудники</a>
+			</li>
+		</ul>
+	</nav>
 
-		<div class="container" >
-			@RenderBody()
-		</div>
+	<div class="container">
+		@RenderBody()
+	</div>
 
-		<div class="footer bg-dark">
-			<div class="container">
-				<div class="row">
-					<div class="col-10">
-						<ul class="nav nav-pills nav-fill">
-							<li class="nav-item">
-								<a class="nav-link" href="#">Active</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Longer nav link</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Link</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Disabled</a>
-							</li>
-						</ul>
-					</div>
-					<div class="col-2" style="margin-top: 10px;">
-						<p>#Коробов В.А. Октябрь 2021</p>
-					</div>
+	<div class="footer bg-dark">
+		<div class="container">
+			<div class="row">
+				<div class="col-10">
+					<ul class="nav nav-pills nav-fill">
+						<li class="nav-item">
+							<a class="nav-link" href="#">Active</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Longer nav link</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Disabled</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-2" style="margin-top: 10px;">
+					<p>#Коробов В.А. Октябрь 2021</p>
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<script src="~/Content/main.js"></script>
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
-		@RenderSection("scripts", required: false)
-	</body>
+	<script src="~/Content/js/main.js"></script>
+	<script src="~/Content/js/service.js"></script>
+	<script src="~/Content/js/company.js"></script>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
+</body>
 </html>

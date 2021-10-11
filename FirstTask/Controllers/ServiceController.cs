@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using FirstTask.Helpers;
 using FirstTaskEntities.Enums;
 using FirstTask.Managers;
 using FirstTaskEntities.Interfaces;
@@ -31,42 +30,42 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult Index(ServiceViewModel model)
 		{
-			var result = manager.GetPageResult(model);
+			var result = manager.GetServices(model);
 
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
-		public string AddService(Service service)
+		public JsonResult AddService(Service service)
 		{
 			var IsSucces = manager.Add(service);
 
 			if (IsSucces)
-				return JsonHelper.SerializeSuccess("Услуга успешно добавлена!");
+				return Json(new { IsSuccess = true, Message = "Услуга успешно добавлена!" }, JsonRequestBehavior.AllowGet);
 			else
-				return JsonHelper.SerializeErorr("Произошла ошибка!");
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
-		public string EditService(Service service)
+		public JsonResult EditService(Service service)
 		{
 			var IsSucces = manager.Edit(service);
 
 			if (IsSucces)
-				return JsonHelper.SerializeSuccess("Услуга успешно отредактирована!");
+				return Json(new { IsSuccess = true, Message = "Услуга успешно отредактирована!" }, JsonRequestBehavior.AllowGet);
 			else
-				return JsonHelper.SerializeErorr("Произошла ошибка!");
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
-		public string DeleteService(int id)
+		public JsonResult DeleteService(int id)
 		{
 			var IsSucces = manager.Delete(id);
 
 			if (IsSucces)
-				return JsonHelper.SerializeSuccess("Услуга успешно удалена!");
+				return Json(new { IsSuccess = true, Message = "Услуга успешно удалена!" }, JsonRequestBehavior.AllowGet);
 			else
-				return JsonHelper.SerializeErorr("Произошла ошибка!");
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

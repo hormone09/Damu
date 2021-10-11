@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 
+using AutoMapper;
+
 using FirstTask.Managers;
 
 using FirstTaskEntities.Interfaces;
@@ -24,6 +26,8 @@ namespace FirstTask.App_Start
 
 			// managers
 			builder.RegisterType<ServiceManager>().AsSelf();
+			builder.RegisterType<CompanyManager>().AsSelf();
+			builder.RegisterModule<AutoFacModule>();
 
 			// создаем новый контейнер с теми зависимостями, которые определены выше
 			var container = builder.Build();

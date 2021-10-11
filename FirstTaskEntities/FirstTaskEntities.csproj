@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ServiceStatuses.cs" />
+    <Compile Include="Enums\Statuses.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\Service.cs" />
@@ -51,7 +51,9 @@
     <Compile Include="Entities\ServicesHistory.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query\ServiceListQuery.cs" />
+    <Compile Include="Query\CompanyQueryList.cs" />
+    <Compile Include="Query\QueryListBase.cs" />
+    <Compile Include="Query\ServiceQueryList.cs" />
     <Compile Include="Repository\CompanyRepository.cs" />
     <Compile Include="Repository\EmployeeRepository.cs" />
     <Compile Include="Repository\ServiceProvidedRepository.cs" />

@@ -2,6 +2,7 @@
 body {
 	background-color: white;
 	font-family: 'Times New Roman';
+	min-height: 1080px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -100,6 +101,8 @@ h1{
 	width: 200px;
 }
 .footer{
+	position: fixed;
+	bottom: 0px;
 	color: gray;
 	width: 100%;
 	height: auto;

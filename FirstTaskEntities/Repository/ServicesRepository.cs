@@ -6,31 +6,38 @@ using System.Linq;
 using FirstTaskEntities.Models;
 using System.Configuration;
 using FirstTaskEntities.Enums;
-using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Query;
+using FirstTaskEntities.Interfaces;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesRepository
+	public class ServicesRepository : IRepository<Service>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
-		//string query = "SELECT * FROM Services WHERE Status = @Status";
 
-		public List<dynamic> List(ServiceListQuery queryList)
+		public List<Service> List(object queryList)
 		{
-			string where = string.Empty;
-			if (!string.IsNullOrEmpty(queryList.ServiceName) && queryList.Status == null)
-				where = "Name LIKE " + queryList.ServiceName + "%";
-			else if (!string.IsNullOrEmpty(queryList.ServiceName) || queryList.Status != null)
-				where = "Status = @Status AND Name Like '" + queryList.ServiceName + "%'";
-			else if(string.IsNullOrEmpty(queryList.ServiceName) && queryList.Status != null)
-				where = "Status = @Status";
+			ServiceQueryList query;
 
-			if (where.Equals("WHERE")) where = string.Empty;
+			if (queryList is ServiceQueryList)
+				query = (ServiceQueryList)queryList;
+			else
+				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+
+			string where = "WHERE Status = @Status";
+			string orderType;
+
+			if (string.IsNullOrEmpty(query.SortingType))
+				orderType = "Id";
+			else
+				orderType = query.SortingType;
+
+			if (!string.IsNullOrEmpty(query.ServiceName))
+				where += " AND Name LIKE '" + query.ServiceName + "%'";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services WHERE {where} ORDER BY Id OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", queryList).ToList();
+				return connection.Query<Service>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Services {where} ORDER BY {orderType} OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", query).ToList();
 			}
 		}
 

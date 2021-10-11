@@ -10,9 +10,9 @@ namespace FirstTaskEntities.Interfaces
 {
 	public interface IRepository<T>
 	{
-		List<T> List(string query, object param);
-		void Add(T company);
-		void Update(T company);
+		List<T> List(object queryList);
+		void Add(T instanse);
+		void Update(T instanse);
 		void Remove(int id);
 	}
 }

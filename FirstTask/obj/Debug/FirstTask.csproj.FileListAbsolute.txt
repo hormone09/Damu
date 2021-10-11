@@ -226,3 +226,5 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.csproj
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.csproj.CopyComplete
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.dll
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.pdb
+C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.dll
+C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.pdb

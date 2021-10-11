@@ -10,14 +10,12 @@ using System.Web;
 
 namespace FirstTask.ViewModels
 {
-	public class ServiceViewModel
+	public class ServiceViewModel : ViewModelBase
 	{
-		public int? Page { get; set; }
 		public string ServiceName { get; set; }
 		public decimal Price { get; set; }
-		public Statuses? Status { get; set; }
+		public Statuses Status { get; set; }
+		public string SortingType { get; set; }
 		public List<Service> Items { get; set; }
-		public int Limit { get; set; }
-		public int RowNumber { get; set; }
 	}
 }

@@ -1,4 +1,7 @@
-﻿using FirstTask.ViewModels;
+﻿using AutoMapper;
+
+using FirstTask.App_Start;
+using FirstTask.ViewModels;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -6,51 +9,27 @@ using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace FirstTask.Managers
 {
 	public class ServiceManager
 	{
-		private int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
 		private ServicesRepository rep = new ServicesRepository();
+		private IMapper mapper;
 
-		public ServiceViewModel GetPageResult(ServiceViewModel model)
+		public ServiceManager(IMapper mapper)
 		{
-			int skip = 0;
+			this.mapper = mapper;
+		}
 
-			if (model.Page == null)
-				model.Page = 1;
-			else
-				skip = (int)(model.Page - 1) * pageSize;
-
-			var query = new ServiceListQuery
-			{
-				Price = model.Price,
-				ServiceName = model.ServiceName,
-				Status = model.Status,
-				Skip = skip,
-				Limit = 20
-			};
+		public ServiceViewModel GetServices(ServiceViewModel model)
+		{
+			var query = mapper.Map<ServiceQueryList>(model);
 			
-			var table = rep.List(query);
-			model.Items = new List<Service>();
-			foreach (var obj in table)
-			{
-				var temp = new Service
-				{
-					Id = obj.Id,
-					Name = obj.Name,
-					Price = obj.Price,
-					Status = (Statuses)obj.Status,
-					Code = obj.Code,
-					DateOfBegin = obj.DateOfBegin
-				};
-
-				model.RowNumber = obj.TotalRows;
-				model.Items.Add(temp);
-			}
-
-			model.Limit = pageSize;
+			var services = rep.List(query);
+			model.Items = services;
+			model.RowNumber = services.Any() ? services.FirstOrDefault().TotalRows : 0;
 
 			return model;
 		}
@@ -106,12 +85,6 @@ namespace FirstTask.Managers
 			{
 				return false;
 			}
-		}
-
-
-		public void Test()
-		{
-
 		}
 	}
 }

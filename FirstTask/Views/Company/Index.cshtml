@@ -1,7 +1,32 @@
 ﻿
 @{
-    ViewBag.Title = "View";
+	ViewBag.Title = "Реестр компаний";
 }
 
-<h2>Реест организаций</h2>
+<h2>Реестр организаций</h2>
+
+<span id="allNotif"></span>
+
+<div id="companiesGrid">
+	<div id="toolbar1">
+		<p>Статус: </p>
+		<div id="statusesListCompanies"></div>
+		<p>Сортировать по: </p>
+		<div id="companiesSortingTypes"></div>
+		<p>Наименование: </p>
+		<input type="text" name="Name" id="nameFilter" />
+		<button type="button" id="btn-insert">Добавить</button>
+	</div>
+</div>
+
+<div id="insert-window1">
+	<form id="insert-form"></form>
+</div>
+
+<div>
+	<div id="delete-window1" style="text-align: center;">
+		<h3 style="margin: 20px 0px;">Вы действительно хотите удалить данные этой компании?</h3>
+	</div>
+</div>
+
 

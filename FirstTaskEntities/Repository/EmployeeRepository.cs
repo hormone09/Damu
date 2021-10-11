@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
-	public class EmployeeRepository : IRepository<Employee>
+	public class EmployeeRepository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 

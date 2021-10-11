@@ -26,8 +26,25 @@ namespace DapperTest
 		static void Main(string[] args)
 		{
 
-			AddServices();
+			//AddServices();
 			//AddEmployee();
+			AddCompanies();
+		}
+		static void AddCompanies()
+		{
+			for (int i = 0; i < 15; i++)
+			{
+				var obj = new Company
+				{
+					Phone = "87076405699",
+					BIN = "123456789101",
+					DateOfBegin = DateTime.Now,
+					Name = $"Компания {i}",
+					Status = Statuses.Disabled
+				};
+
+				companyRep.Add(obj);
+			}
 		}
 
 		static void AddServices()
@@ -48,24 +65,24 @@ namespace DapperTest
 		}
 		static void AddEmployee()
 		{
-			int[] mas = companyRep.List("SELECT * FROM Services", new { }).Select(x => x.Id).Distinct().ToArray();
-			Random random = new Random();
+			//int[] mas = companyRep.List("SELECT * FROM Services", new { }).Select(x => x.Id).Distinct().ToArray();
+			//Random random = new Random();
 
-			for (int i = 0; i < 5; i++)
-			{
-				var obj = new Employee
-				{
-					CompanyId = random.Next(mas[0], mas[mas.Length - 1]),
-					BirthdayDate = DateTime.Now,
-					DateOfBegin = DateTime.Now,
-					FullName = "Name",
-					PersonalNumber = "123456789101",
-					Phone = "123123",
-					Status = Statuses.Active
-				};
+			//for (int i = 0; i < 5; i++)
+			//{
+			//	var obj = new Employee
+			//	{
+			//		CompanyId = random.Next(mas[0], mas[mas.Length - 1]),
+			//		BirthdayDate = DateTime.Now,
+			//		DateOfBegin = DateTime.Now,
+			//		FullName = "Name",
+			//		PersonalNumber = "123456789101",
+			//		Phone = "123123",
+			//		Status = Statuses.Active
+			//	};
 
-				employeeRep.Add(obj);
-			}
+			//	employeeRep.Add(obj);
+			//}
 		}
 	}
 }

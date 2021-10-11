@@ -1,14 +1,19 @@
 ﻿@{
-	ViewBag.Title = "Services";
+	ViewBag.Title = "Реестр услуг";
 }
 
+<h2>Реестр услуг</h2>
+
+<span id="allNotif"></span>
 
 <div id="grid">
 	<div id="toolbar">
 		<p>Статус: </p>
-		<div id="dropdown"></div>
+		<div id="statusesList"></div>
+		<p>Сортировать по: </p>
+		<div id="orderByTypes"></div>
 		<p>Наименование: </p>
-		<input type="text" name="Name" id="kendoTextBox" />
+		<input type="text" name="Name" id="nameFilter" />
 		<button type="button" id="btn-insert">Добавить</button>
 	</div>
 </div>
@@ -43,11 +48,4 @@
 	<div id="delete-window" style="text-align: center;">
 		<h3 style="margin: 20px 0px;">Вы действительно хотите удалить эту услугу?</h3>
 	</div>
-</div>
-
-<div>
-	@for(int i =0; i< ViewBag.PageCount; i++)
-	{
-		<a href="/Service/Index/?page=@i">@i</a>
-	}
 </div>
