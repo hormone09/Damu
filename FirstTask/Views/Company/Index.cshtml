@@ -5,26 +5,30 @@
 
 <h2>Реестр организаций</h2>
 
-<span id="allNotif"></span>
+<span id="companyNotifications"></span>
 
 <div id="companiesGrid">
-	<div id="toolbar1">
+	<div id="companiesToolbar">
 		<p>Статус: </p>
 		<div id="statusesListCompanies"></div>
 		<p>Сортировать по: </p>
 		<div id="companiesSortingTypes"></div>
 		<p>Наименование: </p>
 		<input type="text" name="Name" id="nameFilter" />
-		<button type="button" id="btn-insert">Добавить</button>
+		<button type="button" id="btnCompanyInsert">Добавить</button>
 	</div>
 </div>
 
-<div id="insert-window1">
-	<form id="insert-form"></form>
+<div id="companiesInsertWindow">
+	<form id="companiesInsertForm"></form>
+</div>
+
+<div id="companyEditWindow">
+	<form id="companyEditForm"></form>
 </div>
 
 <div>
-	<div id="delete-window1" style="text-align: center;">
+	<div id="companiesDeleteWindow" style="text-align: center;">
 		<h3 style="margin: 20px 0px;">Вы действительно хотите удалить данные этой компании?</h3>
 	</div>
 </div>

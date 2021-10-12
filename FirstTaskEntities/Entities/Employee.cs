@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -9,7 +10,7 @@ namespace FirstTaskEntities.Models
 {
 	public class Employee
 	{
-		public int Id { get; set; }
+		public int Id { get; }
 
 		/// <summary>
 		/// ИИН сотрудника
@@ -51,5 +52,8 @@ namespace FirstTaskEntities.Models
 		/// Статус активности
 		/// </summary>
 		public Statuses Status { get; set; }
+
+		[NotMapped]
+		public int TotalRows { get; set; }
 	}
 }

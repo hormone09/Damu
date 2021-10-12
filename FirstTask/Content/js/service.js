@@ -1,11 +1,12 @@
 ﻿
 $(document).ready(function () {
-
+	
 	var notifElement = $("#allNotif");
 	notifElement.kendoNotification({
 	});
 	var notification = notifElement.data("kendoNotification");
 
+	// Insert
 	$("body").on("click", "#btn-insert", function () {
 		let window = $("#insert-window").data("kendoDialog");
 		window.open();
@@ -61,6 +62,7 @@ $(document).ready(function () {
 		return false;
 	});
 
+	// Edit
 	$("#edit-window").kendoDialog({
 		modal: true,
 		width: "500px",
@@ -69,8 +71,54 @@ $(document).ready(function () {
 		title: false,
 	});
 
-	var formEdit = $("#edit-form").kendoForm({
-		visible: true
+	var formEdit = $("#editServiceForm").kendoForm({
+		visible: true,
+		items: [
+			{
+				type: "group",
+				label: "Редактирование параметров услуги",
+				items: [
+					{
+						field: "Id", editor: function (container, options) {
+							var input = $('<input id="editId" name="Id" type="hidden"/>');
+							input.appendTo(container);
+						}
+					},
+					{
+						field: "Name", label: "Назваине", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editName" name="Name" required="required" />');
+							input.appendTo(container);
+							input.kendoTextBox();
+						}
+					},
+					{
+						field: "Price", label: "Price", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editPrice" name="Price" required="required" />');
+							input.appendTo(container);
+							input.kendoNumericTextBox();
+						}
+					},
+					{
+						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
+							input.appendTo(container);
+							input.kendoDatePicker();
+						}
+					},
+					{
+						field: "Code", label: "Код услуги", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editCode" name="Code" required="required" />');
+							input.appendTo(container);
+							input.kendoMaskedTextBox();
+						}
+					}
+				]
+			}
+		]
 	});
 
 	formEdit.bind("submit", function (e) {
@@ -82,12 +130,12 @@ $(document).ready(function () {
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true) {
-					var grid = $("#grid").data("kendoGrid");
+					var grid = $("#servicesGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
 				}
 				else {
-					notification.error(json.Message);
+					notification.error(json.Error);
 				}
 			}
 		});
@@ -98,17 +146,18 @@ $(document).ready(function () {
 	});
 
 	function EditService(oldService) {
-		$("#edit-form #edit-id").val(oldService.Id);
-		$("#edit-form #edit-name").val(oldService.Name);
-		$("#edit-form #edit-price").val(oldService.Price);
-		$("#edit-form #edit-code").val(oldService.Code);
+		$("#editServiceForm #editId").val(oldService.Id);
+		$("#editServiceForm #editName").val(oldService.Name);
+		$("#editServiceForm #editPrice").val(oldService.Price);
+		$("#editServiceForm #editCode").val(oldService.Code);
 
 		$("#edit-window").data("kendoDialog").open();
 
 		return false;
 	}
 
-	// TODO: заменить чистый JS
+
+	// Delete
 	document.getElementById('delete-window').style.display = "none";
 	function DeleteService(id) {
 		document.getElementById('delete-window').style.display = "block";
@@ -129,7 +178,7 @@ $(document).ready(function () {
 							data: { id: id },
 							success: function (json) {
 								if (json.IsSuccess == true) {
-									var grid = $("#grid").data("kendoGrid");
+									var grid = $("#servicesGrid").data("kendoGrid");
 									grid.dataSource.read();
 									notification.success(json.Message);
 								}
@@ -145,11 +194,12 @@ $(document).ready(function () {
 		});
 	};
 
+	// Filters
 	$("#toolbar").kendoToolBar({
 	});
-	$("#nameFilter").kendoTextBox({
+	$("#serviceNameFilter").kendoTextBox({
 		change: function () {
-			let grid = $("#grid").data("kendoGrid");
+			let grid = $("#servicesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
 			grid.dataSource.read();
 		}
@@ -163,7 +213,7 @@ $(document).ready(function () {
 			{ text: "Отключенные", value: 2 },
 		],
 		select: function () {
-			let grid = $("#grid").data("kendoGrid");
+			let grid = $("#servicesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
 			setTimeout(() => grid.dataSource.read(), 1000);
 		}
@@ -178,12 +228,13 @@ $(document).ready(function () {
 			{ text: "Убыванию цены", value: "Price DESC" }
 		],
 		select: function () {
-			let grid = $("#grid").data("kendoGrid");
+			let grid = $("#servicesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
 			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
+	// GRID
 	var dataSource = new kendo.data.DataSource({
 		pageSize: 20,
 		transport: {
@@ -193,7 +244,7 @@ $(document).ready(function () {
 				contentType: "application/json; charset=utf-8",
 			},
 			parameterMap: function (options) {
-				let name = $("#nameFilter").val();
+				let name = $("#serviceNameFilter").val();
 				var data = {
 					ServiceName: name,
 					Page: options.page,
@@ -218,7 +269,7 @@ $(document).ready(function () {
 		serverSorting: true,
 	});
 
-	$("#grid").kendoGrid({
+	$("#servicesGrid").kendoGrid({
 		dataSource: dataSource,
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },

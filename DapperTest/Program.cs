@@ -9,6 +9,7 @@ using FirstTaskEntities.Models;
 using System.Configuration;
 using FirstTaskEntities.Repository;
 using FirstTaskEntities.Enums;
+using FirstTaskEntities.Query;
 
 namespace DapperTest
 {
@@ -27,8 +28,8 @@ namespace DapperTest
 		{
 
 			//AddServices();
-			//AddEmployee();
-			AddCompanies();
+			//AddCompanies();
+			AddEmployee();
 		}
 		static void AddCompanies()
 		{
@@ -40,7 +41,7 @@ namespace DapperTest
 					BIN = "123456789101",
 					DateOfBegin = DateTime.Now,
 					Name = $"Компания {i}",
-					Status = Statuses.Disabled,
+					Status = Statuses.Active,
 				};
 
 				companyRep.Add(obj);
@@ -65,24 +66,24 @@ namespace DapperTest
 		}
 		static void AddEmployee()
 		{
-			//int[] mas = companyRep.List("SELECT * FROM Services", new { }).Select(x => x.Id).Distinct().ToArray();
-			//Random random = new Random();
+			int[] mas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 20 }).Select(x => x.Id).Distinct().ToArray();
+			Random random = new Random();
 
-			//for (int i = 0; i < 5; i++)
-			//{
-			//	var obj = new Employee
-			//	{
-			//		CompanyId = random.Next(mas[0], mas[mas.Length - 1]),
-			//		BirthdayDate = DateTime.Now,
-			//		DateOfBegin = DateTime.Now,
-			//		FullName = "Name",
-			//		PersonalNumber = "123456789101",
-			//		Phone = "123123",
-			//		Status = Statuses.Active
-			//	};
+			for (int i = 0; i < 50; i++)
+			{
+				var obj = new Employee
+				{
+					CompanyId = random.Next(6, 10),
+					BirthdayDate = DateTime.Now,
+					DateOfBegin = DateTime.Now,
+					FullName = "Name",
+					PersonalNumber = "123456789101",
+					Phone = "123123",
+					Status = Statuses.Active
+				};
 
-			//	employeeRep.Add(obj);
-			//}
+				employeeRep.Add(obj);
+			}
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpGet]
-		public JsonResult AddService(Company company)
+		public JsonResult AddCompany(Company company)
 		{
 			var IsSucces = manager.Add(company);
 
@@ -44,7 +44,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpGet]
-		public JsonResult EditService(Company company)
+		public JsonResult EditCompany(Company company)
 		{
 			var IsSucces = manager.Edit(company);
 
@@ -55,7 +55,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult DeleteService(int id)
+		public JsonResult DeleteCompany(int id)
 		{
 			var IsSucces = manager.Delete(id);
 

@@ -2,6 +2,7 @@
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
+using FirstTaskEntities.Query;
 
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,11 @@ namespace FirstTaskEntities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Employee> List(string query, object param)
+		public List<Employee> List(EmployeeQueryList queryList)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Employee>("SELECT * FROM Services").ToList();
+				return connection.Query<Employee>("SELECT * FROM Employee").ToList();
 			}
 		}
 
@@ -29,9 +30,9 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO Employee (PersonalNumber, FullName, BirthdayDate, Phone, DateOfBegin, CompanyID, Status) " +
-					"VALUES (@PersonalNumber, @FullName, @BirthdayDate, @Phone, @DateOfBegin, @CompanyID, @Status)";
-				connection.Query(query, new { Status = employee.Status, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, DateOfBegin = DateTime.Now, CompanyId = employee.CompanyId });
+				string query = "INSERT INTO Employee (PersonalNumber, FullName, BirthdayDate, Phone, DateOfBegin, CompanyId, Status) " +
+					"VALUES (@PersonalNumber, @FullName, @BirthdayDate, @Phone, @DateOfBegin, @CompanyId, @Status)";
+				connection.Query<Employee>(query, new { Status = employee.Status, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, DateOfBegin = DateTime.Now, CompanyId = employee.CompanyId });
 			}
 		}
 

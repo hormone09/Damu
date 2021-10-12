@@ -1,4 +1,5 @@
 ﻿using FirstTaskEntities.Enums;
+using FirstTaskEntities.Models;
 
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,16 @@ using System.Web;
 
 namespace FirstTask.Models
 {
-	public class ServiceModel
+	public class EmployeeModel
 	{
 		public int Id { get; }
-		public string Name { get; set; }
-		public string Code { get; set; }
+		public string PersonalNumber { get; set; }
+		public string FullName { get; set; }
+		public DateTime BirthdayDate { get; set; }
 		public DateTime DateOfBegin { get; set; }
 		public DateTime DateOfFinish { get; set; }
-		public decimal Price { get; set; }
+		public Company Company { get; set; }
+		public string Phone { get; set; }
 		public Statuses Status { get; set; }
 	}
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace FirstTaskEntities.Repository
@@ -35,6 +36,9 @@ namespace FirstTaskEntities.Repository
 			else
 				orderType = query.SortingType;
 
+			if (query.Id != null)
+				where += " AND Id = @Id";
+
 			if (!string.IsNullOrEmpty(query.CompanyName))
 				where += " AND Name LIKE '" + query.CompanyName + "%'";
 
@@ -48,8 +52,10 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin) VALUES (@Name, @BIN, @Phone, @DateOfBegin)";
-				connection.Query<Company>(query, new { Name = company.Name, Code = service.Code, DateOfBegin = service.DateOfBegin, Status = service.Status });
+				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin, Status) VALUES (@Name, @BIN, @Phone, @DateOfBegin, @Status)";
+				connection.Query<Company>(query, new { Name = company.Name, DateOfBegin = company.DateOfBegin, Status = company.Status,
+					BIN = company.BIN.Replace("-", ""), 
+					Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "") });
 			}
 		}
 
@@ -58,7 +64,10 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE Companies SET Name = @Name, BIN = @BIN, DateOfBegin = @Date, Phone = @Phone WHERE Id= @Id";
-				connection.Query<Company>(query, new { Id = company.Id, Name = company.Name, BIN = company.BIN, Date = company.DateOfBegin, Phone = company.Phone });
+				connection.Query<Company>(query, new { Id = company.Id, Name = company.Name, Date = company.DateOfBegin,
+					BIN = company.BIN.Replace("-", ""),
+					Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "")
+				});
 			}
 		}
 

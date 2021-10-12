@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Query
 {
-	public class CompanyQueryList : QueryListBase
+	public class EmployeeQueryList : QueryListBase
 	{
-		public int? Id { get; set; }
-		public string CompanyName { get; set; }
+		public int CompanyId { get; set; }
+		public string Name { get; set; }
+		public DateTime DateOfBegin { get; set; }
 	}
 }

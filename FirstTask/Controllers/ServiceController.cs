@@ -1,14 +1,6 @@
 ﻿using FirstTaskEntities.Models;
-using FirstTaskEntities.Repository;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using FirstTaskEntities.Enums;
 using FirstTask.Managers;
-using FirstTaskEntities.Interfaces;
 using FirstTask.ViewModels;
 
 namespace FirstTask.Controllers

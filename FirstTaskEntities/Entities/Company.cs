@@ -28,7 +28,6 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Номер телефона
 		/// </summary>
-		// TODO: MASK
 		public string Phone { get; set; }
 
 		/// <summary>

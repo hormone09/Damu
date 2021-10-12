@@ -6,14 +6,14 @@
 
 <span id="allNotif"></span>
 
-<div id="grid">
+<div id="servicesGrid">
 	<div id="toolbar">
 		<p>Статус: </p>
 		<div id="statusesList"></div>
 		<p>Сортировать по: </p>
 		<div id="orderByTypes"></div>
 		<p>Наименование: </p>
-		<input type="text" name="Name" id="nameFilter" />
+		<input type="text" name="Name" id="serviceNameFilter" />
 		<button type="button" id="btn-insert">Добавить</button>
 	</div>
 </div>
@@ -23,25 +23,7 @@
 </div>
 
 <div id="edit-window">
-	<form id="edit-form">
-		<input type="hidden" id="edit-id" name="Id" />
-		<div class="flex-box-beetwen">
-			<label>Название услуги: </label>
-			<input type="text" id="edit-name" name="Name" />
-		</div>
-		<div class="flex-box-beetwen">
-			<label>Стоимость услуги: </label>
-			<input type="text" id="edit-price" name="Price" />
-		</div>
-		<div class="flex-box-beetwen">
-			<label>Дата начала действия услуги: </label>
-			<input type="date" id="edit-date" name="DateOfBegin" />
-		</div>
-		<div class="flex-box-beetwen">
-			<label>Код услуги: </label>
-			<input type="text" id="edit-code" name="Code" />
-		</div>
-	</form>
+	<form id="editServiceForm"></form>
 </div>
 
 <div>

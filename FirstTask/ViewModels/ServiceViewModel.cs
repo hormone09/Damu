@@ -14,8 +14,6 @@ namespace FirstTask.ViewModels
 	{
 		public string ServiceName { get; set; }
 		public decimal Price { get; set; }
-		public Statuses Status { get; set; }
-		public string SortingType { get; set; }
 		public List<Service> Items { get; set; }
 	}
 }

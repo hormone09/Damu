@@ -51,10 +51,10 @@ namespace FirstTask.Managers
 
 		public bool Add(Company company)
 		{
-			if (string.IsNullOrEmpty(company.BIN) || string.IsNullOrEmpty(company.Name) || string.IsNullOrEmpty(company.Phone) || company.Id <= 0)
+			if (string.IsNullOrEmpty(company.BIN) || string.IsNullOrEmpty(company.Name) || string.IsNullOrEmpty(company.Phone))
 				return false;
 
-			if (company.DateOfBegin <= DateTime.Now)
+			if (company.DateOfBegin >= DateTime.Now)
 				company.Status = Statuses.Active;
 			else
 				company.Status = Statuses.Disabled;

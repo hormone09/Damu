@@ -1,7 +1,14 @@
 ﻿
 @{
-    ViewBag.Title = "View";
+    ViewBag.Title = "Реестр сотрудников";
 }
 
-<h2>View</h2>
+<h2>Реестр сотрудников</h2>
+
+<div>
+	@foreach(var el in ViewBag.Test)
+	{
+		<p>@el.Company.Name</p>
+	}
+</div>
 
