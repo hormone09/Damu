@@ -39,6 +39,16 @@ namespace FirstTask.Managers
 			if (string.IsNullOrEmpty(service.Code) || string.IsNullOrEmpty(service.Name) || service.Price <= 0 || service.Id <= 0 )
 				return false;
 
+			if (service.DateOfBegin <= DateTime.Now)
+			{
+				service.Status = Statuses.Active;
+				service.DateOfFinish = null;
+			}
+			else
+			{
+				service.Status = Statuses.Disabled;
+			}
+
 			try
 			{
 				rep.Update(service);

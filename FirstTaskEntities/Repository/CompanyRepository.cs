@@ -36,9 +36,6 @@ namespace FirstTaskEntities.Repository
 			else
 				orderType = query.SortingType;
 
-			if (query.Id != null)
-				where += " AND Id = @Id";
-
 			if (!string.IsNullOrEmpty(query.CompanyName))
 				where += " AND Name LIKE '" + query.CompanyName + "%'";
 
@@ -53,9 +50,7 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "INSERT INTO Companies (Name, BIN, Phone, DateOfBegin, Status) VALUES (@Name, @BIN, @Phone, @DateOfBegin, @Status)";
-				connection.Query<Company>(query, new { Name = company.Name, DateOfBegin = company.DateOfBegin, Status = company.Status,
-					BIN = company.BIN.Replace("-", ""), 
-					Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "") });
+				connection.Query<Company>(query, new { Name = company.Name, DateOfBegin = company.DateOfBegin, Status = company.Status, BIN = company.BIN, Phone = company.Phone });
 			}
 		}
 
@@ -63,11 +58,9 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Companies SET Name = @Name, BIN = @BIN, DateOfBegin = @Date, Phone = @Phone WHERE Id= @Id";
-				connection.Query<Company>(query, new { Id = company.Id, Name = company.Name, Date = company.DateOfBegin,
-					BIN = company.BIN.Replace("-", ""),
-					Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "")
-				});
+				string query = "UPDATE Companies SET Status = @Status, Name = @Name, BIN = @BIN, DateOfFinish = @DateOfFinish, DateOfBegin = @Date, Phone = @Phone WHERE Id= @Id";
+				connection.Query<Company>(query, new { Id = company.Id, Name = company.Name, Date = company.DateOfBegin, 
+					DateOfFinish = company.DateOfFinish, Status = company.Status, BIN = company.BIN, Phone = company.Phone });
 			}
 		}
 
@@ -86,6 +79,17 @@ namespace FirstTaskEntities.Repository
 				var query = "UPDATE Companies SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
 				connection.Query<Company>(query, new { Id = id, Status = Statuses.Disabled, DateOfFinish = DateTime.Now });
 			}
+		}
+
+		public Company Find(int id)
+		{
+			var result = new Company();
+			using (var connection = new SqlConnection(connectionString))
+			{
+				var query = "SELECT * FROM Companies WHERE Id = @Id";
+				result = connection.Query<Company>(query, new { Id = id }).FirstOrDefault();
+			}
+			return result;
 		}
 	}
 }

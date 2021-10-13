@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 using FirstTask.Models;
 using FirstTask.ViewModels;
 
@@ -25,9 +24,9 @@ namespace FirstTask.App_Start
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
 			CreateMap<EmployeeModel, Employee>()
-				.ForMember(obj => obj.CompanyId, opt => opt.MapFrom(x => x.Company.Id));
+				.ForMember(obj => obj.Id, opt => opt.MapFrom(x => (int)x.Id));
 			CreateMap<Employee, EmployeeModel>()
-				.ForMember(obj => obj.Company, opt => opt.MapFrom(x => new Company { Id = x.CompanyId }));
+				.ForMember(obj => obj.Id, opt => opt.MapFrom(x => (int)x.Id));
 		}
 	}
 }

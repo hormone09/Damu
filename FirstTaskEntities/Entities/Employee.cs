@@ -10,7 +10,7 @@ namespace FirstTaskEntities.Models
 {
 	public class Employee
 	{
-		public int Id { get; }
+		public int Id { get; set; }
 
 		/// <summary>
 		/// ИИН сотрудника
@@ -35,7 +35,7 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Дата удаления сотрудника
 		/// </summary>
-		public DateTime DateOfFinish { get; set; }
+		public DateTime? DateOfFinish { get; set; }
 
 		/// <summary>
 		/// Ссылка для определения пренадлежности к компании

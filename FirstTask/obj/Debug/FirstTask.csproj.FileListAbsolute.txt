@@ -83,9 +83,7 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\ru\System.Web.Razor.resources.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\ru\System.Web.WebPages.resources.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\ru\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\ru\System.Web.WebPages.Razor.resources.dll
-C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csprojAssemblyReference.cache
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csproj.CoreCompileInputs.cache
-C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csproj.CopyComplete
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.dll
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Autofac.dll
@@ -228,3 +226,4 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.dll
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.pdb
+C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csproj.AssemblyReference.cache

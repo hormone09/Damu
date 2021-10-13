@@ -10,7 +10,7 @@ namespace FirstTask.Models
 {
 	public class EmployeeModel
 	{
-		public int Id { get; }
+		public int Id { get; set; }
 		public string PersonalNumber { get; set; }
 		public string FullName { get; set; }
 		public DateTime BirthdayDate { get; set; }

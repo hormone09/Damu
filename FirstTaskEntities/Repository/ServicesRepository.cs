@@ -54,8 +54,9 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, Price = @Price WHERE Id = @Id";
-				connection.Query<Service>(query, new { Id = service.Id, Name = service.Name, Code = service.Code, Date = service.DateOfBegin, Price = service.Price });
+				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, DateOfFinish = @DateOfFinish, Price = @Price, Status = @Status WHERE Id = @Id";
+				connection.Query<Service>(query, new { Id = service.Id, Status = service.Status, Name = service.Name, Code = service.Code, 
+					Date = service.DateOfBegin, DateOfFinish = service.DateOfFinish, Price = service.Price });
 			}
 		}
 
@@ -65,16 +66,6 @@ namespace FirstTaskEntities.Repository
 			{
 				string query = "UPDATE Services SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
 				connection.Query<Service>(query, new { Id = id, Status = Statuses.Disabled,  DateOfFinish = DateTime.Now});
-			}
-		}
-
-		public int GetCount(string query, object param)
-		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				var count = connection.QuerySingle<int>(query, param);
-
-				return count;
 			}
 		}
 	}

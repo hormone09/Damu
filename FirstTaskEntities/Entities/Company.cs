@@ -37,7 +37,7 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Дата удаления
 		/// </summary>
-		public DateTime DateOfFinish { get; set; }
+		public DateTime? DateOfFinish { get; set; }
 
 		public Statuses Status { get; set; }
 

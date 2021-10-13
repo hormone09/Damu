@@ -11,6 +11,7 @@ namespace FirstTask.ViewModels
 {
 	public class EmployeeViewModel : ViewModelBase
 	{
+		public string FullName { get; set; }
 		public List<EmployeeModel> Items { get; set; }
 	}
 }

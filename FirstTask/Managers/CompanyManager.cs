@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+
+using FirstTask.Errors;
 using FirstTask.ViewModels;
 
 using FirstTaskEntities.Enums;
@@ -34,9 +36,23 @@ namespace FirstTask.Managers
 		}
 		public bool Edit(Company company)
 		{
+			//ActionStatus result;
 			if (string.IsNullOrEmpty(company.BIN) || string.IsNullOrEmpty(company.Name) || string.IsNullOrEmpty(company.Phone) || company.Id <= 0)
-				return false;
+				return false;//new ActionStatus(false, "Заполните все поля!");
 
+			if(company.DateOfBegin <= DateTime.Now)
+			{
+				company.Status = Statuses.Active;
+				company.DateOfFinish = null;
+			}
+			else
+			{
+				company.Status = Statuses.Disabled;
+			}
+
+			company.BIN = company.BIN.Replace("-", "");
+			company.Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
+			
 			try
 			{
 				rep.Update(company);
@@ -58,6 +74,9 @@ namespace FirstTask.Managers
 				company.Status = Statuses.Active;
 			else
 				company.Status = Statuses.Disabled;
+
+			company.BIN = company.BIN.Replace("-", "");
+			company.Phone = company.Phone.Replace("-", "").Replace("(", "").Replace("(", "");
 
 			try
 			{

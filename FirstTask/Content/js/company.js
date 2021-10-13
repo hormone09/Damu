@@ -144,13 +144,11 @@
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true) {
-					alert(JSON.stringify(json));
 					var grid = $("#companiesGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
 				}
 				else {
-					alert(JSON.stringify(json));
 					notification.error(json.Error);
 				}
 			}

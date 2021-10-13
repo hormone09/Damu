@@ -14,9 +14,54 @@ namespace FirstTask.Controllers
 			this.manager = manager;
 		}
 
-		public JsonResult Index()
+		public ActionResult Index()
 		{
-			return Json(manager.GetEmployeies(new EmployeeViewModel { Page = 1, PageSize = 20}).Items, JsonRequestBehavior.AllowGet);
+			return View();
+		}
+
+		[HttpPost]
+		public JsonResult Index(EmployeeViewModel model)
+		{
+			var result = manager.GetEmployeies(model);
+
+			return Json(result, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPost]
+		public JsonResult AddEmployee(Employee employee)
+		{
+			//return Json(employee, JsonRequestBehavior.AllowGet);
+			employee.CompanyId = 4;
+
+			var IsSucces = manager.Add(employee);
+
+			if (IsSucces)
+				return Json(new { IsSuccess = true, Message = "Услуга успешно добавлена!" }, JsonRequestBehavior.AllowGet);
+			else
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPost]
+		public JsonResult EditEmployee(Employee employee)
+		{
+			employee.CompanyId = 3;
+			var IsSucces = manager.Edit(employee);
+
+			if (IsSucces)
+				return Json(new { IsSuccess = true, Message = "Услуга успешно отредактирована!" }, JsonRequestBehavior.AllowGet);
+			else
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPost]
+		public JsonResult DeleteEmployee(int id)
+		{
+			var IsSucces = manager.Delete(id);
+
+			if (IsSucces)
+				return Json(new { IsSuccess = true, Message = "Услуга успешно удалена!" }, JsonRequestBehavior.AllowGet);
+			else
+				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

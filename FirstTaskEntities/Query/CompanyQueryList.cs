@@ -8,7 +8,6 @@ namespace FirstTaskEntities.Query
 {
 	public class CompanyQueryList : QueryListBase
 	{
-		public int? Id { get; set; }
 		public string CompanyName { get; set; }
 	}
 }

@@ -31,7 +31,7 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Дата окончания действия 
 		/// </summary>
-		public DateTime DateOfFinish { get; set; }
+		public DateTime? DateOfFinish { get; set; }
 		
 		/// <summary>
 		/// Стоимость оказания услуги

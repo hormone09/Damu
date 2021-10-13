@@ -169,6 +169,8 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Errors\ActionStatus.cs" />
+    <Compile Include="Errors\ErorsText.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -249,6 +251,7 @@
     <Content Include="Content\bootstrap\js\src\util\scrollbar.js" />
     <Content Include="Content\Images\doctor1.jpg" />
     <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\js\emloyee.js" />
     <Content Include="Content\js\company.js" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1-t.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1.png" />
