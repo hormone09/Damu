@@ -4,7 +4,15 @@ body {
 	font-family: 'Times New Roman';
 	min-height: 1080px;
 }
-
+button{
+	border: 0px solid red;
+	width: 65px;
+	height: 25px;
+	border-radius: 6%;
+	font-size: 13px;
+	font-weight: bold;
+	color: white;
+}
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

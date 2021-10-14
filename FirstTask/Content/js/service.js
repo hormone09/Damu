@@ -12,6 +12,14 @@ $(document).ready(function () {
 		window.open();
 	});
 
+	$("body").on("click", "#serviceCloseInsertWindow", function () {
+		$("#insert-window").data("kendoDialog").close();
+	});
+
+	$("body").on("click", "#serviceCloseEditWindow", function () {
+		$("#edit-window").data("kendoDialog").close();
+	});
+
 	$("#insert-window").kendoDialog({
 		modal: true,
 		width: "400px",
@@ -39,7 +47,8 @@ $(document).ready(function () {
 					{ field: "Price", label: "Цена", validation: { required: true } }
 				]
 			}
-		]
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>Отмена</button>"
 	});
 
 	formInsert.bind("submit", function (e) {
@@ -79,7 +88,7 @@ $(document).ready(function () {
 				label: "Редактирование параметров услуги",
 				items: [
 					{
-						field: "Id", editor: function (container, options) {
+						field: "Id", label: "", editor: function (container, options) {
 							var input = $('<input id="editId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
@@ -118,7 +127,8 @@ $(document).ready(function () {
 					}
 				]
 			}
-		]
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseEditWindow' type='button'>Отмена</button>"
 	});
 
 	formEdit.bind("submit", function (e) {
@@ -256,19 +266,59 @@ $(document).ready(function () {
 			}
 		},
 		schema: {
-			data: "Items",
-			total: "RowNumber",
+			total: function (response) {
+				return response[0].TotalRows;
+			},
 			model: {
 				fields: {
 					DateOfBegin: { type: "date" }
 				}
-			}
+			},
 		},
-		page: "Page",
 		serverPaging: true,
 		serverSorting: true,
 	});
 
+	function writeButtons() {
+		setTimeout(1000);
+		var status = $("#statusesList").val();
+		let buttonsForActiveStatus = [
+			{
+				name: "destroy",
+				className: "btn-destroy",
+				text: "Удаление",
+				click: function (e) {
+					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+					DeleteService(dataItem.Id);
+				}
+			},
+			{
+				name: "edit",
+				className: "btn-edit",
+				text: "Редактирование",
+				click: function (e) {
+					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+					EditService(dataItem);
+				}
+			},
+		]
+		let buttonsForDisableStatus = [
+			{
+				id: "Edit1-btn",
+				name: "edit",
+				className: "btn-edit",
+				text: "Редактирование",
+				click: function (e) {
+					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+					EditService(dataItem);
+				}
+			},
+		]
+		if (status == 1)
+			return buttonsForActiveStatus;
+		else
+			return buttonsForDisableStatus;
+	}
 	$("#servicesGrid").kendoGrid({
 		dataSource: dataSource,
 		columns: [
@@ -278,33 +328,11 @@ $(document).ready(function () {
 			{ field: "Status", title: "Статус", width: "10%" },
 			{ field: "Code", title: "Код ", width: "15%" },
 			{ field: "DateOfBegin", title: "Дата образования", width: "20%", format: "{0: dd-MM-yyyy}" },
-			{
-				command: [{
-					name: "Delete",
-					className: "btn-destroy",
-					text: "Удаление",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						DeleteService(dataItem.Id);
-					}
-				}],
-				width: "15%",
-			},
-			{
-				command: [{
-					name: "Edit",
-					className: "btn-edit",
-					text: "Редактирование",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						EditService(dataItem);
-					}
-				}],
-				width: "15%",
-			},
+			{ command: writeButtons() }
 		],
 		pageable: true,
 		scrollable: false,
-		width: "1000px"
 	});
+
+	alert($("#Edit1-btn").attr('id'));
 });

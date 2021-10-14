@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 
 using FirstTask.App_Start;
-using FirstTask.ViewModels;
+using FirstTask.Models;
+using FirstTask.ViewQueris;
+
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -23,35 +25,35 @@ namespace FirstTask.Managers
 			this.mapper = mapper;
 		}
 
-		public ServiceViewModel GetServices(ServiceViewModel model)
+		public List<ServiceModel> List(ServiceViewQuery viewQuery)
 		{
-			var query = mapper.Map<ServiceQueryList>(model);
-			
-			var services = rep.List(query);
-			model.Items = services;
-			model.RowNumber = services.Any() ? services.FirstOrDefault().TotalRows : 0;
+			var query = mapper.Map<ServiceQueryList>(viewQuery);
+			var serviceEntities = rep.List(query);
+			var serviceModels = mapper.Map<List<ServiceModel>>(serviceEntities);
 
-			return model;
+			return serviceModels;
 		}
 
-		public bool Edit(Service service)
+		public bool Edit(ServiceModel model)
 		{
-			if (string.IsNullOrEmpty(service.Code) || string.IsNullOrEmpty(service.Name) || service.Price <= 0 || service.Id <= 0 )
+			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0 || model.Id <= 0 )
 				return false;
 
-			if (service.DateOfBegin <= DateTime.Now)
+			if (model.DateOfBegin <= DateTime.Now)
 			{
-				service.Status = Statuses.Active;
-				service.DateOfFinish = null;
+				model.Status = Statuses.Active;
+				model.DateOfFinish = null;
 			}
 			else
 			{
-				service.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
 			}
+
+			var entity = mapper.Map<Service>(model);
 
 			try
 			{
-				rep.Update(service);
+				rep.Update(entity);
 
 				return true;
 			}
@@ -61,19 +63,21 @@ namespace FirstTask.Managers
 			}
 		}
 
-		public bool Add(Service service)
+		public bool Add(ServiceModel model)
 		{
-			if (string.IsNullOrEmpty(service.Code) || string.IsNullOrEmpty(service.Name) || service.Price <= 0)
+			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0)
 				return false;
 
-			if (service.DateOfBegin <= DateTime.Now)
-				service.Status = Statuses.Active;
+			if (model.DateOfBegin <= DateTime.Now)
+				model.Status = Statuses.Active;
 			else
-				service.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
+
+			var entity = mapper.Map<Service>(model);
 
 			try
 			{
-				rep.Add(service);
+				rep.Add(entity);
 
 				return true;
 			}

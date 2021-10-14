@@ -15,9 +15,10 @@ namespace FirstTask.Models
 		public string FullName { get; set; }
 		public DateTime BirthdayDate { get; set; }
 		public DateTime DateOfBegin { get; set; }
-		public DateTime DateOfFinish { get; set; }
-		public Company Company { get; set; }
+		public DateTime? DateOfFinish { get; set; }
+		public CompanyModel Company { get; set; }
 		public string Phone { get; set; }
 		public Statuses Status { get; set; }
+		public int TotalRows { get; set; }
 	}
 }

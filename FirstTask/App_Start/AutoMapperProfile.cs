@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FirstTask.Models;
-using FirstTask.ViewModels;
+using FirstTask.ViewQueris;
 
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -11,22 +11,29 @@ namespace FirstTask.App_Start
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<ServiceViewModel, ServiceQueryList>()
+			CreateMap<Service, ServiceModel>();
+			CreateMap<ServiceModel, Service>();
+			CreateMap<ServiceViewQuery, ServiceQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
-			CreateMap<CompanyViewModel, CompanyQueryList>()
+			CreateMap<ServiceProvided, ServiceProvidedModel>();
+			CreateMap<ServiceProvidedModel, ServiceProvided>();
+			CreateMap<ServiceProvidedViewQuery, ServiceProvidedQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
-			CreateMap<EmployeeViewModel, EmployeeQueryList>()
+			CreateMap<Company, CompanyModel>();
+			CreateMap<CompanyModel, Company>();
+			CreateMap<CompanyViewQuery, CompanyQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
-			CreateMap<EmployeeModel, Employee>()
-				.ForMember(obj => obj.Id, opt => opt.MapFrom(x => (int)x.Id));
-			CreateMap<Employee, EmployeeModel>()
-				.ForMember(obj => obj.Id, opt => opt.MapFrom(x => (int)x.Id));
+			CreateMap<Employee, EmployeeModel>();
+			CreateMap<EmployeeModel, Employee>();
+			CreateMap<EmployeeViewQuery, EmployeeQueryList>()
+				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
+				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 		}
 	}
 }

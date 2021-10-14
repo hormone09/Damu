@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FirstTask.Models;
-using FirstTask.ViewModels;
+using FirstTask.ViewQueris;
+
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -22,47 +23,46 @@ namespace FirstTask.Managers
 		{
 			this.mapper = mapper;
 		}
-		public EmployeeViewModel GetEmployeies(EmployeeViewModel model)
+		public List<EmployeeModel> List(EmployeeViewQuery queryView)
 		{
-			var query = mapper.Map<EmployeeQueryList>(model);
-			var employeeEntities = emloyeeRep.List(query);
-			var emloyeeModels = mapper.Map<List<EmployeeModel>>(employeeEntities);
+			var query = mapper.Map<EmployeeQueryList>(queryView);
+			var entities = emloyeeRep.List(query);
+			var models = mapper.Map<List<EmployeeModel>>(entities);
 
-			foreach (var el in emloyeeModels)
+			foreach (var el in models)
 			{
-				var companyId = employeeEntities.First(x => x.Id == el.Id).CompanyId;
-				el.Company = companyRep.Find(companyId);
+				var companyId = entities.First(x => x.Id == el.Id).CompanyId;
+				var companyEntity = companyRep.Find(companyId);
+				el.Company = mapper.Map<CompanyModel>(companyEntity);
 			}
 
-			model.Items = emloyeeModels;
-			model.RowNumber = employeeEntities.Any() ? employeeEntities.FirstOrDefault().TotalRows : 0;
-
-			return model;
+			return models;
 		}
 
 		
-		public bool Edit(Employee employee)
+		public bool Edit(EmployeeModel model)
 		{
-			if (string.IsNullOrEmpty(employee.PersonalNumber) || string.IsNullOrEmpty(employee.FullName) || string.IsNullOrEmpty(employee.Phone)
-				|| employee.DateOfBegin == null || employee.BirthdayDate == null)
+			if (string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Phone)
+				|| model.DateOfBegin == null || model.BirthdayDate == null)
 				return false;
 
-			if (employee.DateOfBegin <= DateTime.Now)
+			if (model.DateOfBegin <= DateTime.Now)
 			{
-				employee.Status = Statuses.Active;
-				employee.DateOfFinish = null;
+				model.Status = Statuses.Active;
+				model.DateOfFinish = null;
 			}
 			else
 			{
-				employee.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
 			}
 
-			employee.Phone = employee.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
-			employee.PersonalNumber = employee.PersonalNumber.Replace("-", "").Replace(" ", "");
+			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
+			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
+			var entity = mapper.Map<Employee>(model);
 
 			try
 			{
-				emloyeeRep.Update(employee);
+				emloyeeRep.Update(entity);
 
 				return true;
 			}
@@ -72,23 +72,24 @@ namespace FirstTask.Managers
 			}
 		}
 
-		public bool Add(Employee employee)
+		public bool Add(EmployeeModel model)
 		{
-			if (string.IsNullOrEmpty(employee.FullName) || string.IsNullOrEmpty(employee.PersonalNumber) || string.IsNullOrEmpty(employee.Phone)
-				|| employee.BirthdayDate == null || employee.DateOfBegin == null)
+			if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.Phone)
+				|| model.BirthdayDate == null || model.DateOfBegin == null)
 				return false;
 
-			if (employee.DateOfBegin <= DateTime.Now)
-				employee.Status = Statuses.Active;
+			if (model.DateOfBegin <= DateTime.Now)
+				model.Status = Statuses.Active;
 			else
-				employee.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
 
-			employee.Phone = employee.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
-			employee.PersonalNumber = employee.PersonalNumber.Replace("-", "").Replace(" ", "");
+			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
+			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
+			var entity = mapper.Map<Employee>(model);
 
 			try
 			{
-				emloyeeRep.Add(employee);
+				emloyeeRep.Add(entity);
 
 				return true;
 			}

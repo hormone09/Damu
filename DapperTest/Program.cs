@@ -28,8 +28,9 @@ namespace DapperTest
 		{
 
 			//AddServices();
+			AddServicesProvided();
 			//AddCompanies();
-			AddEmployee();
+			//AddEmployee();
 		}
 		static void AddCompanies()
 		{
@@ -64,6 +65,29 @@ namespace DapperTest
 				serviceRep.Add(obj);
 			}
 		}
+
+		static void AddServicesProvided()
+		{
+			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] servicesMas = serviceRep.List(new ServiceQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			Random random = new Random();
+
+			for (int i = 0; i < 50; i++)
+			{
+				var companyId = random.Next(0, companiesMas.Length - 1);
+				var serviceId = random.Next(0, servicesMas.Length - 1);
+				var obj = new ServiceProvided
+				{
+					CompanyId = companyId,
+					ServiceId = serviceId,
+					DateOfBegin = DateTime.Parse("09.09.2021"),
+					Status = Statuses.Active
+				};
+
+				serviceProvidedRep.Add(obj);
+			}
+		}
+
 		static void AddEmployee()
 		{
 			int[] mas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 20 }).Select(x => x.Id).Distinct().ToArray();

@@ -7,6 +7,15 @@
 	var notification = notifElement.data("kendoNotification");
 
 	// Insert
+
+	$("body").on("click", "#companiesCloseInsertWindow", function () {
+		$("#companiesInsertWindow").data("kendoDialog").close();
+	});
+
+	$("body").on("click", "#companiesCloseEditWindow", function () {
+		$("#companyEditWindow").data("kendoDialog").close();
+	});
+
 	$("#companiesInsertWindow").kendoDialog({
 		modal: true,
 		width: "400px",
@@ -50,7 +59,8 @@
 					}
 				]
 			}
-		]
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>Отмена</button>"
 	});
 
 	formInsert.bind("submit", function (e) {
@@ -73,6 +83,7 @@
 	});
 
 	// Edit
+
 	$("#companyEditWindow").kendoDialog({
 		modal: true,
 		width: "500px",
@@ -89,7 +100,7 @@
 				label: "Редактирование данных компании",
 				items: [
 					{
-						field: "Id", editor: function (container, options) {
+						field: "Id", label: "", editor: function (container, options) {
 							var input = $('<input id="editId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
@@ -132,7 +143,8 @@
 					}
 				]
 			}
-		]
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>Отмена</button>"
 	});
 
 	formEdit.bind("submit", function (e) {
@@ -267,15 +279,15 @@
 			}
 		},
 		schema: {
-			data: "Items",
-			total: "RowNumber",
+			total: function (response) {
+				return response[0].TotalRows;
+			},
 			model: {
 				fields: {
 					DateOfBegin: { type: "date" }
 				}
 			}
 		},
-		page: "Page",
 		serverPaging: true,
 		serverSorting: true,
 	});

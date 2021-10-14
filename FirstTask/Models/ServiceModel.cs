@@ -9,12 +9,13 @@ namespace FirstTask.Models
 {
 	public class ServiceModel
 	{
-		public int Id { get; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Code { get; set; }
 		public DateTime DateOfBegin { get; set; }
-		public DateTime DateOfFinish { get; set; }
+		public DateTime? DateOfFinish { get; set; }
 		public decimal Price { get; set; }
 		public Statuses Status { get; set; }
+		public int TotalRows { get; set; }
 	}
 }

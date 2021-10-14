@@ -1,6 +1,7 @@
 ﻿using FirstTaskEntities.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,11 +31,14 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Дата окончания оказания услуги компанией
 		/// </summary>
-		public DateTime DateOfFinish { get; set; }
+		public DateTime? DateOfFinish { get; set; }
 
 		/// <summary>
 		/// Статус активности услуги
 		/// </summary>
 		public Statuses Status { get; set; }
+
+		[NotMapped]
+		public int TotalRows { get; set; }
 	}
 }

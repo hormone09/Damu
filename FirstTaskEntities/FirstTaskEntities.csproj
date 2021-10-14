@@ -54,6 +54,7 @@
     <Compile Include="Query\CompanyQueryList.cs" />
     <Compile Include="Query\EmployeeQueryList.cs" />
     <Compile Include="Query\QueryListBase.cs" />
+    <Compile Include="Query\ServiceProvidedQueryList.cs" />
     <Compile Include="Query\ServiceQueryList.cs" />
     <Compile Include="Repository\CompanyRepository.cs" />
     <Compile Include="Repository\EmployeeRepository.cs" />

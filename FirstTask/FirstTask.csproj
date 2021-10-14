@@ -169,6 +169,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\ServiceProvidedController.cs" />
     <Compile Include="Errors\ActionStatus.cs" />
     <Compile Include="Errors\ErorsText.cs" />
     <Compile Include="Global.asax.cs">
@@ -177,13 +178,17 @@
     <Compile Include="Managers\CompanyManager.cs" />
     <Compile Include="Managers\EmployeeManager.cs" />
     <Compile Include="Managers\ServiceManager.cs" />
+    <Compile Include="Managers\ServiceProvidedManager.cs" />
+    <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
+    <Compile Include="Models\ServiceProvidedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CompanyViewModel.cs" />
-    <Compile Include="ViewModels\EmployeeViewModel.cs" />
-    <Compile Include="ViewModels\ServiceViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewQueris\CompanyViewQuery.cs" />
+    <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
+    <Compile Include="ViewQueris\ServiceProvidedViewQuery.cs" />
+    <Compile Include="ViewQueris\ServiceViewQuery.cs" />
+    <Compile Include="ViewQueris\ViewQueryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="changelog.html" />
@@ -253,6 +258,7 @@
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\js\emloyee.js" />
     <Content Include="Content\js\company.js" />
+    <Content Include="Content\js\serviceProvided.js" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1-t.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\2-t.png" />
@@ -6401,6 +6407,7 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Service\ServicesCompleted.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\ServiceProvided\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

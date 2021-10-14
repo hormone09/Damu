@@ -19,6 +19,10 @@ $(document).ready(function () {
 		title: false,
 	});
 
+	$("body").on("click", "#employeeCloseInsertWindow", function () {
+		$("#employeeInsertWindow").data("kendoDialog").close();
+	});
+
 	var formInsert = $("#employeeInsertForm").kendoForm({
 		visible: false,
 		formData: {
@@ -59,8 +63,9 @@ $(document).ready(function () {
 						}
 					},
 				]
-			}
-		]
+			},
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>Отмена</button>"
 	});
 
 	formInsert.bind("submit", function (e) {
@@ -84,6 +89,10 @@ $(document).ready(function () {
 	});
 
 	// Edit
+	$("body").on("click", "#employeeCloseEditWindow", function () {
+		$("#editEmployeeWindow").data("kendoDialog").close();
+	});
+
 	$("#editEmployeeWindow").kendoDialog({
 		modal: true,
 		width: "500px",
@@ -97,10 +106,10 @@ $(document).ready(function () {
 		items: [
 			{
 				type: "group",
-				label: "Редактирование параметров услуги",
+				label: "Редактирование параметров сотрудника",
 				items: [
 					{
-						field: "Id", editor: function (container, options) {
+						field: "Id", label: "", editor: function (container, options) {
 							var input = $('<input id="editId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
@@ -137,7 +146,9 @@ $(document).ready(function () {
 						editor: function (container, options) {
 							var input = $('<input id="editBirthdayDate" name="BirthdayDate" required="required" />');
 							input.appendTo(container);
-							input.kendoDatePicker();
+							input.kendoDatePicker({
+								format: 'dd/MM/yy',
+							});
 						}
 					},
 					{
@@ -153,12 +164,15 @@ $(document).ready(function () {
 						editor: function (container, options) {
 							var input = $('<input id="editDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
-							input.kendoDatePicker();
+							input.kendoDatePicker({
+								format: 'dd/MM/yy',
+							});
 						}
 					},
 				]
 			}
-		]
+		],
+		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>Отмена</button>"
 	});
 
 	formEdit.bind("submit", function (e) {
@@ -320,8 +334,9 @@ $(document).ready(function () {
 			}
 		},
 		schema: {
-			data: "Items",
-			total: "RowNumber",
+			total: function (response) {
+				return response[0].TotalRows;
+			},
 			model: {
 				fields: {
 					BirthdayDate: { type: "date" },

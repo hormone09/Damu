@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 
 using FirstTask.Errors;
-using FirstTask.ViewModels;
+using FirstTask.Models;
+using FirstTask.ViewQueris;
 
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
@@ -24,38 +25,36 @@ namespace FirstTask.Managers
 			this.mapper = mapper;
 		}
 
-		public CompanyViewModel GetCompanies(CompanyViewModel model)
+		public List<CompanyModel> List(CompanyViewQuery queryView)
 		{
-			var query = mapper.Map<CompanyQueryList>(model);
+			var query = mapper.Map<CompanyQueryList>(queryView);
+			var entities = rep.List(query);
+			var models = mapper.Map<List<CompanyModel>>(entities);
 
-			var companies = rep.List(query);
-			model.Items = companies;
-			model.RowNumber = companies.Any() ? companies.FirstOrDefault().TotalRows : 0;
-
-			return model;
+			return models;
 		}
-		public bool Edit(Company company)
+		public bool Edit(CompanyModel model)
 		{
-			//ActionStatus result;
-			if (string.IsNullOrEmpty(company.BIN) || string.IsNullOrEmpty(company.Name) || string.IsNullOrEmpty(company.Phone) || company.Id <= 0)
-				return false;//new ActionStatus(false, "Заполните все поля!");
+			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone) || model.Id <= 0)
+				return false;
 
-			if(company.DateOfBegin <= DateTime.Now)
+			if(model.DateOfBegin <= DateTime.Now)
 			{
-				company.Status = Statuses.Active;
-				company.DateOfFinish = null;
+				model.Status = Statuses.Active;
+				model.DateOfFinish = null;
 			}
 			else
 			{
-				company.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
 			}
 
-			company.BIN = company.BIN.Replace("-", "");
-			company.Phone = company.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
+			model.BIN = model.BIN.Replace("-", "");
+			model.Phone = model.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
+			var entity = mapper.Map<Company>(model);
 			
 			try
 			{
-				rep.Update(company);
+				rep.Update(entity);
 
 				return true;
 			}
@@ -65,22 +64,23 @@ namespace FirstTask.Managers
 			}
 		}
 
-		public bool Add(Company company)
+		public bool Add(CompanyModel model)
 		{
-			if (string.IsNullOrEmpty(company.BIN) || string.IsNullOrEmpty(company.Name) || string.IsNullOrEmpty(company.Phone))
+			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone))
 				return false;
 
-			if (company.DateOfBegin >= DateTime.Now)
-				company.Status = Statuses.Active;
+			if (model.DateOfBegin >= DateTime.Now)
+				model.Status = Statuses.Active;
 			else
-				company.Status = Statuses.Disabled;
+				model.Status = Statuses.Disabled;
 
-			company.BIN = company.BIN.Replace("-", "");
-			company.Phone = company.Phone.Replace("-", "").Replace("(", "").Replace("(", "");
+			model.BIN = model.BIN.Replace("-", "");
+			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace("(", "");
+			var entity = mapper.Map<Company>(model);
 
 			try
 			{
-				rep.Add(company);
+				rep.Add(entity);
 
 				return true;
 			}

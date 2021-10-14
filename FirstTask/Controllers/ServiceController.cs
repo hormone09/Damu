@@ -1,7 +1,8 @@
 ﻿using FirstTaskEntities.Models;
 using System.Web.Mvc;
 using FirstTask.Managers;
-using FirstTask.ViewModels;
+using FirstTask.ViewQueris;
+using FirstTask.Models;
 
 namespace FirstTask.Controllers
 {
@@ -20,17 +21,17 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(ServiceViewModel model)
+		public JsonResult Index(ServiceViewQuery query)
 		{
-			var result = manager.GetServices(model);
+			var result = manager.List(query);
 
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
-		public JsonResult AddService(Service service)
+		public JsonResult AddService(ServiceModel model)
 		{
-			var IsSucces = manager.Add(service);
+			var IsSucces = manager.Add(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Услуга успешно добавлена!" }, JsonRequestBehavior.AllowGet);
@@ -39,9 +40,9 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpGet]
-		public JsonResult EditService(Service service)
+		public JsonResult EditService(ServiceModel model)
 		{
-			var IsSucces = manager.Edit(service);
+			var IsSucces = manager.Edit(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Услуга успешно отредактирована!" }, JsonRequestBehavior.AllowGet);

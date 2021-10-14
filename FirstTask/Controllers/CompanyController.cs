@@ -1,5 +1,6 @@
 ﻿using FirstTask.Managers;
-using FirstTask.ViewModels;
+using FirstTask.Models;
+using FirstTask.ViewQueris;
 
 using FirstTaskEntities.Models;
 
@@ -19,23 +20,24 @@ namespace FirstTask.Controllers
 		{
 			this.manager = manager;
 		}
+
 		public ActionResult Index()
         {
             return View();
 		}
 
 		[HttpPost]
-		public JsonResult Index(CompanyViewModel model)
+		public JsonResult Index(CompanyViewQuery query)
 		{
-			var result = manager.GetCompanies(model);
+			var result = manager.List(query);
 
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
-		public JsonResult AddCompany(Company company)
+		public JsonResult AddCompany(CompanyModel model)
 		{
-			var IsSucces = manager.Add(company);
+			var IsSucces = manager.Add(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Данные компании успешно добавлены!" }, JsonRequestBehavior.AllowGet);
@@ -44,9 +46,9 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpGet]
-		public JsonResult EditCompany(Company company)
+		public JsonResult EditCompany(CompanyModel model)
 		{
-			var IsSucces = manager.Edit(company);
+			var IsSucces = manager.Edit(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Данные компании успешно отредактированы!" }, JsonRequestBehavior.AllowGet);

@@ -1,7 +1,8 @@
 ﻿using FirstTaskEntities.Models;
 using System.Web.Mvc;
 using FirstTask.Managers;
-using FirstTask.ViewModels;
+using FirstTask.Models;
+using FirstTask.ViewQueris;
 
 namespace FirstTask.Controllers
 {
@@ -20,20 +21,19 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(EmployeeViewModel model)
+		public JsonResult Index(EmployeeViewQuery query)
 		{
-			var result = manager.GetEmployeies(model);
+			var result = manager.List(query);
 
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
-		public JsonResult AddEmployee(Employee employee)
+		public JsonResult AddEmployee(EmployeeModel model)
 		{
-			//return Json(employee, JsonRequestBehavior.AllowGet);
-			employee.CompanyId = 4;
+			model.Company = new CompanyModel { Id = 4 };
 
-			var IsSucces = manager.Add(employee);
+			var IsSucces = manager.Add(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Услуга успешно добавлена!" }, JsonRequestBehavior.AllowGet);
@@ -42,10 +42,10 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult EditEmployee(Employee employee)
+		public JsonResult EditEmployee(EmployeeModel model)
 		{
-			employee.CompanyId = 3;
-			var IsSucces = manager.Edit(employee);
+			model.Company = new CompanyModel { Id = 4 };
+			var IsSucces = manager.Edit(model);
 
 			if (IsSucces)
 				return Json(new { IsSuccess = true, Message = "Услуга успешно отредактирована!" }, JsonRequestBehavior.AllowGet);

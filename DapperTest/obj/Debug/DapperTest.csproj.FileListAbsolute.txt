@@ -24,9 +24,7 @@ C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\ru\System.Web.WebPages.resources
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\ru\System.Web.WebPages.Razor.resources.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\ru\System.Web.Razor.resources.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\ru\System.Web.WebPages.Deployment.resources.dll
-C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.csprojAssemblyReference.cache
 C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.csproj.CoreCompileInputs.cache
-C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.csproj.CopyComplete
 C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.exe
 C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.pdb
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\FirstTaskEntities.dll
@@ -98,3 +96,4 @@ C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.exe
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.pdb
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.xml
+C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.csproj.AssemblyReference.cache

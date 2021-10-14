@@ -68,5 +68,16 @@ namespace FirstTaskEntities.Repository
 				connection.Query<Service>(query, new { Id = id, Status = Statuses.Disabled,  DateOfFinish = DateTime.Now});
 			}
 		}
+
+		public Service Find(int id)
+		{
+			var result = new Service();
+			using (var connection = new SqlConnection(connectionString))
+			{
+				var query = "SELECT * FROM Services WHERE Id = @Id";
+				result = connection.Query<Service>(query, new { Id = id }).FirstOrDefault();
+			}
+			return result;
+		}
 	}
 }
