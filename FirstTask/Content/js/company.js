@@ -19,7 +19,7 @@
 	$("#companiesInsertWindow").kendoDialog({
 		modal: true,
 		width: "400px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -87,7 +87,7 @@
 	$("#companyEditWindow").kendoDialog({
 		modal: true,
 		width: "500px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -200,10 +200,9 @@
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#companiesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
@@ -213,10 +212,9 @@
 		dataSource: [
 			{ text: "Названию", value: "Name" }
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#grid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
@@ -280,7 +278,10 @@
 		},
 		schema: {
 			total: function (response) {
-				return response[0].TotalRows;
+				if (response.length > 0)
+					return response[0].TotalRows;
+				else
+					return 1;
 			},
 			model: {
 				fields: {
@@ -298,31 +299,37 @@
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "Name", title: "Название компании", width: "20%" },
 			{ field: "Phone", title: "Номер телефона", width: "20%" },
-			{ field: "Status", title: "Статус", width: "10%" },
 			{ field: "DateOfBegin", title: "Дата добавления", width: "20%", format: "{0: dd-MM-yyyy}" },
 			{
-				command: [{ 
-					name: "Delete",
-					className: "btn-destroy",
-					text: "Удаление",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						DeleteCompany(dataItem.Id);
-					}
-				}],
-				width: "15%",
+				field: "Status", title: "Статус", width: "10%", values: [
+					{ text: "Активно", value: 1 },
+					{ text: "Удалено", value: 2 }
+				]
 			},
+
 			{
-				command: [{
-					name: "Edit",
-					className: "btn-edit",
-					text: "Редактирование",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						EditCompany(dataItem);
-					}
-				}],
-				width: "15%",
+				command: [
+					{
+						name: "Delete",
+						className: "btn-destroy",
+						text: "Удаление",
+						visible: function (dataItem) { return dataItem.Status == 1 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							DeleteCompany(dataItem.Id);
+						},
+					},
+					{
+						name: "Edit",
+						className: "btn-edit",
+						text: "Редактирование",
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							EditCompany(dataItem);
+						},
+					},
+				],
+				width: "30%",
 			},
 		],
 		pageable: true,

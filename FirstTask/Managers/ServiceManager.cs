@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace FirstTask.Managers
 {
@@ -37,6 +38,10 @@ namespace FirstTask.Managers
 		public bool Edit(ServiceModel model)
 		{
 			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0 || model.Id <= 0 )
+				return false;
+
+			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}";
+			if (!Regex.IsMatch(model.Code, pattern))
 				return false;
 
 			if (model.DateOfBegin <= DateTime.Now)
@@ -66,6 +71,10 @@ namespace FirstTask.Managers
 		public bool Add(ServiceModel model)
 		{
 			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0)
+				return false;
+
+			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}";
+			if (!Regex.IsMatch(model.Code, pattern))
 				return false;
 
 			if (model.DateOfBegin <= DateTime.Now)

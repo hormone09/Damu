@@ -17,7 +17,8 @@ namespace FirstTask.Managers
 {
 	public class CompanyManager
 	{
-		private CompanyRepository rep = new CompanyRepository();
+		private EmployeeRepository employeeRep = new EmployeeRepository();
+		private CompanyRepository companyRep = new CompanyRepository();
 		private IMapper mapper;
 
 		public CompanyManager(IMapper mapper)
@@ -28,7 +29,7 @@ namespace FirstTask.Managers
 		public List<CompanyModel> List(CompanyViewQuery queryView)
 		{
 			var query = mapper.Map<CompanyQueryList>(queryView);
-			var entities = rep.List(query);
+			var entities = companyRep.List(query);
 			var models = mapper.Map<List<CompanyModel>>(entities);
 
 			return models;
@@ -54,7 +55,7 @@ namespace FirstTask.Managers
 			
 			try
 			{
-				rep.Update(entity);
+				companyRep.Update(entity);
 
 				return true;
 			}
@@ -80,7 +81,7 @@ namespace FirstTask.Managers
 
 			try
 			{
-				rep.Add(entity);
+				companyRep.Add(entity);
 
 				return true;
 			}
@@ -94,7 +95,10 @@ namespace FirstTask.Managers
 		{
 			try
 			{
-				rep.Remove(id);
+				companyRep.Remove(id);
+				var employeeEntities = employeeRep.List(new EmployeeQueryList { CompanyId = id, Status = Statuses.Active, Skip = 0, Limit = 100});
+				foreach (var el in employeeEntities)
+					employeeRep.Remove(el.Id);
 
 				return true;
 			}

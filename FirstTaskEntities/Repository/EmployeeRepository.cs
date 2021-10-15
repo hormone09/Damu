@@ -38,6 +38,9 @@ namespace FirstTaskEntities.Repository
 			if (!string.IsNullOrEmpty(query.FullName))
 				where += " AND FullName LIKE '" + query.FullName + "%'";
 
+			if (query.CompanyId != null)
+				where += " AND CompanyId = @CompanyId";
+
 			using (var connection = new SqlConnection(connectionString))
 			{
 				return connection.Query<Employee>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Employee {where} ORDER BY {orderType} OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", query).ToList();
@@ -50,7 +53,7 @@ namespace FirstTaskEntities.Repository
 			{
 				string query = "INSERT INTO Employee (PersonalNumber, FullName, BirthdayDate, Phone, DateOfBegin, CompanyId, Status) " +
 					"VALUES (@PersonalNumber, @FullName, @BirthdayDate, @Phone, @DateOfBegin, @CompanyId, @Status)";
-				connection.Query<Employee>(query, new { Status = employee.Status, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, DateOfBegin = DateTime.Now, CompanyId = employee.CompanyId });
+				connection.Query<Employee>(query, new { Status = employee.Status, PersonalNumber = employee.PersonalNumber, FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Phone = employee.Phone, DateOfBegin = employee.DateOfBegin, CompanyId = employee.CompanyId });
 			}
 		}
 
@@ -58,8 +61,9 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Employee SET DateOfFinish = @DateOfFinish, DateOfBegin = @DateOfBegin, PersonalNumber = @PersonalNumber, FullName = @FullName, BirthdayDate = @BirthdayDate, Phone = @Phone, Status = @Status WHERE Id = @Id";
-				connection.Query<Employee>(query, new { Id = employee.Id, Phone = employee.Phone, PersonalNumber = employee.PersonalNumber, 
+				string query = "UPDATE Employee SET DateOfFinish = @DateOfFinish, DateOfBegin = @DateOfBegin, PersonalNumber = @PersonalNumber, FullName = @FullName, " +
+					"BirthdayDate = @BirthdayDate, Phone = @Phone, CompanyId = @CompanyId, Status = @Status WHERE Id = @Id";
+				connection.Query<Employee>(query, new { Id = employee.Id, Phone = employee.Phone, PersonalNumber = employee.PersonalNumber, CompanyId = employee.CompanyId,
 					FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Status = employee.Status, DateOfBegin = employee.DateOfBegin, DateOfFinish = employee.DateOfFinish});
 			}
 		}
@@ -71,10 +75,6 @@ namespace FirstTaskEntities.Repository
 				string query = "UPDATE Employee SET Status = @Status, DateOfFinish = @Finish WHERE Id = @Id";
 				connection.Query<Employee>(query, new { Id = id, Finish = DateTime.Now, Status = Statuses.Disabled });
 			}
-		}
-		public int GetCount(string query, object param)
-		{
-			return 1;
 		}
 	}
 }

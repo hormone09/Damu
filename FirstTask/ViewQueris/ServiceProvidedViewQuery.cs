@@ -9,7 +9,7 @@ namespace FirstTask.ViewQueris
 {
 	public class ServiceProvidedViewQuery : ViewQueryBase
 	{
-		public CompanyModel company { get; set; }
-		public ServiceModel service { get; set; }
+		public int? CompanyId { get; set; }
+		public int? ServiceId { get; set; }
 	}
 }

@@ -5,6 +5,7 @@ $(document).ready(function () {
 	notifElement.kendoNotification();
 	var notification = notifElement.data("kendoNotification");
 
+
 	// Insert
 	$("body").on("click", "#employeeInsertButton", function () {
 		let window = $("#employeeInsertWindow").data("kendoDialog");
@@ -14,7 +15,7 @@ $(document).ready(function () {
 	$("#employeeInsertWindow").kendoDialog({
 		modal: true,
 		width: "400px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -55,11 +56,17 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "CompanyId", label: "Компания", validation: { required: false },
+						field: "Company.Id", label: "Компания", validation: { required: false },
 						editor: function (container, options) {
-							var input = $('<input id="CompanyId" name="CompanyId"  />');
+							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
 							input.appendTo(container);
-							input.kendoDropDownList();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getCompanyList()
+							});
 						}
 					},
 				]
@@ -96,7 +103,7 @@ $(document).ready(function () {
 	$("#editEmployeeWindow").kendoDialog({
 		modal: true,
 		width: "500px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -152,11 +159,17 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "CompanyId", label: "Компания", validation: { required: false },
+						field: "Company.Id", label: "Компания", validation: { required: false },
 						editor: function (container, options) {
-							var input = $('<input id="editCompanyId" name="CompanyId"  />');
+							var input = $('<input id="editCompanyId" name="Company.Id"  />');
 							input.appendTo(container);
-							input.kendoDropDownList();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getCompanyList()
+							});
 						}
 					},
 					{
@@ -265,38 +278,23 @@ $(document).ready(function () {
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#emloyeeGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
 	$("#companyFilter").kendoComboBox({
-		dataSource: {
-			transport: {
-				read: {
-					url: "/Company/Index",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				parameterMap: function (options) {
-					var data = { PageSize: 50, CompanyName: this.dataValueField, Status: 1 };
-
-					return kendo.stringify(data);
-				}
-			}
-		},
+		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getCompanyList(),
 		change: function () {
-			$("#companyFilter").data("kendoComboBox").dataSource.read();
-		},
-		serverFiltering: true
+			let grid = $("#emloyeeGrid").data("kendoGrid");
+			grid.dataSource.page(1);
+		}
 	});
-
-	function changeComboBox() {
-		alert("Wordking!");
-		$("#companyFilter").data("kendoComboBox").dataSource.read();
-	}
 
 	$("#employeeSortingTypes").kendoDropDownList({
 		dataTextField: "text",
@@ -305,10 +303,9 @@ $(document).ready(function () {
 			{ text: "Имени", value: "FullName" },
 			{ text: "Дата рождения", value: "BirthdayDate" }
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#emloyeeGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
@@ -328,19 +325,24 @@ $(document).ready(function () {
 					Page: options.page,
 					PageSize: options.pageSize,
 					Status: $("#statusesList").val(),
-					SortingType: $("#employeeSortingTypes").val()
+					SortingType: $("#employeeSortingTypes").val(),
+					CompanyId: $("#companyFilter").val()
 				}
 				return kendo.stringify(data);
 			}
 		},
 		schema: {
 			total: function (response) {
-				return response[0].TotalRows;
+				if (response.length > 0)
+					return response[0].TotalRows;
+				else
+					return 1;
 			},
 			model: {
 				fields: {
 					BirthdayDate: { type: "date" },
-					DateOfBegin: { type: "date" }
+					DateOfBegin: { type: "date" },
+					DateOfFinish: { type: "date" }
 				}
 			}
 		},
@@ -354,38 +356,44 @@ $(document).ready(function () {
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "FullName", title: "Полное имя", width: "20%" },
-			{ field: "PersonalNumber", title: "ИИН", width: "15%" },
+			{ field: "PersonalNumber", title: "ИИН", width: "5%" },
 			{ field: "Phone", title: "Номер", width: "15%" },
 			{ field: "Company.Name", title: "Название компании", width: "15%" },
-			{ field: "BirthdayDate", title: "Дата рождения", width: "20%", format: "{0: dd-MM-yyyy}" },
-			{ field: "DateOfBegin", title: "Дата образования", width: "20%", format: "{0: dd-MM-yyyy}" },
+			{ field: "BirthdayDate", title: "Дата рождения", width: "10%", format: "{0: dd-MM-yyyy}" },
+			{ field: "DateOfBegin", title: "Дата образования", width: "10%", format: "{0: dd-MM-yyyy}" },
+			//{ field: "DateOfFinish", title: "1", , format: "{0: dd-MM-yyyy}", visible: function (dataItem) { return dataItem.Status == 0 }},
 			{
-				command: [{
-					name: "Delete",
-					className: "btn-destroy",
-					text: "Удаление",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						DeleteEmployee(dataItem.Id);
-					}
-				}],
-				width: "15%",
+				field: "Status", title: "Статус", width: "10%", values: [
+					{ text: "Активно", value: 1 },
+					{ text: "Удалено", value: 2 }
+				]
 			},
 			{
-				command: [{
-					name: "Edit",
-					className: "btn-edit",
-					text: "Редактирование",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						EditEmployee(dataItem);
-					}
-				}],
-				width: "15%",
+				command: [
+					{
+						name: "Delete",
+						className: "btn-destroy",
+						text: "Удаление",
+						visible: function (dataItem) { return dataItem.Status == 1 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							DeleteEmployee(dataItem.Id);
+						},
+					},
+					{
+						name: "Edit",
+						className: "btn-edit",
+						text: "Редактирование",
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							EditEmployee(dataItem);
+						},
+					},
+				],
+				width: "30%",
 			},
 		],
 		pageable: true,
 		scrollable: false,
-		width: "1000px"
 	});
 });

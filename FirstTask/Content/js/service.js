@@ -30,21 +30,24 @@ $(document).ready(function () {
 
 	var formInsert = $("#insert-form").kendoForm({
 		visible: false,
-		formData: {
-			Name: "Название услуги",
-			Code: "Укажите номер услуги",
-			DateOfBegin: new Date(),
-			Price: 7000.00,
-		},
 		items: [
 			{
 				type: "group",
 				label: "Добавление новой услуги",
 				items: [
 					{ field: "Name", label: "Назваине", validation: { required: true } },
-					{ field: "Code", label: "Номер услуги", validation: { required: true } },
 					{ field: "DateOfBegin", label: "Дата начала действия услуги", editor: "DatePicker", validation: { required: true } },
-					{ field: "Price", label: "Цена", validation: { required: true } }
+					{ field: "Price", label: "Цена", validation: { required: true } },
+					{
+						field: "Code", label: "Код услуги", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editCode" name="Code" required="required" />');
+							input.appendTo(container);
+							input.kendoMaskedTextBox({
+								mask: "L00.000.000"
+							});
+						}
+					}
 				]
 			}
 		],
@@ -122,7 +125,9 @@ $(document).ready(function () {
 						editor: function (container, options) {
 							var input = $('<input id="editCode" name="Code" required="required" />');
 							input.appendTo(container);
-							input.kendoMaskedTextBox();
+							input.kendoMaskedTextBox({
+								mask: "L00.000.000"
+							});
 						}
 					}
 				]
@@ -222,10 +227,10 @@ $(document).ready(function () {
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#servicesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
+			grid.dataSource.read();
 		}
 	});
 
@@ -237,14 +242,14 @@ $(document).ready(function () {
 			{ text: "Возрастанию цены", value: "Price" },
 			{ text: "Убыванию цены", value: "Price DESC" }
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#servicesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
 	// GRID
+
 	var dataSource = new kendo.data.DataSource({
 		pageSize: 20,
 		transport: {
@@ -267,72 +272,61 @@ $(document).ready(function () {
 		},
 		schema: {
 			total: function (response) {
-				return response[0].TotalRows;
+				if (response.length > 0)
+					return response[0].TotalRows;
+				else 
+					return 1;
 			},
 			model: {
 				fields: {
-					DateOfBegin: { type: "date" }
+					DateOfBegin: { type: "date" },
 				}
 			},
 		},
+
 		serverPaging: true,
 		serverSorting: true,
-	});
+	}); 
 
-	function writeButtons() {
-		setTimeout(1000);
-		var status = $("#statusesList").val();
-		let buttonsForActiveStatus = [
-			{
-				name: "destroy",
-				className: "btn-destroy",
-				text: "Удаление",
-				click: function (e) {
-					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-					DeleteService(dataItem.Id);
-				}
-			},
-			{
-				name: "edit",
-				className: "btn-edit",
-				text: "Редактирование",
-				click: function (e) {
-					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-					EditService(dataItem);
-				}
-			},
-		]
-		let buttonsForDisableStatus = [
-			{
-				id: "Edit1-btn",
-				name: "edit",
-				className: "btn-edit",
-				text: "Редактирование",
-				click: function (e) {
-					var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-					EditService(dataItem);
-				}
-			},
-		]
-		if (status == 1)
-			return buttonsForActiveStatus;
-		else
-			return buttonsForDisableStatus;
-	}
 	$("#servicesGrid").kendoGrid({
 		dataSource: dataSource,
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "Name", title: "Название услуги", width: "20%" },
 			{ field: "Price", title: "Цена", width: "15%" },
-			{ field: "Status", title: "Статус", width: "10%" },
 			{ field: "Code", title: "Код ", width: "15%" },
 			{ field: "DateOfBegin", title: "Дата образования", width: "20%", format: "{0: dd-MM-yyyy}" },
-			{ command: writeButtons() }
+			{
+				field: "Status", title: "Статус", width: "10%", values: [
+					{ text: "Активно", value: 1 },
+					{ text: "Удалено", value: 2 }
+				]
+			},
+			{
+				command: [
+					{
+						name: "Delete",
+						className: "btn-destroy",
+						text: "Удаление",
+						visible: function(dataItem) { return dataItem.Status == 1 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							DeleteService(dataItem.Id);
+						}
+					},
+					{
+						name: "Edit",
+						className: "btn-edit",
+						text: "Редактирование",
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							EditService(dataItem);
+						}
+					},
+				]
+			},
 		],
 		pageable: true,
 		scrollable: false,
 	});
-
-	alert($("#Edit1-btn").attr('id'));
 });

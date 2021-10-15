@@ -9,6 +9,7 @@ using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace FirstTask.Managers
@@ -46,6 +47,11 @@ namespace FirstTask.Managers
 				|| model.DateOfBegin == null || model.BirthdayDate == null)
 				return false;
 
+			int minEmployeeAge = 18;
+
+			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
+				return false;
+
 			if (model.DateOfBegin <= DateTime.Now)
 			{
 				model.Status = Statuses.Active;
@@ -55,10 +61,15 @@ namespace FirstTask.Managers
 			{
 				model.Status = Statuses.Disabled;
 			}
+			/*//0 - (000) - 000 - 00 - 00 || 000 - 000 - 000 - 000
+			string phonePattern = "[0-9]{1}-([0-9]{3})-[0-9]{3}-[0-9]{2}-[0-9]{2}", personalNumberPattern = "[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}";
+			if (!Regex.IsMatch(model.Phone, phonePattern) || !Regex.IsMatch(model.PersonalNumber, personalNumberPattern))
+				return false;*/
 
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
+			entity.CompanyId = model.Company.Id;
 
 			try
 			{
@@ -78,6 +89,12 @@ namespace FirstTask.Managers
 				|| model.BirthdayDate == null || model.DateOfBegin == null)
 				return false;
 
+			int minEmployeeAge = 18;
+
+			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
+				return false;
+
+
 			if (model.DateOfBegin <= DateTime.Now)
 				model.Status = Statuses.Active;
 			else
@@ -86,6 +103,7 @@ namespace FirstTask.Managers
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
+			entity.CompanyId = model.Company.Id;
 
 			try
 			{

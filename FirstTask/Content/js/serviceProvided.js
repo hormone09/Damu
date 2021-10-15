@@ -22,7 +22,7 @@
 	$("#sProvidedInsertWindow").kendoDialog({
 		modal: true,
 		width: "400px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -37,18 +37,31 @@
 				label: "Добавление оказываемых услуг",
 				items: [
 					{
-						field: "Company", label: "Компания", validation: { required: true },
+						field: "Company.Id", label: "Компания", validation: { required: false },
 						editor: function (container, options) {
-							var input = $('<input id="editCompany" name="FullName" required="required" />');
+							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
 							input.appendTo(container);
-							input.kendoComboBox();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getCompanyList()
+							});
 						}
 					},
 					{
-						field: "Service", label: "Услуга", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input id="editPhone" name="Service" required="required" />');
+						field: "Service.Id", label: "Услуга", validation: { required: false },
+						editor: function (container, options) {
+							var input = $('<input id="insertServiceId" name="Service.Id"  />');
 							input.appendTo(container);
-							input.kendoComboBox();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getServiceList()
+							});
 						}
 					},
 					{
@@ -91,7 +104,7 @@
 	$("#editSProvidedWindow").kendoDialog({
 		modal: true,
 		width: "500px",
-		closable: true,
+		closable: false,
 		visible: false,
 		title: false,
 	});
@@ -110,18 +123,31 @@
 						}
 					},
 					{
-						field: "Company", label: "Компания", validation: { required: true },
+						field: "Company.Id", label: "Компания", validation: { required: false },
 						editor: function (container, options) {
-							var input = $('<input id="editCompany" name="FullName" required="required" />');
+							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
 							input.appendTo(container);
-							input.kendoComboBox();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getCompanyList()
+							});
 						}
 					},
 					{
-						field: "Service", label: "Услуга", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input id="editPhone" name="Service" required="required" />');
+						field: "Service.Id", label: "Услуга", validation: { required: false },
+						editor: function (container, options) {
+							var input = $('<input id="insertServiceId" name="Service.Id"  />');
 							input.appendTo(container);
-							input.kendoComboBox();
+							input.kendoComboBox({
+								placeholder: "Введите название",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: getServiceList()
+							});
 						}
 					},
 					{
@@ -219,10 +245,26 @@
 
 	$("#sCompany").kendoComboBox({
 		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getCompanyList(),
+		change: function () {
+			let grid = $("#providedGrid").data("kendoGrid");
+			grid.dataSource.page(1);
+		}
 	});
 
 	$("#sService").kendoComboBox({
 		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getServiceList(),
+		change: function () {
+			let grid = $("#providedGrid").data("kendoGrid");
+			grid.dataSource.page(1);
+		}
 	});
 
 	$("#sProvidedStatusesList").kendoDropDownList({
@@ -232,10 +274,9 @@
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#providedGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
@@ -246,10 +287,9 @@
 			{ text: "Имени", value: "FullName" },
 			{ text: "Дата рождения", value: "BirthdayDate" }
 		],
-		select: function () {
+		change: function () {
 			let grid = $("#providedGrid").data("kendoGrid");
 			grid.dataSource.page(1);
-			setTimeout(() => grid.dataSource.read(), 1000);
 		}
 	});
 
@@ -266,14 +306,19 @@
 				var data = {
 					Page: options.page,
 					PageSize: options.pageSize,
-					Status: $("#sProvidedStatusesList").val()
+					Status: $("#sProvidedStatusesList").val(),
+					CompanyId: $("#sCompany").val(),
+					ServiceId: $("#sService").val()
 				}
 				return kendo.stringify(data);
 			}
 		},
 		schema: {
 			total: function (response) {
-				return response[0].TotalRows;
+				if (response.length > 0)
+					return response[0].TotalRows;
+				else
+					return 1;
 			},
 			model: {
 				fields: {
@@ -295,28 +340,35 @@
 			{ field: "Company.Name", title: "Название компании", width: "15%" },
 			{ field: "DateOfBegin", title: "Дата начала действия", width: "20%", format: "{0: dd-MM-yyyy}" },
 			{
-				command: [{
-					name: "Delete",
-					className: "btn-destroy",
-					text: "Удаление",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						DeleteSProvided(dataItem.Id);
-					}
-				}],
-				width: "15%",
+				field: "Status", title: "Статус", width: "10%", values: [
+					{ text: "Активно", value: 1 },
+					{ text: "Удалено", value: 2 }
+				]
 			},
+
 			{
-				command: [{
-					name: "Edit",
-					className: "btn-edit",
-					text: "Редактирование",
-					click: function (e) {
-						var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-						EditSProvided(dataItem);
-					}
-				}],
-				width: "15%",
+				command: [
+					{
+						name: "Delete",
+						className: "btn-destroy",
+						text: "Удаление",
+						visible: function (dataItem) { return dataItem.Status == 1 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							DeleteSProvided(dataItem.Id);
+						},
+					},
+					{
+						name: "Edit",
+						className: "btn-edit",
+						text: "Редактирование",
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							EditSProvided(dataItem);
+						},
+					},
+				],
+				width: "30%",
 			},
 		],
 		pageable: true,

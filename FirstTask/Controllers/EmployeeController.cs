@@ -31,8 +31,6 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult AddEmployee(EmployeeModel model)
 		{
-			model.Company = new CompanyModel { Id = 4 };
-
 			var IsSucces = manager.Add(model);
 
 			if (IsSucces)
@@ -44,7 +42,6 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult EditEmployee(EmployeeModel model)
 		{
-			model.Company = new CompanyModel { Id = 4 };
 			var IsSucces = manager.Edit(model);
 
 			if (IsSucces)
