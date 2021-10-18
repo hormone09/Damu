@@ -1,0 +1,7 @@
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\bin\Debug\DatabaseEditor.exe.config
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\bin\Debug\DatabaseEditor.exe
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\bin\Debug\DatabaseEditor.pdb
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.csproj.AssemblyReference.cache
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.csproj.CoreCompileInputs.cache
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.exe
+C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.pdb

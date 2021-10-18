@@ -27,8 +27,8 @@ namespace DapperTest
 		static void Main(string[] args)
 		{
 
-			//AddServices();
-			AddServicesProvided();
+			AddServices();
+			//AddServicesProvided();
 			//AddCompanies();
 			//AddEmployee();
 		}
@@ -51,13 +51,13 @@ namespace DapperTest
 
 		static void AddServices()
 		{
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				var obj = new Service
 				{
 					Code = "12345",
 					DateOfBegin = DateTime.Now,
-					Name = "NewName",
+					Name = "EditorTEST",
 					Price = 5000,
 					Status = Statuses.Disabled
 				};

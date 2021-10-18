@@ -11,9 +11,19 @@
           "lib/net461/Dapper.dll": {}
         }
       },
+      "DatabaseEditor/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        }
+      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
+          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -47,9 +57,19 @@
           "lib/net461/Dapper.dll": {}
         }
       },
+      "DatabaseEditor/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        }
+      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
+          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -83,9 +103,19 @@
           "lib/net461/Dapper.dll": {}
         }
       },
+      "DatabaseEditor/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        }
+      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
+          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -119,9 +149,19 @@
           "lib/net461/Dapper.dll": {}
         }
       },
+      "DatabaseEditor/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DatabaseEditor.dll": {}
+        }
+      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
+          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -165,6 +205,11 @@
         "lib/netstandard2.0/Dapper.xml"
       ]
     },
+    "DatabaseEditor/1.0.0": {
+      "type": "project",
+      "path": "../DatabaseEditor/DatabaseEditor.csproj",
+      "msbuildProject": "../DatabaseEditor/DatabaseEditor.csproj"
+    },
     "FirstTask/1.0.0": {
       "type": "project",
       "path": "../FirstTask/FirstTask.csproj",
@@ -184,36 +229,37 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Domu\\.nuget\\packages\\": {}
+    "C:\\Users\\Владимир\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+      "projectUniqueName": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\DapperTest\\DapperTest.csproj",
       "projectName": "DapperTest",
-      "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
-      "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\obj\\",
+      "projectPath": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\DapperTest\\DapperTest.csproj",
+      "packagesPath": "C:\\Users\\Владимир\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\DapperTest\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\Domu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Владимир\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net472"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net472": {
           "projectReferences": {
-            "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
-              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj"
+            "C:\\Users\\Владимир\\Desktop\\Code\\Work\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+              "projectPath": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\FirstTaskEntities\\FirstTaskEntities.csproj"
             },
-            "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj": {
-              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj"
+            "C:\\Users\\Владимир\\Desktop\\Code\\Work\\FirstTask\\FirstTask.csproj": {
+              "projectPath": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\FirstTask\\FirstTask.csproj"
             }
           }
         }

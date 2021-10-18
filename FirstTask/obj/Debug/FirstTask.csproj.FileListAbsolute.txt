@@ -227,3 +227,5 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csproj.AssemblyReference.cache
+C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.dll
+C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\AutoMapper.Contrib.Autofac.DependencyInjection.pdb

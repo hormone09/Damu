@@ -52,7 +52,6 @@ C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\FirstTask.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\FirstTaskEntities.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\System.Web.Optimization.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\System.Web.Mvc.dll
-C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Autofac.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Autofac.Integration.Mvc.dll
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Microsoft.Web.Infrastructure.dll
@@ -69,7 +68,6 @@ C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\FirstTask.pdb
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\FirstTask.dll.config
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\System.Web.Optimization.xml
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\System.Web.Mvc.xml
-C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Autofac.pdb
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Autofac.xml
 C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\Autofac.Integration.Mvc.pdb
@@ -97,3 +95,5 @@ C:\Users\Владимир\Desktop\Code\Work\DapperTest\obj\Debug\DapperTest.pdb
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.dll
 C:\Users\Domu\Desktop\Code\DapperTest\bin\Debug\AutoMapper.xml
 C:\Users\Domu\Desktop\Code\DapperTest\obj\Debug\DapperTest.csproj.AssemblyReference.cache
+C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\AutoMapper.dll
+C:\Users\Владимир\Desktop\Code\Work\DapperTest\bin\Debug\AutoMapper.xml
