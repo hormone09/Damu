@@ -17,7 +17,8 @@ namespace FirstTask.App_Start
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
-			CreateMap<ServiceProvided, ServiceProvidedModel>();
+			CreateMap<ServiceProvided, ServiceProvidedModel>()
+				.ForMember("ServicePrice", opt => opt.Ignore());
 			CreateMap<ServiceProvidedModel, ServiceProvided>();
 			CreateMap<ServiceProvidedViewQuery, ServiceProvidedQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))

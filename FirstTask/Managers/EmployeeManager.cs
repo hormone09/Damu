@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+
+using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
 
@@ -16,6 +18,8 @@ namespace FirstTask.Managers
 {
 	public class EmployeeManager
 	{
+		private MessagesStrings strings = new MessagesStrings();
+
 		private CompanyRepository companyRep = new CompanyRepository();
 		private EmployeeRepository emloyeeRep = new EmployeeRepository();
 		private IMapper mapper;
@@ -41,16 +45,16 @@ namespace FirstTask.Managers
 		}
 
 		
-		public bool Edit(EmployeeModel model)
+		public MessageHandler Edit(EmployeeModel model)
 		{
 			if (string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Phone)
-				|| model.DateOfBegin == null || model.BirthdayDate == null)
-				return false;
+				|| model.DateOfBegin == null || model.BirthdayDate == null || model.Company.Id == 0)
+				return new MessageHandler(false, strings.FormError);
 
 			int minEmployeeAge = 18;
 
 			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
-				return false;
+				return new MessageHandler(false, strings.AgeError);
 
 			if (model.DateOfBegin <= DateTime.Now)
 			{
@@ -61,10 +65,11 @@ namespace FirstTask.Managers
 			{
 				model.Status = Statuses.Disabled;
 			}
-			/*//0 - (000) - 000 - 00 - 00 || 000 - 000 - 000 - 000
-			string phonePattern = "[0-9]{1}-([0-9]{3})-[0-9]{3}-[0-9]{2}-[0-9]{2}", personalNumberPattern = "[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}";
-			if (!Regex.IsMatch(model.Phone, phonePattern) || !Regex.IsMatch(model.PersonalNumber, personalNumberPattern))
-				return false;*/
+
+			string personalNumberPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
+			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
+			if (!Regex.IsMatch(model.PersonalNumber, personalNumberPattern) || !Regex.IsMatch(model.Phone, phonePattern))
+				return new MessageHandler(false, strings.FormatError);
 
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
@@ -75,30 +80,35 @@ namespace FirstTask.Managers
 			{
 				emloyeeRep.Update(entity);
 
-				return true;
+				return new MessageHandler(true, strings.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Add(EmployeeModel model)
+		public MessageHandler Add(EmployeeModel model)
 		{
 			if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.Phone)
 				|| model.BirthdayDate == null || model.DateOfBegin == null)
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
 			int minEmployeeAge = 18;
 
 			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
-				return false;
+				return new MessageHandler(false, strings.AgeError);
 
 
 			if (model.DateOfBegin <= DateTime.Now)
 				model.Status = Statuses.Active;
 			else
 				model.Status = Statuses.Disabled;
+
+			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
+			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
+			if (!Regex.IsMatch(model.PersonalNumber, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
+				return new MessageHandler(false, strings.FormatError);
 
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
@@ -109,25 +119,25 @@ namespace FirstTask.Managers
 			{
 				emloyeeRep.Add(entity);
 
-				return true;
+				return new MessageHandler(true, strings.AddSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Delete(int id)
+		public MessageHandler Delete(int id)
 		{
 			try
 			{
 				emloyeeRep.Remove(id);
 
-				return true;
+				return new MessageHandler(true, strings.DeleteSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 	}

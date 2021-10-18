@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
 
@@ -16,6 +17,8 @@ namespace FirstTask.Managers
 {
 	public class ServiceProvidedManager
 	{
+		private MessagesStrings strings = new MessagesStrings();
+
 		private ServiceProvidedRepository providedRepository = new ServiceProvidedRepository();
 		private CompanyRepository companyRepository = new CompanyRepository();
 		private ServicesRepository servicesRepository = new ServicesRepository();
@@ -46,10 +49,10 @@ namespace FirstTask.Managers
 			return models;
 		}
 
-		public bool Edit(ServiceProvidedModel model)
+		public MessageHandler Edit(ServiceProvidedModel model)
 		{
-			if (model.Company == null || model.Service == null || model.DateOfBegin == null)
-				return false;
+			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == 0)
+				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin <= DateTime.Now)
 			{
@@ -65,22 +68,27 @@ namespace FirstTask.Managers
 			entity.CompanyId = model.Company.Id;
 			entity.ServiceId = model.Service.Id;
 
+			var currentService = servicesRepository.Find(entity.ServiceId);
+			currentService.Price = model.ServicePrice;
+
+
 			try
 			{
 				providedRepository.Update(entity);
+				servicesRepository.Update(currentService);
 
-				return true;
+				return new MessageHandler(true, strings.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Add(ServiceProvidedModel model)
+		public MessageHandler Add(ServiceProvidedModel model)
 		{
 			if (model.Company == null || model.Service == null || model.DateOfBegin == null)
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin <= DateTime.Now)
 				model.Status = Statuses.Active;
@@ -89,29 +97,33 @@ namespace FirstTask.Managers
 
 			var entity = mapper.Map<ServiceProvided>(model);
 
+			var currentService = servicesRepository.Find(entity.ServiceId);
+			currentService.Price = model.ServicePrice;
+
 			try
 			{
 				providedRepository.Add(entity);
+				servicesRepository.Update(currentService);
 
-				return true;
+				return new MessageHandler(true, strings.AddSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Delete(int id)
+		public MessageHandler Delete(int id)
 		{
 			try
 			{
 				providedRepository.Remove(id);
 
-				return true;
+				return new MessageHandler(true, strings.DeleteSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 	}

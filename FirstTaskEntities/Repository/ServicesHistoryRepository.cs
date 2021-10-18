@@ -1,5 +1,5 @@
 ﻿using Dapper;
-
+using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using System;
@@ -12,47 +12,35 @@ using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesHistoryRepository
+	public class ServicesHistoryRepository : IRepository<ServicesHistory>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
-		public List<ServicesHistory> List(string query, object param)
+
+		public void Add(ServicesHistory entity)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<ServicesHistory>("SELECT * FROM ServicesHistory").ToList();
+				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@Name, @Price, @Code, @DateOfBegin, null, @Status)";
+				connection.Query(query, new { CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
 			}
 		}
 
-		public void Add(ServicesHistory history)
+		public List<ServicesHistory> List(object queryList)
 		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				string query = "INSERT INTO ServicesHistory (ServiceName, CompanyName, EmployeeName) VALUES (@Service, @Company, @Employee)";
-				connection.Query(query, new { Service = history.ServiceName, Company = history.CompanyName, Employee = history.EmployeeName });
-			}
+			throw new NotImplementedException();
 		}
-
-		public void Update(ServicesHistory history)
+		public void Update(ServicesHistory instanse)
 		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				string query = "UPDATE ServicesHistory SET ServiceName = @Service, CompanyName = @Company, EmployeeName = @Employee";
-				connection.Query<ServicesHistory>(query, new { Id = history.Id, Service = history.ServiceName, Company = history.CompanyName, Employee = history.EmployeeName });
-			}
+			throw new NotImplementedException();
 		}
 
-		// TODO: ???
 		public void Remove(int id)
 		{
-			/*using (var connection = new SqlConnection(connectionString))
+			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE ServicesHistory SET Status = @Status";
-				connection.Query<Service>(query, new { Id = id, ServiceStatuses.Disabled });
-			}*/
-		}
-		public int GetCount(string query, object param)
-		{
-			return 1;
+				string query = "UPDATE ServicesHistory SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
+				connection.Query<Service>(query, new { Id = id, Status = Statuses.Disabled, DateOfFinish = DateTime.Now });
+			}
 		}
 	}
 }

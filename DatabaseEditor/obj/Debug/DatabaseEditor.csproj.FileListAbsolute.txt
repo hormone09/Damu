@@ -5,3 +5,10 @@ C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEdi
 C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.csproj.CoreCompileInputs.cache
 C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.exe
 C:\Users\Владимир\Desktop\Code\Work\DatabaseEditor\obj\Debug\DatabaseEditor.pdb
+C:\Users\Domu\Desktop\Code\DatabaseEditor\bin\Debug\DatabaseEditor.exe.config
+C:\Users\Domu\Desktop\Code\DatabaseEditor\bin\Debug\DatabaseEditor.exe
+C:\Users\Domu\Desktop\Code\DatabaseEditor\bin\Debug\DatabaseEditor.pdb
+C:\Users\Domu\Desktop\Code\DatabaseEditor\obj\Debug\DatabaseEditor.csproj.AssemblyReference.cache
+C:\Users\Domu\Desktop\Code\DatabaseEditor\obj\Debug\DatabaseEditor.csproj.CoreCompileInputs.cache
+C:\Users\Domu\Desktop\Code\DatabaseEditor\obj\Debug\DatabaseEditor.exe
+C:\Users\Domu\Desktop\Code\DatabaseEditor\obj\Debug\DatabaseEditor.pdb

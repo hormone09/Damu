@@ -9,7 +9,10 @@ namespace DatabaseEditor
 {
 	public static class StatusEditor
 	{
-		private static string connectionString = "Data Source=DESKTOP-5MU0QK1; Database=FirstTask; Trusted_Connection=True;";
+		//Home
+		//private static string connectionString = "Data Source=DESKTOP-5MU0QK1; Database=FirstTask; Trusted_Connection=True;";
+		//Work
+		private static string connectionString = "Data Source=DESKTOP-8LKEMKN; Database=FirstTask; Trusted_Connection=True;";
 		private static TimeSpan timeForChange = TimeSpan.Parse("14:29");
 		private static DateTime today;
 
@@ -18,7 +21,7 @@ namespace DatabaseEditor
 			Console.WriteLine($"Время: {DateTime.Now.TimeOfDay} Начало обновления: {timeForChange}");
 			while (true)
 			{
-				if(DateTime.Now.TimeOfDay == timeForChange)
+				if(false)//DateTime.Now.TimeOfDay == timeForChange)
 				{
 					today = DateTime.Now.Date;
 
@@ -29,6 +32,8 @@ namespace DatabaseEditor
 					EditEmployeeStatuses();
 
 					Console.WriteLine("Обновление данных прошло успешно!");
+
+					break;
 				}
 			}
 		}
@@ -43,7 +48,7 @@ namespace DatabaseEditor
 				var command = connection.CreateCommand();
 				command.Parameters.Add(param);
 
-				command.CommandText = "UPDATE Services SET Status = 2 WHERE DateOfBegin <= @Begin AND DateOfFinish is null";
+				command.CommandText = "UPDATE Services SET Status = 1 WHERE DateOfBegin <= @Begin AND DateOfFinish is null";
 
 				command.ExecuteNonQuery();
 

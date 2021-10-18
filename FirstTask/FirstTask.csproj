@@ -97,6 +97,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -170,8 +171,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvidedController.cs" />
-    <Compile Include="Errors\ActionStatus.cs" />
-    <Compile Include="Errors\ErorsText.cs" />
+    <Compile Include="Controllers\ServicesHistoryController.cs" />
+    <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -179,11 +180,18 @@
     <Compile Include="Managers\EmployeeManager.cs" />
     <Compile Include="Managers\ServiceManager.cs" />
     <Compile Include="Managers\ServiceProvidedManager.cs" />
+    <Compile Include="Handlers\MessagesStrings.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
     <Compile Include="Models\ServiceProvidedModel.cs" />
+    <Compile Include="Models\ServicesHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Messages.ru-RU.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.ru-RU.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewQueris\CompanyViewQuery.cs" />
     <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
     <Compile Include="ViewQueris\ServiceProvidedViewQuery.cs" />
@@ -256,6 +264,7 @@
     <Content Include="Content\bootstrap\js\src\util\scrollbar.js" />
     <Content Include="Content\Images\doctor1.jpg" />
     <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\js\scheduler.js" />
     <Content Include="Content\js\emloyee.js" />
     <Content Include="Content\js\company.js" />
     <Content Include="Content\js\serviceProvided.js" />
@@ -6408,6 +6417,7 @@
     <Content Include="Views\Service\ServicesCompleted.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ServiceProvided\Index.cshtml" />
+    <Content Include="Views\ServicesHistory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -6436,6 +6446,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\kendoui.for.jquery.2021.3.914.trial\typescript\kendo.all.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Messages.ru-RU.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.ru-RU.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

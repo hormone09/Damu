@@ -12,6 +12,7 @@ namespace FirstTask.Models
 		public int Id { get; set; }
 		public ServiceModel Service{ get; set; }
 		public CompanyModel Company { get; set; }
+		public decimal ServicePrice { get; set; }
 		public DateTime DateOfBegin { get; set; }
 		public DateTime? DateOfFinish { get; set; }
 		public Statuses Status { get; set; }

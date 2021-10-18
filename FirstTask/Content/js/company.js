@@ -36,14 +36,25 @@
 				type: "group",
 				label: "Добавление новой компании",
 				items: [
-					{ field: "Name", label: "Назваине", validation: { required: true } },
-					{ field: "DateOfBegin", label: "Дата начала работы", editor: "DatePicker", validation: { required: true } },
+					{ field: "Name", placeholder: "Укажите название", label: "Назваине", validation: { required: true } },
+					{
+						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
+							input.appendTo(container);
+							input.kendoDatePicker({
+								placeholder: "Укажите дату начала сотрудничества",
+								format: 'dd/MM/yy',
+							});
+						}
+					},
 					{
 						field: "BIN", label: "BIN", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input name="BIN" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите 12 чисел",
 								mask: "000-000-000-000"
 							});
 						}
@@ -53,6 +64,7 @@
 							var input = $('<input name="Phone" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите номер телефона",
 								mask: "0-(000)-000-00-00"
 							});
 						}
@@ -67,7 +79,7 @@
 		var data = formInsert.serializeArray();
 		$.ajax({
 			url: "/Company/AddCompany/",
-			type: "GET",
+			type: "POST",
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true)
@@ -106,7 +118,7 @@
 						}
 					},
 					{
-						field: "Name", label: "Назваине", validation: { required: true },
+						field: "Name", label: "Назваине", placeholder: "Укажите название", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editName" name="Name" required="required" />');
 							input.appendTo(container);
@@ -119,16 +131,20 @@
 							var input = $('<input id="editBin" name="BIN" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите 12 чисел",
 								mask: "000-000-000-000"
 							});
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
-							input.kendoDatePicker();
+							input.kendoDatePicker({
+								placeholder: "Укажите дату начала сотрудничества",
+								format: 'dd/MM/yy',
+							});
 						}
 					},
 					{
@@ -137,6 +153,7 @@
 							var input = $('<input id="editPhone" name="Phone" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите номер телефона",
 								mask: "0-(000)-000-00-00"
 							});
 						}
@@ -152,7 +169,7 @@
 
 		$.ajax({
 			url: "/Company/EditCompany/",
-			type: "GET",
+			type: "POST",
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true) {
@@ -173,8 +190,6 @@
 
 	function EditCompany(oldService) {
 		$("#companyEditForm #editId").val(oldService.Id);
-		$("#companyEditForm #editName").val(oldService.Name);
-		$("#companyEditForm #editPhone").val(oldService.Phone);
 
 		$("#companyEditWindow").data("kendoDialog").open();
 
@@ -210,10 +225,11 @@
 		dataTextField: "text",
 		dataValueField: "value",
 		dataSource: [
-			{ text: "Названию", value: "Name" }
+			{ text: "Названию", value: "Name" },
+			{ text: "Дате начала", value: "DateOfBegin" }
 		],
 		change: function () {
-			let grid = $("#grid").data("kendoGrid");
+			let grid = $("#companiesGrid").data("kendoGrid");
 			grid.dataSource.page(1);
 		}
 	});

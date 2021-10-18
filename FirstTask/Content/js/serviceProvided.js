@@ -65,11 +65,23 @@
 						}
 					},
 					{
+						field: "ServicePrice", label: "Price", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="insertServicePrice" name="ServicePrice" required="required" />');
+							input.appendTo(container);
+							input.kendoNumericTextBox({
+								placeholder: "Введите стоимость",
+								culture: "de-DE"
+							});
+						}
+					},
+					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
+								placeholder: "Укажите точную дату",
 								format: 'dd/MM/yy',
 							});
 						}
@@ -151,12 +163,24 @@
 						}
 					},
 					{
+						field: "ServicePrice", label: "Price", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="editServicePrice" name="ServicePrice" required="required" />');
+							input.appendTo(container);
+							input.kendoNumericTextBox({
+								placeholder: "Введите стоимость услуги",
+								culture: "de-DE"
+							});
+						}
+					},
+					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
-							format: 'dd/MM/yy',
+								placeholder: "Укажите точную дату",
+								format: 'dd/MM/yy',
 							});
 						}
 					},
@@ -192,11 +216,6 @@
 
 	function EditSProvided(oldService) {
 		$("#editSProvidedForm #editId").val(oldService.Id);
-		$("#editSProvidedForm #editFullName").val(oldService.FullName);
-		$("#editSProvidedForm #editPhone").val(oldService.Phone);
-		$("#editSProvidedForm #editCompanyId").val(oldService.CompanyId);
-		$("#editSProvidedForm #editPersonalNumber").val(oldService.PersonalNumber);
-
 		$("#editSProvidedWindow").data("kendoDialog").open();
 
 		return false;
@@ -284,8 +303,7 @@
 		dataTextField: "text",
 		dataValueField: "value",
 		dataSource: [
-			{ text: "Имени", value: "FullName" },
-			{ text: "Дата рождения", value: "BirthdayDate" }
+			{ text: "Дата начала работы", value: "DateOfBegin" }
 		],
 		change: function () {
 			let grid = $("#providedGrid").data("kendoGrid");

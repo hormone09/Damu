@@ -1,4 +1,5 @@
-﻿using FirstTask.Managers;
+﻿using FirstTask.Handlers;
+using FirstTask.Managers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
 
@@ -34,37 +35,28 @@ namespace FirstTask.Controllers
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public JsonResult AddCompany(CompanyModel model)
 		{
-			var IsSucces = manager.Add(model);
+			var result = manager.Add(model);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Данные компании успешно добавлены!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public JsonResult EditCompany(CompanyModel model)
 		{
-			var IsSucces = manager.Edit(model);
+			var result = manager.Edit(model);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Данные компании успешно отредактированы!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 
 		[HttpPost]
 		public JsonResult DeleteCompany(int id)
 		{
-			var IsSucces = manager.Delete(id);
+			var result = manager.Delete(id);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Данные компании успешно удалены!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 	}
 }

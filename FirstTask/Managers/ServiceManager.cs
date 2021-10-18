@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using FirstTask.App_Start;
+using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
 
@@ -18,7 +19,10 @@ namespace FirstTask.Managers
 {
 	public class ServiceManager
 	{
-		private ServicesRepository rep = new ServicesRepository();
+		private MessagesStrings strings = new MessagesStrings();
+
+		private ServicesRepository serviceRepository = new ServicesRepository();
+		private ServiceProvidedRepository serviceProvidedRepository = new ServiceProvidedRepository();
 		private IMapper mapper;
 
 		public ServiceManager(IMapper mapper)
@@ -29,20 +33,20 @@ namespace FirstTask.Managers
 		public List<ServiceModel> List(ServiceViewQuery viewQuery)
 		{
 			var query = mapper.Map<ServiceQueryList>(viewQuery);
-			var serviceEntities = rep.List(query);
+			var serviceEntities = serviceRepository.List(query);
 			var serviceModels = mapper.Map<List<ServiceModel>>(serviceEntities);
 
 			return serviceModels;
 		}
 
-		public bool Edit(ServiceModel model)
+		public MessageHandler Edit(ServiceModel model)
 		{
-			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0 || model.Id <= 0 )
-				return false;
+			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0 || model.Id <= 0)
+				return new MessageHandler(false, strings.FormError);
 
-			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}";
+			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$";
 			if (!Regex.IsMatch(model.Code, pattern))
-				return false;
+				return new MessageHandler(false, strings.FormatError);
 
 			if (model.DateOfBegin <= DateTime.Now)
 			{
@@ -58,24 +62,24 @@ namespace FirstTask.Managers
 
 			try
 			{
-				rep.Update(entity);
+				serviceRepository.Update(entity);
 
-				return true;
+				return new MessageHandler(true, strings.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Add(ServiceModel model)
+		public MessageHandler Add(ServiceModel model)
 		{
 			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0)
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
-			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}";
+			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$";
 			if (!Regex.IsMatch(model.Code, pattern))
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin <= DateTime.Now)
 				model.Status = Statuses.Active;
@@ -86,27 +90,31 @@ namespace FirstTask.Managers
 
 			try
 			{
-				rep.Add(entity);
+				serviceRepository.Add(entity);
 
-				return true;
+				return new MessageHandler(true, strings.AddSuccess);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Delete(int id)
+		public MessageHandler Delete(int id)
 		{
 			try
 			{
-				rep.Remove(id);
+				serviceRepository.Remove(id);
 
-				return true;
+				var serviceProvidedEntities = serviceProvidedRepository.List(new ServiceProvidedQueryList { ServiceId = id, Status = Statuses.Active, Skip = 0, Limit = 100000000 });
+				foreach (var el in serviceProvidedEntities)
+					serviceProvidedRepository.Remove(el.Id);
+
+				return new MessageHandler(true, strings.DeleteSuccess);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 	}

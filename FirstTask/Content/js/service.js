@@ -35,15 +35,44 @@ $(document).ready(function () {
 				type: "group",
 				label: "Добавление новой услуги",
 				items: [
-					{ field: "Name", label: "Назваине", validation: { required: true } },
-					{ field: "DateOfBegin", label: "Дата начала действия услуги", editor: "DatePicker", validation: { required: true } },
-					{ field: "Price", label: "Цена", validation: { required: true } },
+					{
+						field: "Name", label: "Назваине", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="insertName" name="Name" required="required" />');
+							input.appendTo(container);
+							input.kendoTextBox({
+								placeholder: "Укажите наименование услуги",
+							});
+						}
+					},
+					{
+						field: "Price", label: "Price", placeholder: "Укажите стоимость", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="insertPrice" name="Price" required="required" />');
+							input.appendTo(container);
+							input.kendoNumericTextBox({
+								placeholder: "Введите стоимость ",
+								culture: "de-DE"
+							});
+						}
+					},
+					{
+						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
+							input.appendTo(container);
+							input.kendoDatePicker({
+								format: 'dd/MM/yy',
+							});
+						}
+					},
 					{
 						field: "Code", label: "Код услуги", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editCode" name="Code" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите код в формате 'Z00.000.000'",
 								mask: "L00.000.000"
 							});
 						}
@@ -59,7 +88,7 @@ $(document).ready(function () {
 
 		$.ajax({
 			url: "/Service/AddService/",
-			type: "GET",
+			type: "POST",
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true)
@@ -97,19 +126,24 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Name", label: "Назваине", validation: { required: true },
+						field: "Name", label: "Назваине",  validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editName" name="Name" required="required" />');
 							input.appendTo(container);
-							input.kendoTextBox();
+							input.kendoTextBox({
+								placeholder: "Укажите наименование услуги",
+							});
 						}
 					},
 					{
-						field: "Price", label: "Price", validation: { required: true },
+						field: "Price", label: "Price", placeholder: "Укажите стоимость", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="editPrice" name="Price" required="required" />');
 							input.appendTo(container);
-							input.kendoNumericTextBox();
+							input.kendoNumericTextBox({
+								placeholder: "Введите стоимость ",
+								culture: "de-DE"
+							});
 						}
 					},
 					{
@@ -117,7 +151,10 @@ $(document).ready(function () {
 						editor: function (container, options) {
 							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
-							input.kendoDatePicker();
+							input.kendoDatePicker({
+								placeholder: "Введите точную дату",
+								format: 'dd/MM/yy',
+							});
 						}
 					},
 					{
@@ -126,6 +163,7 @@ $(document).ready(function () {
 							var input = $('<input id="editCode" name="Code" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
+								placeholder: "Укажите код в формате 'Z00.000.000'",
 								mask: "L00.000.000"
 							});
 						}
@@ -141,7 +179,7 @@ $(document).ready(function () {
 
 		$.ajax({
 			url: "/Service/EditService/",
-			type: "GET",
+			type: "POST",
 			data: data,
 			success: function (json) {
 				if (json.IsSuccess == true) {
@@ -162,9 +200,6 @@ $(document).ready(function () {
 
 	function EditService(oldService) {
 		$("#editServiceForm #editId").val(oldService.Id);
-		$("#editServiceForm #editName").val(oldService.Name);
-		$("#editServiceForm #editPrice").val(oldService.Price);
-		$("#editServiceForm #editCode").val(oldService.Code);
 
 		$("#edit-window").data("kendoDialog").open();
 

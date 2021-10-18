@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace FirstTask.Errors
+namespace FirstTask.Handlers
 {
-	public class ActionStatus
+	public class MessageHandler
 	{
-		public bool IsSucces { get; set; }
+		public bool IsSuccess { get; set; }
 		public string Error { get; set; }
 		public string Message { get; set; }
 
-		public ActionStatus() { }
-		public ActionStatus(bool isSuccess, string str)
+		public MessageHandler(bool isSuccess, string str)
 		{
-			IsSucces = isSuccess;
+			IsSuccess = isSuccess;
 
-			if (IsSucces)
+			if (IsSuccess)
 				Message = str;
 			else
 				Error = str;

@@ -1,11 +1,6 @@
 ﻿using FirstTask.Managers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace FirstTask.Controllers
@@ -29,40 +24,31 @@ namespace FirstTask.Controllers
 		{
 			var result = manager.List(query);
 
-			return Json(result, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 
 		[HttpPost]
 		public JsonResult AddProvidedService(ServiceProvidedModel model)
 		{
-			var IsSucces = manager.Add(model);
+			var result = manager.Add(model);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Услуга успешно добавлена!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 
 		[HttpPost]
 		public JsonResult EditProvidedService(ServiceProvidedModel model)
 		{
-			var IsSucces = manager.Edit(model);
+			var result = manager.Edit(model);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Услуга успешно отредактирована!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 
 		[HttpPost]
 		public JsonResult DeleteProvidedService(int id)
 		{
-			var IsSucces = manager.Delete(id);
+			var result = manager.Delete(id);
 
-			if (IsSucces)
-				return Json(new { IsSuccess = true, Message = "Услуга успешно удалена!" }, JsonRequestBehavior.AllowGet);
-			else
-				return Json(new { IsSuccess = false, Error = "Произошла ошибка!" }, JsonRequestBehavior.AllowGet);
+			return Json(result);
 		}
 	}
 }

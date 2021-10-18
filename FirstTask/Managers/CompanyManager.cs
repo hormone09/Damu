@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
-
-using FirstTask.Errors;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
-
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
 using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using FirstTask.Handlers;
+using System.Text.RegularExpressions;
 
 namespace FirstTask.Managers
 {
 	public class CompanyManager
 	{
-		private EmployeeRepository employeeRep = new EmployeeRepository();
+		private MessagesStrings strings = new MessagesStrings();
+
 		private CompanyRepository companyRep = new CompanyRepository();
+		private ServiceProvidedRepository serviceProvidedRepository = new ServiceProvidedRepository();
+
 		private IMapper mapper;
 
 		public CompanyManager(IMapper mapper)
@@ -34,10 +34,10 @@ namespace FirstTask.Managers
 
 			return models;
 		}
-		public bool Edit(CompanyModel model)
+		public MessageHandler Edit(CompanyModel model)
 		{
 			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone) || model.Id <= 0)
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
 			if(model.DateOfBegin <= DateTime.Now)
 			{
@@ -49,6 +49,11 @@ namespace FirstTask.Managers
 				model.Status = Statuses.Disabled;
 			}
 
+			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
+			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
+			if(!Regex.IsMatch(model.BIN, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
+				return new MessageHandler(false, strings.FormatError);
+
 			model.BIN = model.BIN.Replace("-", "");
 			model.Phone = model.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
 			var entity = mapper.Map<Company>(model);
@@ -57,23 +62,28 @@ namespace FirstTask.Managers
 			{
 				companyRep.Update(entity);
 
-				return true;
+				return new MessageHandler(true, strings.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Add(CompanyModel model)
+		public MessageHandler Add(CompanyModel model)
 		{
 			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone))
-				return false;
+				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin >= DateTime.Now)
 				model.Status = Statuses.Active;
 			else
 				model.Status = Statuses.Disabled;
+
+			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
+			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
+			if (!Regex.IsMatch(model.BIN, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
+				return new MessageHandler(false, strings.FormatError);
 
 			model.BIN = model.BIN.Replace("-", "");
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace("(", "");
@@ -83,28 +93,28 @@ namespace FirstTask.Managers
 			{
 				companyRep.Add(entity);
 
-				return true;
+				return new MessageHandler(true, strings.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 
-		public bool Delete(int id)
+		public MessageHandler Delete(int id)
 		{
 			try
 			{
 				companyRep.Remove(id);
-				var employeeEntities = employeeRep.List(new EmployeeQueryList { CompanyId = id, Status = Statuses.Active, Skip = 0, Limit = 100});
-				foreach (var el in employeeEntities)
-					employeeRep.Remove(el.Id);
+				var serviceProvidedEntities = serviceProvidedRepository.List(new ServiceProvidedQueryList { CompanyId = id, Status = Statuses.Active, Skip = 0, Limit = 100000000});
+				foreach (var el in serviceProvidedEntities)
+					serviceProvidedRepository.Remove(el.Id);
 
-				return true;
+				return new MessageHandler(true, strings.DeleteSuccess);
 			}
 			catch (Exception)
 			{
-				return false;
+				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
 	}
