@@ -6,7 +6,7 @@ $(document).ready(function () {
 			read: {
 				url: "/ServicesHistory/LIST",
 				type: "GET",
-				dataType: "jsonp"
+				contentType: "application/json; charset=utf-8",
 			}
 		},
 		batch: false,
@@ -14,9 +14,6 @@ $(document).ready(function () {
 			model: {
 				id: "Id",
 				fields: {
-					serviceName: { from: "Service.Name", type: "string" },
-					companyName: { from: "Company.Name", type: "string" },
-					employeeName: { from: "Eployee.Name", type: "string" },
 					start: { type: "date", from: "Start", },
 					end: { type: "date", from: "End" },
 				}
@@ -25,9 +22,8 @@ $(document).ready(function () {
 	});
 
 	$("#scheduler").kendoScheduler({
-		dataSource: dataSource1,
-		startTime: new Date("2013/6/13 07:00 AM"),
-		endTime: new Date("2013/6/13 06:00 PM"),
+		startTime: new Date("2021/10/18 07:00 AM"),
+		endTime: new Date("2021/10/18 06:00 PM"),
 		height: "600px",
 		views: [
 			{
@@ -38,11 +34,33 @@ $(document).ready(function () {
 			},
 		],
 		editable: {
+			template: $("#schedulerEditor").html(),
 			window: {
-				title: "My Custom Title",
-				animation: false,
-				open: myOpenEventHandler
+				title: "Оказанная услуга",
+				width: "500px",
+				height: "310px",
+				scrollable: false
 			}
 		}
+			//{ field: "Service", dataSource: getServiceList() }
+		/*
+		}*/
 	});
+	$("#schedulerEditor").html(template({}));
+	//Editor Tamplate
+
+	$("#schedulerCompany").kendoComboBox({
+		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getCompanyList()
+	});
+	/*$("#schedulerEmployee").kendoComboBox({
+		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getEmployeeList()
+	});*/
 });

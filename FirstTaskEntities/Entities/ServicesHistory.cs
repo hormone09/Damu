@@ -16,17 +16,17 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Услуга, которая была оказанна
 		/// </summary>
-		public string ServiceId { get; set; }
+		public int ServiceId { get; set; }
 
 		/// <summary>
 		/// Компания, оказавшая услугу
 		/// </summary>
-		public string CompanyId { get; set; }
+		public int CompanyId { get; set; }
 
 		/// <summary>
 		/// Сотрудник, оказавший услугу
 		/// </summary>
-		public string EmployeeId { get; set; }
+		public int EmployeeId { get; set; }
 
 		/// <summary>
 		/// Дата оказания услуги
@@ -36,7 +36,7 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Дата удаления записи
 		/// </summary>
-		public DateTime DateOfDelete { get; set; }
+		public DateTime? DateOfDelete { get; set; }
 		/// <summary>
 		/// Статус записи в БД
 		/// </summary>

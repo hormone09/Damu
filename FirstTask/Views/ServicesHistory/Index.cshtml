@@ -1,9 +1,40 @@
 ﻿
 @{
-    ViewBag.Title = "История оказанных услуг";
+	ViewBag.Title = "История оказанных услуг";
 }
 
 <h2>История оказанных услуг</h2>
 
 <div id="scheduler"></div>
 
+
+<script>
+	$("#schedulerService").kendoComboBox({
+		placeholder: "Введите название",
+		dataTextField: "Name",
+		dataValueField: "Id",
+		filter: "contains",
+		dataSource: getServiceList()
+	});
+</script>
+<script id="schedulerEditor" type="text/x-kendo-template">
+	<div class="container">
+		<p>
+			<label>Начало: <input data-role="datetimepicker" name="start" /></label>
+		</p>
+		<p>
+			<label>Конец: <input data-role="datetimepicker" name="end" /></label>
+		</p>
+		<p>
+			<label>Услуга: <input id="schedulerService" data-role="combobox" name="services" /></label>
+		</p>
+		<p>
+			<label>Компания: <input id="schedulerCompany" data-role="combobox" name="companies" /></label>
+		</p>
+		<p>
+			<label>Сотрудник: <input data-role="combobox" name="employee" /></label>
+		</p>
+		<button class="btn-success" id="save">Сохранить</button>
+		<button class="btn-danger" id="cancel">Отменить</button>
+	</div>
+</script>

@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="1">
+      <FitrstTask Ref="2" type="Stimulsoft.Report.Dictionary.StiSqlDatabase" isKey="true">
+        <Alias>FitrstTask</Alias>
+        <ConnectionStringEncrypted>+VaB60YD0/niX9UIb0xrO94omStPcUKkYmz9vekArB7DOGMJ1XN75fhBub1jVPbrkPL7601Zc9lrXeXE9Vzhe95ay4hNBUud4kk9RPlcsWfjFMEC3UuqZWxHVclnJag3iw==</ConnectionStringEncrypted>
+        <Name>FitrstTask</Name>
+      </FitrstTask>
+    </Databases>
+    <DataSources isList="true" count="1">
+      <Test Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
+        <Alias>Test</Alias>
+        <Columns isList="true" count="5">
+          <value>ORIGINAL,Название_x0020_услуги,ServiceName,ServiceName,System.String</value>
+          <value>ORIGINAL,Название_x0020_компании,CompanyName,CompanyName,System.String</value>
+          <value>ORIGINAL,Имя_x0020_сотрудника,EmployeeName,EmployeeName,System.String</value>
+          <value>ORIGINAL,Стоимость_x0020_услуги,ServicePrice,ServicePrice,System.Int32</value>
+          <value>ORIGINAL,Дата_x0020_оказания_x0020_услуги,DateOfCreate,DateOfCreate,System.DateTime</value>
+        </Columns>
+        <CommandTimeout>30</CommandTimeout>
+        <Dictionary isRef="1" />
+        <Name>Test</Name>
+        <NameInSource>FitrstTask</NameInSource>
+        <Parameters isList="true" count="0" />
+        <SqlCommand>IF @CompanyId &gt; 0 AND @ServiceId &gt; 0 AND @EmployeeId &gt; 0
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) 
+AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId AND EmployeeId = EmployeeId)
+
+ELSE IF @CompanyId &gt; 0 AND @ServiceId &gt; 0
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId)
+
+ELSE IF @CompanyId &gt; 0 AND @EmployeeId &gt; 0
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId AND EmployeeId = @EmployeeId)
+
+ELSE IF @EmployeeId &gt; 0 AND @ServiceId &gt; 0
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.EmployeeId = @EmployeeId AND ServiceId = @ServiceId)
+
+ELSE IF @CompanyId &gt; 0 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId)
+
+ELSE IF @ServiceId &gt; 0 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.ServiceId = @ServiceId)
+
+ELSE IF @EmployeeId &gt; 0 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.EmployeeId = @EmployeeId)
+
+ELSE
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
+	FROM ServicesHistory 
+	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
+INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
+INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
+WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()))</SqlCommand>
+      </Test>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Variables isList="true" count="0" />
+  </Dictionary>
+  <EngineVersion>EngineV1</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page2 Ref="4" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="2">
+        <PageHeaderBand1 Ref="5" type="PageHeaderBand" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>0,0.4,19,4</ClientRectangle>
+          <Components isList="true" count="5">
+            <Text1 Ref="6" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0,19,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,16,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Отчет оказанных услуг</Text>
+              <TextBrush>Black</TextBrush>
+            </Text1>
+            <Text2 Ref="7" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1,1,3,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>0315c4ab51404411ac3af78ef4e0ab2f</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Дата:</Text>
+              <TextBrush>Black</TextBrush>
+            </Text2>
+            <Text3 Ref="8" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1,1.6,3,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>73caff886f2b4f8e8d3461fe6cbcf6b9</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Компания:</Text>
+              <TextBrush>Black</TextBrush>
+            </Text3>
+            <Text4 Ref="9" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1,2.2,3,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>0332e1ef27de4900aaee490c7b9a3f88</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Услуга:</Text>
+              <TextBrush>Black</TextBrush>
+            </Text4>
+            <Text5 Ref="10" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1,2.8,3,0.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>7e336e7979954d3ca90e534fd3fb84e3</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="4" />
+              <Parent isRef="5" />
+              <Text>Сотрудник:</Text>
+              <TextBrush>Black</TextBrush>
+            </Text5>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>PageHeaderBand1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </PageHeaderBand1>
+        <Container1 Ref="11" type="Container" isKey="true">
+          <Brush>Transparent</Brush>
+          <ClientRectangle>1.6,5,15.8,8.8</ClientRectangle>
+          <Components isList="true" count="3">
+            <HeaderBand1 Ref="12" type="HeaderBand" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,0.4,15.8,0.6</ClientRectangle>
+              <Components isList="true" count="0" />
+              <Conditions isList="true" count="0" />
+              <Name>HeaderBand1</Name>
+              <Page isRef="4" />
+              <Parent isRef="11" />
+            </HeaderBand1>
+            <DataBand1 Ref="13" type="DataBand" isKey="true">
+              <Brush>Transparent</Brush>
+              <BusinessObjectGuid isNull="true" />
+              <ClientRectangle>0,1.8,15.8,0.6</ClientRectangle>
+              <Components isList="true" count="0" />
+              <Conditions isList="true" count="0" />
+              <DataRelationName isNull="true" />
+              <DataSourceName>Test</DataSourceName>
+              <Filters isList="true" count="0" />
+              <Name>DataBand1</Name>
+              <Page isRef="4" />
+              <Parent isRef="11" />
+              <Sort isList="true" count="0" />
+            </DataBand1>
+            <FooterBand1 Ref="14" type="FooterBand" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,3.2,15.8,1.2</ClientRectangle>
+              <Components isList="true" count="0" />
+              <Conditions isList="true" count="0" />
+              <Name>FooterBand1</Name>
+              <Page isRef="4" />
+              <Parent isRef="11" />
+            </FooterBand1>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <Name>Container1</Name>
+          <Page isRef="4" />
+          <Parent isRef="4" />
+        </Container1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>4776daea8ab747679ddac43920083467</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page2</Name>
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+      <Watermark Ref="15" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <TextBrush>[50:0:0:0]</TextBrush>
+      </Watermark>
+    </Page2>
+  </Pages>
+  <PrinterSettings Ref="16" type="Stimulsoft.Report.Print.StiPrinterSettings" isKey="true" />
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Отчет</ReportAlias>
+  <ReportChanged>10/19/2021 5:50:38 PM</ReportChanged>
+  <ReportCreated>10/19/2021 2:01:01 PM</ReportCreated>
+  <ReportFile>C:\Users\Domu\Desktop\TEST.mrt</ReportFile>
+  <ReportGuid>72ff5a42c4a742208271b652ccc02888</ReportGuid>
+  <ReportName>Отчет</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2013.1.1600</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Отчет : Stimulsoft.Report.StiReport
+    {
+        public Отчет()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>
