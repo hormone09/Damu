@@ -1,65 +1,97 @@
 ﻿
-	function getCompanyList() {
-		var data = {
-			PageSize: 100000,
-			Status: 1
-		};
+function getCompanyList() {
+	var data = {
+		PageSize: 100000,
+		Status: 1
+	};
 
-		var ajax = null;
+	var ajax = null;
 
-		$.ajax({
-			url: "/Company/Index",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			async: false,
-			success: function (response) {
-				ajax = response;
-			}
-		});
-
-		var nameArray = [];
-		var count = ajax.length;
-		for (var i = 0; i < count; i++) {
-			var temp = {
-				Name: ajax[i].Name,
-				Id: ajax[i].Id
-			};
-			nameArray[i] = temp;
+	$.ajax({
+		url: "/Company/Index",
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(data),
+		async: false,
+		success: function (response) {
+			ajax = response;
 		}
+	});
 
-		return nameArray;
+	var nameArray = [];
+	var count = ajax.length;
+	for (var i = 0; i < count; i++) {
+		var temp = {
+			Name: ajax[i].Name,
+			Id: ajax[i].Id
+		};
+		nameArray[i] = temp;
 	}
 
-	function getServiceList() {
-		var data = {
-			PageSize: 100000,
-			Status: 1
-		};
+	return nameArray;
+}
+
+function getServiceList() {
+	var data = {
+		PageSize: 100000,
+		Status: 1
+	};
 
 
-		var ajax = null;
+	var ajax = null;
 
-		$.ajax({
-			url: "/Service/Index",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			async: false,
-			success: function (response) {
-				ajax = response;
-			}
-		});
-
-		var nameArray = [];
-		var count = ajax.length;
-		for (var i = 0; i < count; i++) {
-			var temp = {
-				Name: ajax[i].Name,
-				Id: ajax[i].Id
-			};
-			nameArray[i] = temp;
+	$.ajax({
+		url: "/Service/Index",
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(data),
+		async: false,
+		success: function (response) {
+			ajax = response;
 		}
+	});
 
-		return nameArray;
+	var nameArray = [];
+	var count = ajax.length;
+	for (var i = 0; i < count; i++) {
+		var temp = {
+			Name: ajax[i].Name,
+			Id: ajax[i].Id
+		};
+		nameArray[i] = temp;
 	}
+
+	return nameArray;
+}
+
+function getEmployeeList() {
+	var data = {
+		PageSize: 100000,
+		Status: 1
+	};
+
+	var ajax = null;
+
+	$.ajax({
+		url: "/Employee/Index",
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(data),
+		async: false,
+		success: function (response) {
+			ajax = response;
+		}
+	});
+
+	var nameArray = [];
+	var count = ajax.length;
+	for (var i = 0; i < count; i++) {
+		var temp = {
+			FullName: ajax[i].FullName,
+			Id: ajax[i].Id
+		};
+		nameArray[i] = temp;
+	}
+
+	return nameArray;
+}

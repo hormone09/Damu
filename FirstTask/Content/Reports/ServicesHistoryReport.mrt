@@ -12,95 +12,98 @@
     <DataSources isList="true" count="1">
       <Test Ref="3" type="Stimulsoft.Report.Dictionary.StiSqlSource" isKey="true">
         <Alias>Test</Alias>
-        <Columns isList="true" count="5">
-          <value>ORIGINAL,Название_x0020_услуги,ServiceName,ServiceName,System.String</value>
-          <value>ORIGINAL,Название_x0020_компании,CompanyName,CompanyName,System.String</value>
-          <value>ORIGINAL,Имя_x0020_сотрудника,EmployeeName,EmployeeName,System.String</value>
-          <value>ORIGINAL,Стоимость_x0020_услуги,ServicePrice,ServicePrice,System.Int32</value>
+        <Columns isList="true" count="6">
+          <value>ORIGINAL,ServiceName,Наименование_x0020_услуги,Наименование_x0020_услуги,System.String</value>
+          <value>ORIGINAL,CompanyName,Название_x0020_компании,Название_x0020_компнаии,System.String</value>
+          <value>ORIGINAL,EmployeeName,Имя_x0020_сотрудника,Имя_x0020_сотрудника,System.String</value>
+          <value>ORIGINAL,ServicePrice,Стоимость_x0020_услуги,Стоимость_x0020_услуги,System.Int32</value>
           <value>ORIGINAL,Дата_x0020_оказания_x0020_услуги,DateOfCreate,DateOfCreate,System.DateTime</value>
+          <value>TotalRows,System.Int32</value>
         </Columns>
         <CommandTimeout>30</CommandTimeout>
         <Dictionary isRef="1" />
         <Name>Test</Name>
         <NameInSource>FitrstTask</NameInSource>
-        <Parameters isList="true" count="7">
+        <Parameters isList="true" count="4">
           <value>CompanyId,,8,0</value>
           <value>ServiceId,,8,0</value>
           <value>EmployeeId,,8,0</value>
-          <value>Date,,31,0</value>
-          <value>ServiceName,,18,0</value>
-          <value>CompanyName,,18,0</value>
-          <value>EmployeeName,,18,0</value>
+          <value>Date,,31,7</value>
         </Parameters>
         <SqlCommand>IF @CompanyId &gt; 0 AND @ServiceId &gt; 0 AND @EmployeeId &gt; 0
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) 
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) 
 AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId AND EmployeeId = EmployeeId)
 
 ELSE IF @CompanyId &gt; 0 AND @ServiceId &gt; 0
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId)
 
 ELSE IF @CompanyId &gt; 0 AND @EmployeeId &gt; 0
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId AND EmployeeId = @EmployeeId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId AND EmployeeId = @EmployeeId)
 
 ELSE IF @EmployeeId &gt; 0 AND @ServiceId &gt; 0
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.EmployeeId = @EmployeeId AND ServiceId = @ServiceId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.EmployeeId = @EmployeeId AND ServiceId = @ServiceId)
 
 ELSE IF @CompanyId &gt; 0 
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.CompanyId = @CompanyId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId)
 
 ELSE IF @ServiceId &gt; 0 
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.ServiceId = @ServiceId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.ServiceId = @ServiceId)
 
 ELSE IF @EmployeeId &gt; 0 
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()) AND ServicesHistory.EmployeeId = @EmployeeId)
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.EmployeeId = @EmployeeId)
 
 ELSE
-(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName
-	FROM ServicesHistory 
+(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, 
+	COUNT(*) OVER() AS TotalRows	FROM ServicesHistory 
 	INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId
 INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId
 INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId
-WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE()))</SqlCommand>
+WHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date))</SqlCommand>
       </Test>
     </DataSources>
     <Relations isList="true" count="0" />
     <Report isRef="0" />
-    <Variables isList="true" count="0" />
+    <Variables isList="true" count="4">
+      <value>,ServiceFilter,ServiceFilter,,System.String,,False,False,True</value>
+      <value>,CompanyFilter,CompanyFilter,System.String,,False,False</value>
+      <value>,EmployeeFilter,EmployeeFilter,System.String,,False,False</value>
+      <value>,Date,Date,,System.String,,False,False,True</value>
+    </Variables>
   </Dictionary>
   <EngineVersion>EngineV1</EngineVersion>
   <GlobalizationStrings isList="true" count="0" />
@@ -117,7 +120,7 @@ WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE
             <Text1 Ref="6" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
-              <ClientRectangle>0,0,19,0.6</ClientRectangle>
+              <ClientRectangle>0,0.2,19,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,16,Bold</Font>
               <HorAlignment>Center</HorAlignment>
@@ -182,50 +185,50 @@ WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE
             </Text5>
             <Text6 Ref="11" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.4,2.8,4.6,0.6</ClientRectangle>
+              <ClientRectangle>4,2.2,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Times New Roman,14,Bold</Font>
+              <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
               <Name>Text6</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{Test.Parameters["EmployeeName"].ParameterValue}</Text>
+              <Text>{ServiceFilter}</Text>
               <TextBrush>Black</TextBrush>
             </Text6>
             <Text7 Ref="12" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.4,2.2,4.6,0.6</ClientRectangle>
+              <ClientRectangle>4,1.6,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Times New Roman,14,Bold</Font>
+              <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
               <Name>Text7</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{Test.Parameters["ServiceName"].ParameterValue}</Text>
+              <Text>{CompanyFilter}</Text>
               <TextBrush>Black</TextBrush>
             </Text7>
             <Text8 Ref="13" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.4,1.6,4.6,0.6</ClientRectangle>
+              <ClientRectangle>4,2.8,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Times New Roman,14,Bold</Font>
+              <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
               <Name>Text8</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{Test.Parameters["CompanyName"].ParameterValue}</Text>
+              <Text>{EmployeeFilter}</Text>
               <TextBrush>Black</TextBrush>
             </Text8>
             <Text9 Ref="14" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.4,1,4.6,0.6</ClientRectangle>
+              <ClientRectangle>4,1,4,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
-              <Font>Times New Roman,14,Bold</Font>
+              <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
               <Name>Text9</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{Test.Parameters["Date"].ParameterValue}</Text>
+              <Text>{Date}</Text>
               <TextBrush>Black</TextBrush>
             </Text9>
           </Components>
@@ -236,157 +239,127 @@ WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE
         </PageHeaderBand1>
         <Container1 Ref="15" type="Container" isKey="true">
           <Brush>Transparent</Brush>
-          <ClientRectangle>1.6,5,15.8,8.8</ClientRectangle>
+          <ClientRectangle>1,5,17,22</ClientRectangle>
           <Components isList="true" count="3">
             <HeaderBand1 Ref="16" type="HeaderBand" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>0,0.4,15.8,0.6</ClientRectangle>
-              <Components isList="true" count="5">
+              <ClientRectangle>0,0.4,17,0.6</ClientRectangle>
+              <Components isList="true" count="4">
                 <Text11 Ref="17" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>0,0,3.4,0.6</ClientRectangle>
+                  <ClientRectangle>0,0,4.4,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,14,Bold</Font>
+                  <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text11</Name>
                   <Page isRef="4" />
                   <Parent isRef="16" />
-                  <Text>ServiceName</Text>
+                  <Text>Наименование услуги</Text>
                   <TextBrush>Black</TextBrush>
                 </Text11>
-                <Text13 Ref="18" type="Text" isKey="true">
+                <Text15 Ref="18" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>3.4,0,3,0.6</ClientRectangle>
+                  <ClientRectangle>4.4,0,3.6,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,14,Bold</Font>
-                  <Margins>0,0,0,0</Margins>
-                  <Name>Text13</Name>
-                  <Page isRef="4" />
-                  <Parent isRef="16" />
-                  <Text>CompanyName</Text>
-                  <TextBrush>Black</TextBrush>
-                </Text13>
-                <Text15 Ref="19" type="Text" isKey="true">
-                  <Border>All;Black;1;Solid;False;4;Black</Border>
-                  <Brush>Transparent</Brush>
-                  <ClientRectangle>6.4,0,3,0.6</ClientRectangle>
-                  <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,14,Bold</Font>
+                  <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text15</Name>
                   <Page isRef="4" />
                   <Parent isRef="16" />
-                  <Text>EmployeeName</Text>
+                  <Text>Стоимость услуги</Text>
                   <TextBrush>Black</TextBrush>
                 </Text15>
+                <Text13 Ref="19" type="Text" isKey="true">
+                  <Border>All;Black;1;Solid;False;4;Black</Border>
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>8,0,4.2,0.6</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Times New Roman,12,Bold</Font>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text13</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="16" />
+                  <Text>Название компнаии</Text>
+                  <TextBrush>Black</TextBrush>
+                </Text13>
                 <Text17 Ref="20" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>9.4,0,2.8,0.6</ClientRectangle>
+                  <ClientRectangle>12.2,0,4.8,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,14,Bold</Font>
+                  <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text17</Name>
                   <Page isRef="4" />
                   <Parent isRef="16" />
-                  <Text>ServicePrice</Text>
+                  <Text>Имя сотрудника</Text>
                   <TextBrush>Black</TextBrush>
                 </Text17>
-                <Text19 Ref="21" type="Text" isKey="true">
-                  <Border>All;Black;1;Solid;False;4;Black</Border>
-                  <Brush>Transparent</Brush>
-                  <ClientRectangle>12.2,0,3.6,0.6</ClientRectangle>
-                  <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,14,Bold</Font>
-                  <Margins>0,0,0,0</Margins>
-                  <Name>Text19</Name>
-                  <Page isRef="4" />
-                  <Parent isRef="16" />
-                  <Text>DateOfCreate</Text>
-                  <TextBrush>Black</TextBrush>
-                </Text19>
               </Components>
               <Conditions isList="true" count="0" />
               <Name>HeaderBand1</Name>
               <Page isRef="4" />
               <Parent isRef="15" />
             </HeaderBand1>
-            <DataBand1 Ref="22" type="DataBand" isKey="true">
+            <DataBand1 Ref="21" type="DataBand" isKey="true">
               <Brush>Transparent</Brush>
               <BusinessObjectGuid isNull="true" />
-              <ClientRectangle>0,1.8,15.8,0.6</ClientRectangle>
-              <Components isList="true" count="5">
-                <Text10 Ref="23" type="Text" isKey="true">
+              <ClientRectangle>0,1.8,17,0.6</ClientRectangle>
+              <Components isList="true" count="4">
+                <Text10 Ref="22" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>0,0,3.4,0.6</ClientRectangle>
+                  <ClientRectangle>0,0,4.4,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text10</Name>
                   <Page isRef="4" />
-                  <Parent isRef="22" />
-                  <Text>{Test.ServiceName}</Text>
+                  <Parent isRef="21" />
+                  <Text>{Test.Наименование_услуги}</Text>
                   <TextBrush>Black</TextBrush>
                 </Text10>
-                <Text12 Ref="24" type="Text" isKey="true">
+                <Text12 Ref="23" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>3.4,0,3,0.6</ClientRectangle>
+                  <ClientRectangle>8,0,4.2,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text12</Name>
                   <Page isRef="4" />
-                  <Parent isRef="22" />
-                  <Text>{Test.CompanyName}</Text>
+                  <Parent isRef="21" />
+                  <Text>{Test.Название_компании}</Text>
                   <TextBrush>Black</TextBrush>
-                  <Type>DataColumn</Type>
                 </Text12>
-                <Text14 Ref="25" type="Text" isKey="true">
+                <Text16 Ref="24" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>6.4,0,3,0.6</ClientRectangle>
-                  <Conditions isList="true" count="0" />
-                  <Font>Times New Roman,12,Bold</Font>
-                  <Margins>0,0,0,0</Margins>
-                  <Name>Text14</Name>
-                  <Page isRef="4" />
-                  <Parent isRef="22" />
-                  <Text>{Test.EmployeeName}</Text>
-                  <TextBrush>Black</TextBrush>
-                  <Type>DataColumn</Type>
-                </Text14>
-                <Text16 Ref="26" type="Text" isKey="true">
-                  <Border>All;Black;1;Solid;False;4;Black</Border>
-                  <Brush>Transparent</Brush>
-                  <ClientRectangle>9.4,0,2.8,0.6</ClientRectangle>
+                  <ClientRectangle>12.2,0,4.8,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
                   <Name>Text16</Name>
                   <Page isRef="4" />
-                  <Parent isRef="22" />
-                  <Text>{Test.ServicePrice}</Text>
+                  <Parent isRef="21" />
+                  <Text>{Test.Имя_сотрудника}</Text>
                   <TextBrush>Black</TextBrush>
-                  <Type>DataColumn</Type>
                 </Text16>
-                <Text18 Ref="27" type="Text" isKey="true">
+                <Text14 Ref="25" type="Text" isKey="true">
                   <Border>All;Black;1;Solid;False;4;Black</Border>
                   <Brush>Transparent</Brush>
-                  <ClientRectangle>12.2,0,3.6,0.6</ClientRectangle>
+                  <ClientRectangle>4.4,0,3.6,0.6</ClientRectangle>
                   <Conditions isList="true" count="0" />
                   <Font>Times New Roman,12,Bold</Font>
                   <Margins>0,0,0,0</Margins>
-                  <Name>Text18</Name>
+                  <Name>Text14</Name>
                   <Page isRef="4" />
-                  <Parent isRef="22" />
-                  <Text>{Test.DateOfCreate}</Text>
+                  <Parent isRef="21" />
+                  <Text>{Test.Стоимость_услуги}</Text>
                   <TextBrush>Black</TextBrush>
-                  <Type>DataColumn</Type>
-                </Text18>
+                </Text14>
               </Components>
               <Conditions isList="true" count="0" />
               <DataRelationName isNull="true" />
@@ -397,10 +370,36 @@ WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE
               <Parent isRef="15" />
               <Sort isList="true" count="0" />
             </DataBand1>
-            <FooterBand1 Ref="28" type="FooterBand" isKey="true">
+            <FooterBand1 Ref="26" type="FooterBand" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>0,3.2,15.8,1.2</ClientRectangle>
-              <Components isList="true" count="0" />
+              <ClientRectangle>0,3.2,17,0.8</ClientRectangle>
+              <Components isList="true" count="2">
+                <Text18 Ref="27" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>0,0.2,10.4,0.6</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Times New Roman,12,Bold</Font>
+                  <Guid>5ec681b02f6847689d62e972f8f91fd4</Guid>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text18</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="26" />
+                  <Text>Количество оказанных услуг по указанному фильтру: </Text>
+                  <TextBrush>Black</TextBrush>
+                </Text18>
+                <Text19 Ref="28" type="Text" isKey="true">
+                  <Brush>Transparent</Brush>
+                  <ClientRectangle>10.4,0.2,1.6,0.6</ClientRectangle>
+                  <Conditions isList="true" count="0" />
+                  <Font>Times New Roman,12,Bold</Font>
+                  <Margins>0,0,0,0</Margins>
+                  <Name>Text19</Name>
+                  <Page isRef="4" />
+                  <Parent isRef="26" />
+                  <Text>{Test.TotalRows}</Text>
+                  <TextBrush>Black</TextBrush>
+                </Text19>
+              </Components>
               <Conditions isList="true" count="0" />
               <Name>FooterBand1</Name>
               <Page isRef="4" />
@@ -438,10 +437,10 @@ WHERE DAY(DateOfCreate) = DAY(GETDATE()) AND MONTH(DateOfCreate) = MONTH(GETDATE
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Отчет</ReportAlias>
-  <ReportChanged>10/19/2021 5:41:53 PM</ReportChanged>
+  <ReportChanged>10/20/2021 4:23:40 PM</ReportChanged>
   <ReportCreated>10/19/2021 2:01:01 PM</ReportCreated>
   <ReportFile>C:\Users\Domu\Desktop\ServicesHistoryReport.mrt</ReportFile>
-  <ReportGuid>6cd1c87f6dc94a4da8b064912232b277</ReportGuid>
+  <ReportGuid>d6c1742460cd4f2ca3e7e563a583577b</ReportGuid>
   <ReportName>Отчет</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2013.1.1600</ReportVersion>

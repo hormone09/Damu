@@ -7,6 +7,11 @@
 
 <div id="scheduler"></div>
 
+<div id="reportWindow">
+	<form id="reportForm"></form>
+</div>
+
+<button id="reportWindowButton">Печать</button>
 
 <script>
 	$("#schedulerService").kendoComboBox({
@@ -20,10 +25,7 @@
 <script id="schedulerEditor" type="text/x-kendo-template">
 	<div class="container">
 		<p>
-			<label>Начало: <input data-role="datetimepicker" name="start" /></label>
-		</p>
-		<p>
-			<label>Конец: <input data-role="datetimepicker" name="end" /></label>
+			<label>Начало: <input id="schedulerDatePicker" name="DateOfCreate" /></label>
 		</p>
 		<p>
 			<label>Услуга: <input id="schedulerService" data-role="combobox" name="services" /></label>
@@ -32,9 +34,7 @@
 			<label>Компания: <input id="schedulerCompany" data-role="combobox" name="companies" /></label>
 		</p>
 		<p>
-			<label>Сотрудник: <input data-role="combobox" name="employee" /></label>
+			<label>Сотрудник: <input id="schedulerEmployee" data-role="combobox" name="employee" /></label>
 		</p>
-		<button class="btn-success" id="save">Сохранить</button>
-		<button class="btn-danger" id="cancel">Отменить</button>
 	</div>
 </script>

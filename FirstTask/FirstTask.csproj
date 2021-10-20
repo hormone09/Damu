@@ -211,6 +211,7 @@
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceProvidedController.cs" />
     <Compile Include="Controllers\ServicesHistoryController.cs" />
+    <Compile Include="Enums\ReportTypes.cs" />
     <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -5981,7 +5982,6 @@
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\styles\kendo.uniform.mobile.min.css.map" />
     <Content Include="fonts\Gagalin-Regular.otf" />
     <Content Include="Content\Reports\ServicesHistoryReport.mrt" />
-    <Content Include="Content\Reports\TEST.mrt" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
