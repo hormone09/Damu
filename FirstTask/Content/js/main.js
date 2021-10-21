@@ -64,6 +64,7 @@ function getServiceList() {
 	return nameArray;
 }
 
+
 function getEmployeeList() {
 	var data = {
 		PageSize: 100000,
@@ -95,3 +96,7 @@ function getEmployeeList() {
 
 	return nameArray;
 }
+
+var employee = getEmployeeList();
+var services = getServiceList();
+var companies = getCompanyList();

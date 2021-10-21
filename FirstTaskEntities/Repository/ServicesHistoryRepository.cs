@@ -2,6 +2,8 @@
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
+using FirstTaskEntities.Query;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +18,28 @@ namespace FirstTaskEntities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
+		public List<ServicesHistory> List(object queryList)
+		{
+			ServiceHistoryQueryList query;
+			if (queryList is ServiceHistoryQueryList)
+				query = (ServiceHistoryQueryList)queryList;
+			else
+				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				return connection.Query<ServicesHistory>("SELECT * FROM ServicesHistory WHERE MONTH(DateOfCreate) = MONTH(@DatePeriod) AND Status = @Status", new { DatePeriod = query.DatePeriod, Status = query.Status }).ToList();
+			}
+		}
+		public void Update(ServicesHistory entity)
+		{
+			using (var connection = new SqlConnection(connectionString))
+			{
+				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfDelete, @Status WHERE Id = @Id)";
+				connection.Query(query, new { Id = entity.Id, CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
+			}
+		}
+
 		public void Add(ServicesHistory entity)
 		{
 			using (var connection = new SqlConnection(connectionString))
@@ -25,14 +49,6 @@ namespace FirstTaskEntities.Repository
 			}
 		}
 
-		public List<ServicesHistory> List(object queryList)
-		{
-			throw new NotImplementedException();
-		}
-		public void Update(ServicesHistory instanse)
-		{
-			throw new NotImplementedException();
-		}
 
 		public void Remove(int id)
 		{

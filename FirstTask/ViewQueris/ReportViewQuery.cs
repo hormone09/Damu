@@ -9,6 +9,7 @@ namespace FirstTask.ViewQueris
 {
 	public class ReportViewQuery
 	{
+		public string Path { get; set; }
 		public int? CompanyId { get; set; }
 		public int? ServiceId { get; set; }
 		public int? EmployeeId { get; set; }

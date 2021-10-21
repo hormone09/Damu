@@ -35,6 +35,8 @@ namespace FirstTask.App_Start
 			CreateMap<EmployeeViewQuery, EmployeeQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
+
+			CreateMap<ServicesHistoryViewQuery, ServiceHistoryQueryList>();
 		}
 	}
 }

@@ -49,7 +49,7 @@ $(document).ready(function () {
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: employee,
+								dataSource: getCompanyList(),
 								optionLabel: "Все",
 							});
 						}
@@ -64,7 +64,7 @@ $(document).ready(function () {
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: services,
+								dataSource: getServiceList(),
 								optionLabel: "Все",
 							});
 						}
@@ -79,7 +79,7 @@ $(document).ready(function () {
 								dataTextField: "FullName",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: employee,
+								dataSource: getEmployeeList(),
 								optionLabel: "Все",
 							});
 						}
@@ -124,54 +124,69 @@ $(document).ready(function () {
 	});
 
 	// SCHEDULER
+
 	var dataSource = new kendo.data.SchedulerDataSource({
 		transport: {
 			read: {
 				url: "/ServicesHistory/Index",
 				type: "POST",
+				data: { DatePeriod: new Date() }
 			},
-			create: function (e) {
-				alert(12312312);
-				let _form = $("#schedulerForm").data("kendoFrom");
-				let data = _form.serializeArray();
-
-				alert(12312312);
-				$.ajax({
-					url: "/ServicesHistory/Create",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						alert(json);
+			create: {
+				url: "/ServicesHistory/Create",
+				type: "POST",
+				data: function () {
+					var data = schedulerForm.serializeArray();
+					var company = { Id: $('#schedulerCompany').data('kendoComboBox').dataItem().Id };
+					var service = { Id: $('#schedulerService').data('kendoComboBox').dataItem().Id };
+					var employee = { Id: $('#schedulerEmployee').data('kendoComboBox').dataItem().Id };
+					var picker = $('#schedulerDatePicker').data('kendoDateTimePicker');
+					var dates = picker.value();
+					alert(dates);
+					var query = {
+						DateOfCreate: dates,
+						Company: company,
+						Service: service,
+						Employee: employee
 					}
-				});
-				alert(12312312);
+
+					return data;
+				}
+			},
+			update: {
+				url: "/ServicesHistory/Update",
+				type: "POST",
+			},
+			destroy: {
+				url: "/ServicesHistory/Delete",
+				type: "POST"
 			}
 		},
 		batch: false,
-		schema: { 
+		schema: {
 			model: {
-				id: "Id",
 				fields: {
-					id: { from: "Id" },
+					id: {from: "Id"},
 					title: { from: "Title" },
 					start: { type: "date", from: "DateOfCreate" },
-					end: { type: "date", from: "DateOfFinish" }
+					end: { type: "date", from: "DateOfFinish" },
 				}
 			}
 		}
 	});
 
 	$("#scheduler").kendoScheduler({
-		dataSource: dataSource,
-		startTime: new Date("2021/10/18 07:00 AM"),
-		endTime: new Date("2021/10/18 06:00 PM"),
+		dataSource: dataSource,//dataSource,
+
+		timezone: "Etc/UTC",
+		startTime: new Date("2021/01/01 7:00"),
+		endTime: new Date("2021/12/31 18:00"),
 		height: "600px",
 		views: [
 			{
 				type: "workWeek",
 				minorTickCount: 1, // display one time slot per major tick
 				majorTick: 15,
-				slotHeight: 10
 			},
 		],
 		editable: {
@@ -179,38 +194,35 @@ $(document).ready(function () {
 			window: {
 				title: "Оказанная услуга",
 				width: "630px",
-				height: "350px",
+				height: "310px",
 				scrollable: false
 			}
 		},
 		edit: function (e) {
-			$("#schedulerForm").kendoForm({
-				orientation: "horizontal",
-				buttonsTemplate: ""
-			})
+			$("#schedulerForm").kendoForm({});
 			$("#schedulerDatePicker").kendoDateTimePicker({
-				format: "dd/MM/yy"
+				format: "MM/dd/yyyy hh:mm tt",
 			});
 			$("#schedulerCompany").kendoComboBox({
 				placeholder: "Название компании",
 				dataTextField: "Name",
 				dataValueField: "Id",
 				filter: "contains",
-				dataSource: companies
+				dataSource: getCompanyList()
 			});
 			$("#schedulerService").kendoComboBox({
 				placeholder: "Название услуги",
 				dataTextField: "Name",
 				dataValueField: "Id",
 				filter: "contains",
-				dataSource: services,
+				dataSource: getServiceList()
 			});
 			$("#schedulerEmployee").kendoComboBox({
 				placeholder: "Имя сотрудника",
 				dataTextField: "FullName",
 				dataValueField: "Id",
 				filter: "contains",
-				dataSource: employee
+				dataSource: getEmployeeList()
 			});
 			let buttonsContainer = e.container.find(".k-edit-buttons");
 			let cancelButton = buttonsContainer.find(".k-scheduler-cancel");

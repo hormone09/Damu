@@ -76,5 +76,17 @@ namespace FirstTaskEntities.Repository
 				connection.Query<Employee>(query, new { Id = id, Finish = DateTime.Now, Status = Statuses.Disabled });
 			}
 		}
+
+		public Employee Find(int id)
+		{
+			var result = new Employee();
+			using (var connection = new SqlConnection(connectionString))
+			{
+				var query = "SELECT * FROM Employee WHERE Id = @Id";
+				result = connection.Query<Employee>(query, new { Id = id }).FirstOrDefault();
+			}
+
+			return result;
+		}
 	}
 }

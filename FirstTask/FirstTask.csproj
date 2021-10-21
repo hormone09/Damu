@@ -221,6 +221,7 @@
     <Compile Include="Managers\ServiceManager.cs" />
     <Compile Include="Managers\ServiceProvidedManager.cs" />
     <Compile Include="Handlers\MessagesStrings.cs" />
+    <Compile Include="Managers\ServicesHistoryManager.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\ServiceModel.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
     <Compile Include="ViewQueris\ReportViewQuery.cs" />
     <Compile Include="ViewQueris\ServiceProvidedViewQuery.cs" />
+    <Compile Include="ViewQueris\ServicesHistoryViewQuery.cs" />
     <Compile Include="ViewQueris\ServiceViewQuery.cs" />
     <Compile Include="ViewQueris\ViewQueryBase.cs" />
   </ItemGroup>
@@ -6494,7 +6496,6 @@
     <Content Include="Scripts\kendo\2014.1.318\jquery.min.map" />
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
-    <Content Include="Views\Service\ServicesCompleted.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ServiceProvided\Index.cshtml" />
     <Content Include="Views\ServicesHistory\Index.cshtml" />

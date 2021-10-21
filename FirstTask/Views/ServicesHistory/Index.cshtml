@@ -13,28 +13,21 @@
 
 <button id="reportWindowButton">Печать</button>
 
-<script>
-	$("#schedulerService").kendoComboBox({
-		placeholder: "Введите название",
-		dataTextField: "Name",
-		dataValueField: "Id",
-		filter: "contains",
-		dataSource: getServiceList()
-	});
-</script>
 <script id="schedulerEditor" type="text/x-kendo-template">
 	<div class="container">
+	<form id="schedulerForm">
 		<p>
-			<label>Начало: <input id="schedulerDatePicker" name="DateOfCreate" /></label>
+			<label>Начало: <input id="schedulerDatePicker" name="DateOfCreate" required /></label>
 		</p>
 		<p>
-			<label>Услуга: <input id="schedulerService" data-role="combobox" name="services" /></label>
+			<label>Услуга: <input id="schedulerService" data-role="combobox" name="Service.Id" required /></label>
 		</p>
 		<p>
-			<label>Компания: <input id="schedulerCompany" data-role="combobox" name="companies" /></label>
+			<label>Компания: <input id="schedulerCompany" data-role="combobox" name="Company.Id" required /></label>
 		</p>
 		<p>
-			<label>Сотрудник: <input id="schedulerEmployee" data-role="combobox" name="employee" /></label>
+			<label>Сотрудник: <input id="schedulerEmployee" data-role="combobox" name="Employee.Id" required /></label>
 		</p>
+	</form>
 	</div>
 </script>
