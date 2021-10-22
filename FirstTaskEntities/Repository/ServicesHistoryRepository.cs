@@ -35,7 +35,7 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfDelete, @Status WHERE Id = @Id)";
+				string query = "UPDATE ServicesHistory SET CompanyId = @CompanyId, ServiceId = @ServiceId, EmployeeId = @EmployeeId WHERE Id = @Id";
 				connection.Query(query, new { Id = entity.Id, CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
 			}
 		}
@@ -48,7 +48,6 @@ namespace FirstTaskEntities.Repository
 				connection.Query(query, new { CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
 			}
 		}
-
 
 		public void Remove(int id)
 		{

@@ -43,15 +43,19 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Update(int companyId)
+		public JsonResult Update(ServicesHistoryModel model)
 		{
-			return Json(companyId);
+			var message = manager.Update(model);
+
+			return Json(message);
 		}
 
 		[HttpPost]
 		public JsonResult Delete(int id)
 		{
-			return Json(id);
+			var message = manager.Remove(id);
+
+			return Json(message);
 		}
 
 		[HttpGet]

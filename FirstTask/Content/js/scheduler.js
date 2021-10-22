@@ -1,6 +1,10 @@
 ﻿
 $(document).ready(function () {
 
+	var notifElement = $("#schedulerNotifications");
+	notifElement.kendoNotification();
+	var notification = notifElement.data("kendoNotification")
+
 	//REPORT
 
 	$("#reportWindow").kendoDialog({
@@ -125,26 +129,68 @@ $(document).ready(function () {
 
 	// SCHEDULER
 	var dataSource = new kendo.data.SchedulerDataSource({
+		sync: function () {
+			this.read();
+		},
 		transport: {
 			read: {
 				url: "/ServicesHistory/Index",
 				type: "POST",
+				contentType: "application/json; charset=utf-8",
 			},
-			create: function (e) {
-				alert(12312312);
-				let _form = $("#schedulerForm").data("kendoFrom");
-				let data = _form.serializeArray();
-
-				alert(12312312);
-				$.ajax({
-					url: "/ServicesHistory/Create",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						alert(json);
+			create: {
+				url: "/ServicesHistory/Create",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+			},
+			update: {
+				url: "/ServicesHistory/Update",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+			},
+			destroy: {
+				url: "/ServicesHistory/Delete",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+			},
+			parameterMap: function (options, type) {
+				if (type == "create") {
+					let json = {
+						DateOfCreate: $("#schedulerDateOfCreate").data("kendoDateTimePicker").value(),
+						Employee: { Id: $("#schedulerEmployee").val() },
+						Company: { Id: $("#schedulerCompany").val() },
+						Service: { Id: $("#schedulerService").val() }
+					};
+					return kendo.stringify(json);
+				}
+				else if (type == "update") {
+					let json = {
+						Id: options.Id,
+						DateOfCreate: $("#schedulerDateOfCreate").data("kendoDateTimePicker").value(),
+						Employee: { Id: $("#schedulerEmployee").val() },
+						Company: { Id: $("#schedulerCompany").val() },
+						Service: { Id: $("#schedulerService").val() }
 					}
-				});
-				alert(12312312);
+					return kendo.stringify(json);
+				}
+				else if (type == "destroy") {
+					return kendo.stringify({ id: options.Id });
+				}
+			}
+		},
+		requestEnd: function (e) {
+			if (e.type == "update" || e.type == "create") {
+				$("#scheduler").data("kendoScheduler").dataSource.read();
+			}
+
+			if (e.type == "update" || e.type == "create" || e.type == "destroy") {
+				let result = e.response;
+				if (result.IsSuccess) {
+					notification.success(result.Message);
+				}
+				else {
+					notification.error(result.Error);
+				}
 			}
 		},
 		batch: false,
@@ -152,7 +198,6 @@ $(document).ready(function () {
 			model: {
 				id: "Id",
 				fields: {
-					id: { from: "Id" },
 					title: { from: "Title" },
 					start: { type: "date", from: "DateOfCreate" },
 					end: { type: "date", from: "DateOfFinish" }
@@ -160,11 +205,10 @@ $(document).ready(function () {
 			}
 		}
 	});
-
 	$("#scheduler").kendoScheduler({
 		dataSource: dataSource,
-		startTime: new Date("2021/10/18 07:00 AM"),
-		endTime: new Date("2021/10/18 06:00 PM"),
+		startTime: new Date("2021/01/01 07:00 AM"),
+		endTime: new Date("2021/12/01 06:00 PM"),
 		height: "600px",
 		views: [
 			{
@@ -178,45 +222,93 @@ $(document).ready(function () {
 			template: $("#schedulerEditor").html(),
 			window: {
 				title: "Оказанная услуга",
-				width: "630px",
-				height: "350px",
+				width: "650px",
+				height: "370px",
 				scrollable: false
 			}
 		},
 		edit: function (e) {
 			$("#schedulerForm").kendoForm({
-				orientation: "horizontal",
-				buttonsTemplate: ""
+				orientation: "vertical",
+				buttonsTemplate: "",
+				items: [
+					{
+						field: "DateOfCreate", label: "Начало", validation: { required: true },
+						editor: function (container, options) {
+							let input = $('<input id="schedulerDateOfCreate" type="datetime" name="DateOfCreate" required="required" />');
+							input.appendTo(container);
+							input.kendoDateTimePicker({
+								format: "MM/dd/yy hh:mm tt"
+							});
+						}
+					},
+					{
+						field: "ServiceId", label: "Услуга", validation: { required: true },
+						editor: function (container, options) {
+							let input = $('<input id="schedulerService" name="SchedulerServiceId" required="required" />');
+							input.appendTo(container);
+							input.kendoComboBox({
+								dataSource: services,
+								placeholder: "Название услуги",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+							});
+						}
+					},
+					{
+						field: "CompanyId", label: "Компания", validation: { required: true },
+						editor: function (container, options) {
+							let input = $('<input id="schedulerCompany" name="SchedulerCompanyId" required="required" />');
+							input.appendTo(container);
+							input.kendoComboBox({
+								dataSource: companies,
+								placeholder: "Название компании",
+								dataTextField: "Name",
+								dataValueField: "Id",
+								filter: "contains",
+							});
+						}
+					},
+					{
+						field: "EmployeeId", label: "Сотрудник", validation: { required: true },
+						editor: function (container, options) {
+							let input = $('<input id="schedulerEmployee" name="SchedulerEmployeeId" required="required" />');
+							input.appendTo(container);
+							input.kendoComboBox({
+								placeholder: "Имя сотрудника",
+								dataTextField: "FullName",
+								dataValueField: "Id",
+								filter: "contains",
+								dataSource: employee,
+								value: "4"
+							});
+						}
+					},
+				]
 			})
-			$("#schedulerDatePicker").kendoDateTimePicker({
-				format: "dd/MM/yy"
-			});
-			$("#schedulerCompany").kendoComboBox({
-				placeholder: "Название компании",
-				dataTextField: "Name",
-				dataValueField: "Id",
-				filter: "contains",
-				dataSource: companies
-			});
-			$("#schedulerService").kendoComboBox({
-				placeholder: "Название услуги",
-				dataTextField: "Name",
-				dataValueField: "Id",
-				filter: "contains",
-				dataSource: services,
-			});
-			$("#schedulerEmployee").kendoComboBox({
-				placeholder: "Имя сотрудника",
-				dataTextField: "FullName",
-				dataValueField: "Id",
-				filter: "contains",
-				dataSource: employee
-			});
+			// Fill form fields
+			if (e.event.Id > 0) {
+				$("#schedulerDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
+				$("#schedulerCompany").data("kendoComboBox").value(e.event.Company.Id);
+				$("#schedulerService").data("kendoComboBox").value(e.event.Service.Id);
+				$("#schedulerEmployee").data("kendoComboBox").value(e.event.Employee.Id);
+			}
+			else {
+				$("#schedulerDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
+			}
+
 			let buttonsContainer = e.container.find(".k-edit-buttons");
 			let cancelButton = buttonsContainer.find(".k-scheduler-cancel");
 			let saveButton = buttonsContainer.find(".k-scheduler-update");
 			cancelButton.text("Отмена");
 			saveButton.text("Применить");
+			saveButton.click(function () {
+				if (e.event.Id > 0) {
+					let sheduler = $("#scheduler").data("kendoScheduler");
+					sheduler.dataSource.at(sheduler.dataSource.indexOf(e.event)).set();
+				}
+			});
 		}
 	});
 });

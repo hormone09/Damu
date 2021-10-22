@@ -72,16 +72,57 @@ namespace FirstTask.Managers
 				Status = Statuses.Active
 			};
 
-			//try
-			//{
+			try
+			{
 				historyRep.Add(entity);
 
 				return new MessageHandler(true, strings.AddSuccess);
+			}
+			catch (Exception)
+			{
+				return new MessageHandler(false, strings.DatabaseError);
+			}
+		}
+
+		public MessageHandler Update(ServicesHistoryModel model)
+		{
+			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
+				return new MessageHandler(false, strings.FormError);
+
+			var entity = new ServicesHistory
+			{
+				Id = model.Id,
+				DateOfCreate = (DateTime)model.DateOfCreate,
+				CompanyId = model.Company.Id,
+				EmployeeId = model.Employee.Id,
+				ServiceId = model.Service.Id,
+				Status = Statuses.Active
+			};
+
+			//try
+			//{
+				historyRep.Update(entity);
+
+				return new MessageHandler(true, strings.EditSuccess);
 			//}
-			//catch(Exception)
+			//catch (Exception)
 			//{
 			//	return new MessageHandler(false, strings.DatabaseError);
 			//}
+		}
+
+		public MessageHandler Remove(int id)
+		{
+			try
+			{
+				historyRep.Remove(id);
+
+				return new MessageHandler(true, strings.DeleteSuccess);
+			}
+			catch(Exception)
+			{
+				return new MessageHandler(false, strings.DatabaseError);
+			}
 		}
 
 		public StiMvcActionResult GetReport(ReportViewQuery query)
