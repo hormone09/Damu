@@ -46,7 +46,7 @@
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getCompanyList()
+								dataSource: companies
 							});
 						}
 					},
@@ -60,7 +60,7 @@
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getServiceList()
+								dataSource: services
 							});
 						}
 					},
@@ -156,7 +156,7 @@
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getCompanyList()
+								dataSource: companies
 							});
 						}
 					},
@@ -170,7 +170,7 @@
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getServiceList()
+								dataSource: services
 							});
 						}
 					},
@@ -285,7 +285,7 @@
 		dataTextField: "Name",
 		dataValueField: "Id",
 		filter: "contains",
-		dataSource: getCompanyList(),
+		dataSource: companies,
 		change: function () {
 			let grid = $("#providedGrid").data("kendoGrid");
 			grid.dataSource.page(1);
@@ -297,7 +297,7 @@
 		dataTextField: "Name",
 		dataValueField: "Id",
 		filter: "contains",
-		dataSource: getServiceList(),
+		dataSource: services,
 		change: function () {
 			let grid = $("#providedGrid").data("kendoGrid");
 			grid.dataSource.page(1);

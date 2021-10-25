@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-
+	
 	var notifElement = $("#employeeNotifications");
 	notifElement.kendoNotification();
 	var notification = notifElement.data("kendoNotification");
@@ -94,7 +94,7 @@ $(document).ready(function () {
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getCompanyList()
+								dataSource: companies
 							});
 						}
 					},
@@ -211,7 +211,7 @@ $(document).ready(function () {
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: getCompanyList()
+								dataSource: companies
 							});
 						}
 					},
@@ -337,7 +337,7 @@ $(document).ready(function () {
 		dataTextField: "Name",
 		dataValueField: "Id",
 		filter: "contains",
-		dataSource: getCompanyList(),
+		dataSource: companies,
 		change: function () {
 			let grid = $("#emloyeeGrid").data("kendoGrid");
 			grid.dataSource.page(1);
