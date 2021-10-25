@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-
 using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
-
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -12,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace FirstTask.Managers
 {

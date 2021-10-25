@@ -238,7 +238,6 @@
 	});
 
 	// Delete
-		document.getElementById('companiesDeleteWindow').style.display = "none";
 	function DeleteCompany(id) {
 		document.getElementById('companiesDeleteWindow').style.display = "block";
 		$("#companiesDeleteWindow").kendoDialog({

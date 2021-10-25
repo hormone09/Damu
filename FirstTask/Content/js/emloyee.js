@@ -33,10 +33,17 @@ $(document).ready(function () {
 				type: "group",
 				label: "Добавление нового сотрудника",
 				items: [
-					{ field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя", validation: { required: true } },
+					{
+						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ", validation: { required: true },
+						editor: function (container, options) {
+							var input = $('<input id="empInsertFullName" name="FullName" required="required" />');
+							input.appendTo(container);
+							input.kendoTextBox();
+						}
+					},
 					{
 						field: "Phone", label: "Телефон", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input name="Phone" required="required" />');
+							var input = $('<input id="empInsertPhone" name="Phone" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
@@ -47,7 +54,7 @@ $(document).ready(function () {
 					{
 						field: "BirthdayDate", label: "Дата рождения", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertBirthdayDate" name="BirthdayDate" required="required" />');
+							var input = $('<input id="empInsertBirthdayDate" name="BirthdayDate" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату рождения",
@@ -58,7 +65,7 @@ $(document).ready(function () {
 					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
+							var input = $('<input id="empInsertDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала работы",
@@ -69,7 +76,7 @@ $(document).ready(function () {
 					{
 						field: "PersonalNumber", label: "ИИН", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input name="PersonalNumber" required="required" />');
+							var input = $('<input id="empInsertPesonalNumber" name="PersonalNumber" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -78,9 +85,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Company.Id", label: "Компания", validation: { required: false },
+						field: "CompanyId", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
+							var input = $('<input id="empInsertCompanyId" name="CompanyId" required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -98,12 +105,20 @@ $(document).ready(function () {
 	});
 
 	formInsert.bind("submit", function (e) {
-		var data = formInsert.serializeArray();
+		let data = {
+			DateOfBegin: $("#empInsertDateOfBegin").data("kendoDatePicker").value(),
+			Company: { Id: $("#empInsertCompanyId").val() },
+			BirthdayDate: $("#empInsertBirthdayDate").data("kendoDatePicker").value(),
+			FullName: $("#empInsertFullName").val(),
+			PersonalNumber: $("#empInsertPesonalNumber").val(),
+			Phone: $("#empInsertPhone").val()
+		}
 
 		$.ajax({
 			url: "/Employee/AddEmployee/",
 			type: "POST",
-			data: data,
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(data),
 			success: function (json) {
 				if (json.IsSuccess == true) {
 					var grid = $("#emloyeeGrid").data("kendoGrid");
@@ -142,21 +157,21 @@ $(document).ready(function () {
 				items: [
 					{
 						field: "Id", label: "", editor: function (container, options) {
-							var input = $('<input id="editId" name="Id" type="hidden"/>');
+							var input = $('<input id="empEditId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
 					},
 					{
 						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editFullName" name="FullName" required="required" />');
+							var input = $('<input id="empEditFullName" name="FullName" required="required" />');
 							input.appendTo(container);
 							input.kendoTextBox();
 						}
 					},
 					{
 						field: "Phone", label: "Телефон", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input id="editPhone" name="Phone" required="required" />');
+							var input = $('<input id="empEditPhone" name="Phone" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
@@ -167,7 +182,7 @@ $(document).ready(function () {
 					{
 						field: "PersonalNumber", label: "ИИН", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editPesonalNumber" name="PersonalNumber" required="required" />');
+							var input = $('<input id="empEditPesonalNumber" name="PersonalNumber" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -178,7 +193,7 @@ $(document).ready(function () {
 					{
 						field: "BirthdayDate", label: "Дата рождения", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editBirthdayDate" name="BirthdayDate" required="required" />');
+							var input = $('<input id="empEditBirthdayDate" name="BirthdayDate" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату рождения",
@@ -187,9 +202,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Company.Id", label: "Компания", validation: { required: false },
+						field: "CompanyId", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editCompanyId" name="Company.Id"  />');
+							var input = $('<input id="empEditCompanyId" name="CompanyId"  required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -203,7 +218,7 @@ $(document).ready(function () {
 					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
+							var input = $('<input id="empEditDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала работы",
@@ -218,12 +233,21 @@ $(document).ready(function () {
 	});
 
 	formEdit.bind("submit", function (e) {
-		var data = formEdit.serializeArray();
+		let data = {
+			Id: $("#empEditId").val(),
+			DateOfBegin: $("#empEditDateOfBegin").data("kendoDatePicker").value(),
+			Company: { Id: $("#empEditCompanyId").val() },
+			BirthdayDate: $("#empEditBirthdayDate").data("kendoDatePicker").value(),
+			FullName: $("#empEditFullName").val(),
+			PersonalNumber: $("#empEditPesonalNumber").val(),
+			Phone: $("#empEditPhone").val()
+		}
 
 		$.ajax({
 			url: "/Employee/EditEmployee/",
 			type: "POST",
-			data: data,
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(data),
 			success: function (json) {
 				if (json.IsSuccess == true) {
 					var grid = $("#emloyeeGrid").data("kendoGrid");
@@ -250,7 +274,6 @@ $(document).ready(function () {
 	}
 
 	// Delete
-	document.getElementById('employeeDeleteWindow').style.display = "none";
 	function DeleteEmployee(id) {
 		document.getElementById('employeeDeleteWindow').style.display = "block";
 		$("#employeeDeleteWindow").kendoDialog({

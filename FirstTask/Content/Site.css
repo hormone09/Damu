@@ -4,6 +4,9 @@ body {
 	font-family: 'Times New Roman';
 	min-width: 1280px;
 }
+.content {
+	min-height: 822px;
+}
 h2 {
 	text-align: center;
 	margin: 40px 0px;
@@ -114,11 +117,9 @@ h1{
 	width: 200px;
 }
 .footer{
-	position: fixed;
-	bottom: 0px;
 	color: gray;
 	width: 100%;
-	height: auto;
+	height: 65px;
 	font-size: 15px;
 }
 #grid{

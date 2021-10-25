@@ -211,7 +211,6 @@ $(document).ready(function () {
 
 
 	// Delete
-	document.getElementById('delete-window').style.display = "none";
 	function DeleteService(id) {
 		document.getElementById('delete-window').style.display = "block";
 		$("#delete-window").kendoDialog({

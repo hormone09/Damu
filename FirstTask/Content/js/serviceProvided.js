@@ -39,7 +39,7 @@
 					{
 						field: "Company.Id", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
+							var input = $('<input id="sProvidedInsertCompanyId" name="CompanyId"  />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -53,7 +53,7 @@
 					{
 						field: "Service.Id", label: "Услуга", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertServiceId" name="Service.Id"  />');
+							var input = $('<input id="sProvidedInsertServiceId" name="ServiceId"  />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -67,7 +67,7 @@
 					{
 						field: "ServicePrice", label: "Price", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertServicePrice" name="ServicePrice" required="required" />');
+							var input = $('<input id="sProvidedInsertServicePrice" name="ServicePrice" required="required" />');
 							input.appendTo(container);
 							input.kendoNumericTextBox({
 								placeholder: "Введите стоимость",
@@ -78,7 +78,7 @@
 					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="sProvidedInsertDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите точную дату",
@@ -93,11 +93,19 @@
 	});
 
 	formInsert.bind("submit", function (e) {
-		var data = formInsert.serializeArray();
+
+		let data = {
+			DateOfBegin: $("#sProvidedInsertDateOfBegin").data("kendoDatePicker").value(),
+			Company: { Id: $("#sProvidedInsertCompanyId").val() },
+			Service: { Id: $("#sProvidedInsertServiceId").val() },
+			ServicePrice: $("#sProvidedInsertServicePrice").val()
+		};
+
 		$.ajax({
 			url: "/ServiceProvided/AddProvidedService/",
 			type: "POST",
-			data: data,
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(data),
 			success: function (json) {
 				if (json.IsSuccess == true) {
 					var grid = $("#providedGrid").data("kendoGrid");
@@ -133,7 +141,7 @@
 				items: [
 					{
 						field: "Id", label: "", editor: function (container, options) {
-							var input = $('<input id="editId" name="Id" type="hidden"/>');
+							var input = $('<input id="sProvidedEditId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 
 						}
@@ -141,7 +149,7 @@
 					{
 						field: "Company.Id", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertCompanyId" name="Company.Id"  required="required" />');
+							var input = $('<input id="sProvidedEditCompanyId" name="CompanyId"  required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -155,7 +163,7 @@
 					{
 						field: "Service.Id", label: "Услуга", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertServiceId" name="Service.Id"  required="required" />');
+							var input = $('<input id="sProvidedEditServiceId" name="ServiceId"  required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -169,7 +177,7 @@
 					{
 						field: "ServicePrice", label: "Price", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editServicePrice" name="ServicePrice" required="required" />');
+							var input = $('<input id="sProvidedEditServicePrice" name="ServicePrice" required="required" />');
 							input.appendTo(container);
 							input.kendoNumericTextBox({
 								placeholder: "Введите стоимость услуги",
@@ -180,7 +188,7 @@
 					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="sProvidedEditDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите точную дату",
@@ -195,12 +203,19 @@
 	});
 
 	formEdit.bind("submit", function (e) {
-		var data = formEdit.serializeArray();
+		let data = {
+			Id: $("#sProvidedEditId").val(),
+			DateOfBegin: $("#sProvidedEditDateOfBegin").data("kendoDatePicker").value(),
+			Company: { Id: $("#sProvidedEditCompanyId").val() },
+			Service: { Id: $("#sProvidedEditServiceId").val() },
+			ServicePrice: $("#sProvidedEditServicePrice").val()
+		};
 
 		$.ajax({
 			url: "/ServiceProvided/EditProvidedService/",
 			type: "POST",
-			data: data,
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(data),
 			success: function (json) {
 				if (json.IsSuccess == true) {
 					var grid = $("#providedGrid").data("kendoGrid");
@@ -219,14 +234,13 @@
 	});
 
 	function EditSProvided(oldService) {
-		$("#editSProvidedForm #editId").val(oldService.Id);
+		$("#editSProvidedForm #sProvidedEditId").val(oldService.Id);
 		$("#editSProvidedWindow").data("kendoDialog").open();
 
 		return false;
 	}
 
 	// Delete
-	document.getElementById('sProdivdedDeleteWindow').style.display = "none";
 	function DeleteSProvided(id) {
 		document.getElementById('sProdivdedDeleteWindow').style.display = "block";
 		$("#sProdivdedDeleteWindow").kendoDialog({
