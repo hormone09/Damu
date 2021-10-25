@@ -257,7 +257,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#statusesList").kendoDropDownList({
+	$("#serviceStatusesList").kendoDropDownList({
 		dataTextField: "text",
 		dataValueField: "value",
 		dataSource: [
@@ -301,7 +301,7 @@ $(document).ready(function () {
 					ServiceName: name,
 					Page: options.page,
 					PageSize: options.pageSize,
-					Status: $("#statusesList").val(),
+					Status: $("#serviceStatusesList").val(),
 					SortingType: $("#orderByTypes").val()
 				}
 				return kendo.stringify(data);

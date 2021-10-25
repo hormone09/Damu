@@ -86,7 +86,7 @@ namespace FirstTask.Managers
 				return new MessageHandler(false, strings.FormatError);
 
 			model.BIN = model.BIN.Replace("-", "");
-			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace("(", "");
+			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			var entity = mapper.Map<Company>(model);
 
 			try
