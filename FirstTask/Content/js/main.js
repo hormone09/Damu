@@ -1,4 +1,10 @@
-﻿
+﻿function Loading() {
+
+	let loading = document.getElementById('loading');
+	loading.style.display = "none"
+}
+setTimeout(Loading, 1100);
+
 function getCompanyList() {
 	var data = {
 		PageSize: 100000,
