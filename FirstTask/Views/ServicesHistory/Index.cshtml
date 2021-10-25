@@ -2,18 +2,21 @@
 @{
 	ViewBag.Title = "История оказанных услуг";
 }
+<div class="container">
+	<h2>История оказанных услуг</h2>
 
-<h2>История оказанных услуг</h2>
+	<div id="scheduler"></div>
 
-<div id="scheduler"></div>
+	<div id="reportWindow">
+		<form id="reportForm"></form>
+	</div>
 
-<div id="reportWindow">
-	<form id="reportForm"></form>
+	<div id="schedulerNotifications"></div>
+
+	<div>
+		<button id="reportWindowButton">Печать</button>
+	</div>
 </div>
-
-<div id="schedulerNotifications"></div>
-
-<button id="reportWindowButton">Печать</button>
 
 <script id="schedulerEditor" type="text/x-kendo-template">
 	<div class="container">

@@ -51,7 +51,7 @@ namespace FirstTask.Managers
 
 		public MessageHandler Edit(ServiceProvidedModel model)
 		{
-			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == 0)
+			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == 0 || model.ServicePrice == null)
 				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin <= DateTime.Now)
@@ -69,7 +69,7 @@ namespace FirstTask.Managers
 			entity.ServiceId = model.Service.Id;
 
 			var currentService = servicesRepository.Find(entity.ServiceId);
-			currentService.Price = model.ServicePrice;
+			currentService.Price = (decimal)model.ServicePrice;
 
 
 			try
@@ -87,7 +87,7 @@ namespace FirstTask.Managers
 
 		public MessageHandler Add(ServiceProvidedModel model)
 		{
-			if (model.Company == null || model.Service == null || model.DateOfBegin == null)
+			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == null)
 				return new MessageHandler(false, strings.FormError);
 
 			if (model.DateOfBegin <= DateTime.Now)
@@ -98,7 +98,7 @@ namespace FirstTask.Managers
 			var entity = mapper.Map<ServiceProvided>(model);
 
 			var currentService = servicesRepository.Find(entity.ServiceId);
-			currentService.Price = model.ServicePrice;
+			currentService.Price = (decimal)model.ServicePrice;
 
 			try
 			{

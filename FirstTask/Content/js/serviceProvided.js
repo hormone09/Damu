@@ -37,7 +37,7 @@
 				label: "Добавление оказываемых услуг",
 				items: [
 					{
-						field: "Company.Id", label: "Компания", validation: { required: false },
+						field: "Company.Id", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
 							input.appendTo(container);
@@ -51,7 +51,7 @@
 						}
 					},
 					{
-						field: "Service.Id", label: "Услуга", validation: { required: false },
+						field: "Service.Id", label: "Услуга", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="insertServiceId" name="Service.Id"  />');
 							input.appendTo(container);
@@ -99,8 +99,11 @@
 			type: "POST",
 			data: data,
 			success: function (json) {
-				if (json.IsSuccess == true)
+				if (json.IsSuccess == true) {
+					var grid = $("#providedGrid").data("kendoGrid");
+					grid.dataSource.read();
 					notification.success(json.Message);
+				}
 				else
 					return notification.error(json.Error);
 			}
@@ -136,9 +139,9 @@
 						}
 					},
 					{
-						field: "Company.Id", label: "Компания", validation: { required: false },
+						field: "Company.Id", label: "Компания", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertCompanyId" name="Company.Id"  />');
+							var input = $('<input id="insertCompanyId" name="Company.Id"  required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -150,9 +153,9 @@
 						}
 					},
 					{
-						field: "Service.Id", label: "Услуга", validation: { required: false },
+						field: "Service.Id", label: "Услуга", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="insertServiceId" name="Service.Id"  />');
+							var input = $('<input id="insertServiceId" name="Service.Id"  required="required" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -357,9 +360,9 @@
 			{ field: "Service.Name", title: "Название услуги", width: "20%" },
 			{ field: "Service.Price", title: "Стоимость услуги", width: "15%" },
 			{ field: "Company.Name", title: "Название компании", width: "15%" },
-			{ field: "DateOfBegin", title: "Дата начала действия", width: "20%", format: "{0: dd-MM-yyyy}" },
+			{ field: "DateOfBegin", title: "Дата начала действия", width: "10%", format: "{0: dd-MM-yyyy}" },
 			{
-				field: "Status", title: "Статус", width: "10%", values: [
+				field: "Status", title: "Статус", width: "5%", values: [
 					{ text: "Активно", value: 1 },
 					{ text: "Удалено", value: 2 }
 				]
@@ -386,12 +389,10 @@
 							EditSProvided(dataItem);
 						},
 					},
-				],
-				width: "30%",
+				]
 			},
 		],
 		pageable: true,
 		scrollable: false,
-		width: "1000px"
 	});
 });

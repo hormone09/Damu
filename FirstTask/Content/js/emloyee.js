@@ -105,8 +105,11 @@ $(document).ready(function () {
 			type: "POST",
 			data: data,
 			success: function (json) {
-				if (json.IsSuccess == true)
+				if (json.IsSuccess == true) {
+					var grid = $("#emloyeeGrid").data("kendoGrid");
+					grid.dataSource.read();
 					notification.success(json.Message);
+				}
 				else
 					return notification.error(json.Error);
 			}
@@ -377,15 +380,14 @@ $(document).ready(function () {
 		dataSource: dataSource,
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
-			{ field: "FullName", title: "Полное имя", width: "20%" },
+			{ field: "FullName", title: "Полное имя", width: "10%" },
 			{ field: "PersonalNumber", title: "ИИН", width: "5%" },
 			{ field: "Phone", title: "Номер", width: "15%" },
-			{ field: "Company.Name", title: "Название компании", width: "15%" },
-			{ field: "BirthdayDate", title: "Дата рождения", width: "10%", format: "{0: dd-MM-yyyy}" },
-			{ field: "DateOfBegin", title: "Дата начала работы", width: "10%", format: "{0: dd-MM-yyyy}" },
-			//{ field: "DateOfFinish", title: "1", , format: "{0: dd-MM-yyyy}", visible: function (dataItem) { return dataItem.Status == 0 }},
+			{ field: "Company.Name", title: "Название компании", width: "5%" },
+			{ field: "BirthdayDate", title: "Дата рождения", width: "8%", format: "{0: dd-MM-yyyy}" },
+			{ field: "DateOfBegin", title: "Дата начала работы", width: "7%", format: "{0: dd-MM-yyyy}" },
 			{
-				field: "Status", title: "Статус", width: "10%", values: [
+				field: "Status", title: "Статус", width: "5%", values: [
 					{ text: "Активно", value: 1 },
 					{ text: "Удалено", value: 2 }
 				]
@@ -411,8 +413,7 @@ $(document).ready(function () {
 							EditEmployee(dataItem);
 						},
 					},
-				],
-				width: "30%",
+				]
 			},
 		],
 		pageable: true,

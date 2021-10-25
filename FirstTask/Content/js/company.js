@@ -82,8 +82,11 @@
 			type: "POST",
 			data: data,
 			success: function (json) {
-				if (json.IsSuccess == true)
+				if (json.IsSuccess == true) {
+					var grid = $("#companiesGrid").data("kendoGrid");
+					grid.dataSource.read();
 					notification.success(json.Message);
+				}
 				else
 					notification.error(json.Error);
 			}
@@ -313,11 +316,11 @@
 		dataSource: dataSource,
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
-			{ field: "Name", title: "Название компании", width: "20%" },
-			{ field: "Phone", title: "Номер телефона", width: "20%" },
-			{ field: "DateOfBegin", title: "Дата добавления", width: "20%", format: "{0: dd-MM-yyyy}" },
+			{ field: "Name", title: "Название компании", width: "30%" },
+			{ field: "Phone", title: "Номер телефона", width: "10%" },
+			{ field: "DateOfBegin", title: "Дата добавления", width: "10%", format: "{0: dd-MM-yyyy}" },
 			{
-				field: "Status", title: "Статус", width: "10%", values: [
+				field: "Status", title: "Статус", width: "5%", values: [
 					{ text: "Активно", value: 1 },
 					{ text: "Удалено", value: 2 }
 				]
@@ -350,6 +353,5 @@
 		],
 		pageable: true,
 		scrollable: false,
-		width: "1000px"
 	});
 });

@@ -2,16 +2,20 @@
 body {
 	background-color: white;
 	font-family: 'Times New Roman';
-	min-height: 1080px;
+	min-width: 1280px;
 }
-button{
-	border: 0px solid red;
-	width: 65px;
-	height: 25px;
+h2 {
+	text-align: center;
+	margin: 40px 0px;
+	font-family: 'Franklin Gothic';
+}
+button {
+	height: 20px;
 	border-radius: 6%;
 	font-size: 13px;
-	font-weight: bold;
 	color: white;
+	background-color: dodgerblue;
+	border: none;
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -32,8 +36,6 @@ img {
 	object-fit: cover;
 	width: 100%;
 }
-.row{
-}
 .text {
 	margin: 35px 0px;
 	text-align: center;
@@ -50,8 +52,11 @@ img {
 	font-size: 30px;
 	text-align: center;
 }
-.navbar {
-	border-bottom: 2px solid gray;
+.service-text {
+	margin: -10px 0px;
+	font-size: 18px;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	text-align: justify;
 }
 .nav a{
 	font-size: 15px;
@@ -120,27 +125,64 @@ h1{
 	animation-name: table;
 	animation-duration: 2s;
 }
+.k-grid {
+	margin: 2% 5%;
+	width: 90%;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-size: 12px;
+}
+/* Notifications */
+.k-notification {
+	min-width: 340px;
+	height: 60px;
+	font-size: 20px;
+	padding: 0px 10px;
+	position: fixed;
+	top: -800px;
+}
+.k-button {
+	border: 1px solid black;
+	background-color: white;
+	font-weight: bold;
+	font-family: Arial
+}
+.k-button:hover{
+	background-color: white;
+}
+.btn-destroy{
+	background-color: rgb(212 116 116);
+}
+.btn-edit {
+	background-color: rgb(36 141 80);
+}
+.k-scheduler-content .k-scheduler-table tr td {
+	height: 70px;
+}
 
 @keyframes rigth-block {
 	from {
-		transform: translate(500px, 0%);
-	}
-	to {
-	}
-}
-@keyframes left-block {
-	from {
-		transform: translate(-500px, 0%);
+			transform: translate(500px, 0%);
+		}
+
+		to {
+		}
 	}
 
-	to {
+	@keyframes left-block {
+		from {
+			transform: translate(-500px, 0%);
+		}
+
+		to {
+		}
 	}
-}
-@keyframes table{
-	from{
-		opacity: 0%;
+
+	@keyframes table {
+		from {
+			opacity: 0%;
+		}
+
+		to {
+			opacity: 100%;
+		}
 	}
-	to{
-		opacity: 100%;
-	}
-}

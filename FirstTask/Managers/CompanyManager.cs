@@ -75,7 +75,7 @@ namespace FirstTask.Managers
 			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone))
 				return new MessageHandler(false, strings.FormError);
 
-			if (model.DateOfBegin >= DateTime.Now)
+			if (model.DateOfBegin <= DateTime.Now)
 				model.Status = Statuses.Active;
 			else
 				model.Status = Statuses.Disabled;
@@ -93,7 +93,7 @@ namespace FirstTask.Managers
 			{
 				companyRep.Add(entity);
 
-				return new MessageHandler(true, strings.EditSuccess);
+				return new MessageHandler(true, strings.AddSuccess);
 			}
 			catch (Exception)
 			{

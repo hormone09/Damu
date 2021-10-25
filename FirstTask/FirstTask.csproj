@@ -305,6 +305,9 @@
     <Content Include="Content\bootstrap\js\src\util\index.js" />
     <Content Include="Content\bootstrap\js\src\util\sanitizer.js" />
     <Content Include="Content\bootstrap\js\src\util\scrollbar.js" />
+    <Content Include="Content\Images\1.jpg" />
+    <Content Include="Content\Images\2.jpg" />
+    <Content Include="Content\Images\3.jpg" />
     <Content Include="Content\Images\doctor1.jpg" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\js\scheduler.js" />

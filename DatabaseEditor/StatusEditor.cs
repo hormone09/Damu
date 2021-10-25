@@ -13,7 +13,7 @@ namespace DatabaseEditor
 		//private static string connectionString = "Data Source=DESKTOP-5MU0QK1; Database=FirstTask; Trusted_Connection=True;";
 		//Work
 		private static string connectionString = "Data Source=DESKTOP-8LKEMKN; Database=FirstTask; Trusted_Connection=True;";
-		private static TimeSpan timeForChange = TimeSpan.Parse("14:29");
+		private static TimeSpan timeForChange = TimeSpan.Parse("00:00");
 		private static DateTime today;
 
 		public static void Start()
@@ -21,7 +21,7 @@ namespace DatabaseEditor
 			Console.WriteLine($"Время: {DateTime.Now.TimeOfDay} Начало обновления: {timeForChange}");
 			while (true)
 			{
-				if(false)//DateTime.Now.TimeOfDay == timeForChange)
+				if(DateTime.Now.TimeOfDay.Hours == timeForChange.Hours && DateTime.Now.TimeOfDay.Minutes == timeForChange.Minutes)
 				{
 					today = DateTime.Now.Date;
 

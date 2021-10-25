@@ -91,8 +91,11 @@ $(document).ready(function () {
 			type: "POST",
 			data: data,
 			success: function (json) {
-				if (json.IsSuccess == true)
+				if (json.IsSuccess == true) {
+					var grid = $("#servicesGrid").data("kendoGrid");
+					grid.dataSource.read();
 					notification.success(json.Message);
+				}
 				else
 					return notification.error(json.Error);
 			}
@@ -327,12 +330,12 @@ $(document).ready(function () {
 		dataSource: dataSource,
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
-			{ field: "Name", title: "Название услуги", width: "20%" },
-			{ field: "Price", title: "Цена", width: "15%" },
-			{ field: "Code", title: "Код ", width: "15%" },
-			{ field: "DateOfBegin", title: "Дата образования", width: "20%", format: "{0: dd-MM-yyyy}" },
+			{ field: "Name", title: "Название услуги", width: "30%" },
+			{ field: "Price", title: "Цена", width: "10%" },
+			{ field: "Code", title: "Код ", width: "10%" },
+			{ field: "DateOfBegin", title: "Дата образования", width: "10%", format: "{0: dd-MM-yyyy}" },
 			{
-				field: "Status", title: "Статус", width: "10%", values: [
+				field: "Status", title: "Статус", width: "5%", values: [
 					{ text: "Активно", value: 1 },
 					{ text: "Удалено", value: 2 }
 				]
@@ -358,7 +361,7 @@ $(document).ready(function () {
 							EditService(dataItem);
 						}
 					},
-				]
+				],
 			},
 		],
 		pageable: true,
