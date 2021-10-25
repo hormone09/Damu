@@ -50,6 +50,7 @@ namespace FirstTask.Managers
 				model.Employee = mapper.Map<EmployeeModel>(employeeEntity);
 				model.DateOfCreate = el.DateOfCreate;
 				model.DateOfFinish = el.DateOfCreate.AddMinutes(15.00);
+				// TODO: Change on JS Hedler
 				model.Title = $"Наименование услуги: {model.Service.Name} \n Стоимость: {model.Service.Price} \n Выполнил сотрудник компании: {model.Company.Name} \n Имя: {model.Employee.FullName}";
 
 				models.Add(model);
@@ -99,16 +100,16 @@ namespace FirstTask.Managers
 				Status = Statuses.Active
 			};
 
-			//try
-			//{
+			try
+			{
 				historyRep.Update(entity);
 
 				return new MessageHandler(true, strings.EditSuccess);
-			//}
-			//catch (Exception)
-			//{
-			//	return new MessageHandler(false, strings.DatabaseError);
-			//}
+			}
+			catch (Exception)
+			{
+				return new MessageHandler(false, strings.DatabaseError);
+			}
 		}
 
 		public MessageHandler Remove(int id)

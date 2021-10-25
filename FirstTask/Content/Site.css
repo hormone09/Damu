@@ -122,11 +122,9 @@ h1{
 	height: 65px;
 	font-size: 15px;
 }
-#grid{
+.k-grid {
 	animation-name: table;
 	animation-duration: 2s;
-}
-.k-grid {
 	margin: 2% 5%;
 	width: 90%;
 	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -164,7 +162,6 @@ h1{
 	from {
 			transform: translate(500px, 0%);
 		}
-
 		to {
 		}
 	}
