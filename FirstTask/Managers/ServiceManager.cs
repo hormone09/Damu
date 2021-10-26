@@ -117,5 +117,19 @@ namespace FirstTask.Managers
 				return new MessageHandler(false, strings.DatabaseError);
 			}
 		}
+
+		public MessageHandler Activate(int id)
+		{
+			try
+			{
+				serviceRepository.Activate(id);
+
+				return new MessageHandler(true, strings.ActivateSuccess);
+			}
+			catch(Exception)
+			{
+				return new MessageHandler(false, strings.ActivateFailed);
+			}
+		}
 	}
 }

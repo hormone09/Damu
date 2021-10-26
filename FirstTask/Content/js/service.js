@@ -72,7 +72,6 @@ $(document).ready(function () {
 							var input = $('<input id="editCode" name="Code" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
-								placeholder: "Укажите код в формате 'Z00.000.000'",
 								mask: "L00.000.000"
 							});
 						}
@@ -124,14 +123,14 @@ $(document).ready(function () {
 				items: [
 					{
 						field: "Id", label: "", editor: function (container, options) {
-							var input = $('<input id="editId" name="Id" type="hidden"/>');
+							var input = $('<input id="editServicesId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
 					},
 					{
 						field: "Name", label: "Назваине",  validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editName" name="Name" required="required" />');
+							var input = $('<input id="editServicesName" name="Name" required="required" />');
 							input.appendTo(container);
 							input.kendoTextBox({
 								placeholder: "Укажите наименование услуги",
@@ -141,7 +140,7 @@ $(document).ready(function () {
 					{
 						field: "Price", label: "Price", placeholder: "Укажите стоимость", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editPrice" name="Price" required="required" />');
+							var input = $('<input id="editServicesPrice" name="Price" required="required" />');
 							input.appendTo(container);
 							input.kendoNumericTextBox({
 								placeholder: "Введите стоимость ",
@@ -152,7 +151,7 @@ $(document).ready(function () {
 					{
 						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
+							var input = $('<input id="editServicesDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Введите точную дату",
@@ -163,7 +162,7 @@ $(document).ready(function () {
 					{
 						field: "Code", label: "Код услуги", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editCode" name="Code" required="required" />');
+							var input = $('<input id="editServicesCode" name="Code" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите код в формате 'Z00.000.000'",
@@ -202,13 +201,34 @@ $(document).ready(function () {
 	});
 
 	function EditService(oldService) {
-		$("#editServiceForm #editId").val(oldService.Id);
+		$("#editServiceForm #editServicesId").val(oldService.Id);
+		$("#editServiceForm #editServicesName").val(oldService.Name);
+		$("#editServiceForm #editServicesPrice").data("kendoNumericTextBox").value(oldService.Price);
+		$("#editServiceForm #editServicesDateOfBegin").val(new Date().toLocaleDateString());
+		$("#editServiceForm #editServicesCode").val(oldService.Code);
 
 		$("#edit-window").data("kendoDialog").open();
 
 		return false;
 	}
 
+	function ActivateService(id) {
+		$.ajax({
+			url: "/Service/ActivateService/",
+			type: "POST",
+			data: { id: id },
+			success: function (json) {
+				if (json.IsSuccess == true) {
+					var grid = $("#servicesGrid").data("kendoGrid");
+					grid.dataSource.read();
+					notification.success(json.Message);
+				}
+				else {
+					notification.error(json.Message);
+				}
+			}
+		})
+	}
 
 	// Delete
 	function DeleteService(id) {
@@ -247,14 +267,15 @@ $(document).ready(function () {
 	};
 
 	// Filters
+
+	$("body").on("click", "#btn-search", function () {
+		let grid = $("#servicesGrid").data("kendoGrid");
+		grid.dataSource.read();
+	});
+
 	$("#toolbar").kendoToolBar({
 	});
 	$("#serviceNameFilter").kendoTextBox({
-		change: function () {
-			let grid = $("#servicesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-			grid.dataSource.read();
-		}
 	});
 
 	$("#serviceStatusesList").kendoDropDownList({
@@ -263,12 +284,7 @@ $(document).ready(function () {
 		dataSource: [
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
-		],
-		change: function () {
-			let grid = $("#servicesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-			grid.dataSource.read();
-		}
+		]
 	});
 
 	$("#orderByTypes").kendoDropDownList({
@@ -278,11 +294,7 @@ $(document).ready(function () {
 			{ text: "Названию", value: "Name" },
 			{ text: "Возрастанию цены", value: "Price" },
 			{ text: "Убыванию цены", value: "Price DESC" }
-		],
-		change: function () {
-			let grid = $("#servicesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
+		]
 	});
 
 	// GRID
@@ -352,6 +364,16 @@ $(document).ready(function () {
 						}
 					},
 					{
+						name: "Activate",
+						className: "btn-activate",
+						text: "Востановить",
+						visible: function (dataItem) { return dataItem.Status == 2 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							ActivateService(dataItem.Id);
+						}
+					},
+					{
 						name: "Edit",
 						className: "btn-edit",
 						text: "Редактирование",
@@ -363,7 +385,8 @@ $(document).ready(function () {
 				],
 			},
 		],
+		height: 620,
 		pageable: true,
-		scrollable: false,
+		scrollable: true,
 	});
 });

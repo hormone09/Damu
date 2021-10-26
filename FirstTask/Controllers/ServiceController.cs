@@ -52,5 +52,13 @@ namespace FirstTask.Controllers
 
 			return Json(result);
 		}
+
+		[HttpPost]
+		public JsonResult ActivateService(int id)
+		{
+			var result = manager.Activate(id);
+
+			return Json(result);
+		}
 	}
 }

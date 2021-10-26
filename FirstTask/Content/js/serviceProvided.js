@@ -205,7 +205,7 @@
 	formEdit.bind("submit", function (e) {
 		let data = {
 			Id: $("#sProvidedEditId").val(),
-			DateOfBegin: $("#sProvidedEditDateOfBegin").data("kendoDatePicker").value(),
+			DateOfBegin: new Date($("#sProvidedEditDateOfBegin").data("kendoDatePicker").value()),
 			Company: { Id: $("#sProvidedEditCompanyId").val() },
 			Service: { Id: $("#sProvidedEditServiceId").val() },
 			ServicePrice: $("#sProvidedEditServicePrice").val()
@@ -234,7 +234,13 @@
 	});
 
 	function EditSProvided(oldService) {
+		console.log(oldService);
 		$("#editSProvidedForm #sProvidedEditId").val(oldService.Id);
+		$("#editSProvidedForm #sProvidedEditServiceId").data("kendoComboBox").value(oldService.Service.Id);
+		$("#editSProvidedForm #sProvidedEditServicePrice").data("kendoNumericTextBox").value(oldService.Service.Price);
+		$("#editSProvidedForm #sProvidedEditCompanyId").data("kendoComboBox").value(oldService.Company.Id);
+		$("#editSProvidedForm #sProvidedEditDateOfBegin").val(new Date(oldService.DateOfBegin).toLocaleDateString());
+
 		$("#editSProvidedWindow").data("kendoDialog").open();
 
 		return false;
@@ -278,6 +284,11 @@
 
 
 	// Filters
+	$("body").on("click", "#sProvidedSearchButton", function () {
+		var grid = $("#providedGrid").data("kendoGrid");
+		grid.dataSource.read();
+	});
+
 	$("#sProvidedToolbar").kendoToolBar({});
 
 	$("#sCompany").kendoComboBox({
@@ -286,10 +297,6 @@
 		dataValueField: "Id",
 		filter: "contains",
 		dataSource: companies,
-		change: function () {
-			let grid = $("#providedGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
 
 	$("#sService").kendoComboBox({
@@ -298,10 +305,6 @@
 		dataValueField: "Id",
 		filter: "contains",
 		dataSource: services,
-		change: function () {
-			let grid = $("#providedGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
 
 	$("#sProvidedStatusesList").kendoDropDownList({
@@ -311,10 +314,6 @@
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
 		],
-		change: function () {
-			let grid = $("#providedGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
 
 	$("#sProvidedSortingTypes").kendoDropDownList({
@@ -323,10 +322,6 @@
 		dataSource: [
 			{ text: "Дата начала работы", value: "DateOfBegin" }
 		],
-		change: function () {
-			let grid = $("#providedGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
 
 	// GRID
@@ -406,7 +401,8 @@
 				]
 			},
 		],
+		height: 620,
 		pageable: true,
-		scrollable: false,
+		scrollable: true,
 	});
 });

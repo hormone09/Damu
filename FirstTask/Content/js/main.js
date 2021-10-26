@@ -1,9 +1,35 @@
-﻿function Loading() {
+﻿function EditNumber(phone) {
+	var arr = phone.split('');
+	var result = "";
+	result += arr[0] + "-(" + arr[1] + arr[2] + arr[3] + ")-" + arr[4] + arr[5] + arr[6] + "-" + arr[7] + arr[8] + "-" + arr[9] + arr[10];
+
+	return result;
+}
+
+function EditBIN(bin) {
+	var arr = bin.split('');
+	var result = "";
+	var temp = 0;
+	for (var i = 0; i < arr.length; i++) {
+		if (temp < 3 && i != arr.length) {
+			result += arr[i];
+			temp++;
+		}
+		else {
+			result += "-" + arr[i];
+			temp = 1;
+		}
+	}
+
+	return result;
+}
+
+function Loading() {
 
 	let loading = document.getElementById('loading');
 	loading.style.display = "none"
 }
-setTimeout(Loading, 1100);
+setTimeout(Loading, 800);
 
 function getCompanyList() {
 	var data = {

@@ -26,6 +26,8 @@ namespace FirstTask.Handlers
 		public string DeleteSuccess { get { return rm.GetString("DeleteSuccess", culture); } }
 		public string EditSuccess { get { return rm.GetString("EditSuccess", culture); } }
 		public string AddSuccess { get { return rm.GetString("AddSuccess", culture); } }
+		public string ActivateSuccess { get { return rm.GetString("ActivateSuccess", culture); } }
+		public string ActivateFailed { get { return rm.GetString("ActivateFailed", culture); } }
 		public string AgeError { get { return rm.GetString("AgeError", culture); } }
 	}
 }

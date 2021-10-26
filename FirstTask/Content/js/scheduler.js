@@ -16,7 +16,7 @@ $(document).ready(function () {
 	});
 
 	var reportWindow = $("#reportWindow").data("kendoDialog");
-
+	
 	$("body").on("click", "#reportWindowButton", function () {
 		reportWindow.open();
 	});
@@ -154,7 +154,20 @@ $(document).ready(function () {
 				contentType: "application/json; charset=utf-8",
 			},
 			parameterMap: function (options, type) {
-				if (type == "create") {
+				let scheduler = $("#scheduler").data("kendoScheduler");
+				let timeZone = scheduler._model.formattedShortDate.split('- ').join('');
+				let timeZoneArray = timeZone.split(' ');
+				let dateBegin = new Date(timeZoneArray[0]).toLocaleDateString();
+				let dateEnd = new Date(timeZoneArray[1]).toLocaleDateString();
+				if (type == "read") {
+					let json = {
+						DateBegin: dateBegin,
+						DateEnd: dateEnd
+					};
+					console.log(json)
+					return kendo.stringify(json);
+				}
+				else if (type == "create") {
 					let json = {
 						DateOfCreate: $("#schedulerDateOfCreate").data("kendoDateTimePicker").value(),
 						Employee: { Id: $("#schedulerEmployee").val() },
@@ -210,14 +223,17 @@ $(document).ready(function () {
 		startTime: new Date("2021/01/01 07:00 AM"),
 		endTime: new Date("2021/12/01 06:00 PM"),
 		height: "600px",
+		databound: "",
 		views: [
 			{
 				type: "workWeek",
 				minorTickCount: 1, // display one time slot per major tick
 				majorTick: 15,
-				slotHeight: 10
-			},
-		],
+				slotHeight: 10,
+				dateHeaderTemplate: kendo.template("<span class='days-name'>#=kendo.toString(date, 'dd.MM.yyyy')#</span>"),
+				allDaySlot: false,
+			}],
+		dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd/M')#</u> - (#=percentage(date)#%)"),
 		editable: {
 			template: $("#schedulerEditor").html(),
 			window: {
@@ -310,5 +326,20 @@ $(document).ready(function () {
 				}
 			});
 		}
+	});
+
+	$(".k-nav-today").on("click", function () {
+		$("#scheduler").data("kendoScheduler").dataSource.read();
+		$("#scheduler").data("kendoScheduler").dataSource.read();
+	});
+
+	$(".k-nav-prev").on("click", function () {
+		$("#scheduler").data("kendoScheduler").dataSource.read();
+		$("#scheduler").data("kendoScheduler").dataSource.read();
+	});
+
+	$(".k-nav-next").on("click", function () {
+		$("#scheduler").data("kendoScheduler").dataSource.read();
+		$("#scheduler").data("kendoScheduler").dataSource.read();
 	});
 });

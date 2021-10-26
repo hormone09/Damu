@@ -31,7 +31,6 @@ namespace FirstTask.Managers
 
 		public List<ServicesHistoryModel> List(ServicesHistoryViewQuery queryView)
 		{
-			queryView.DatePeriod = DateTime.Now;
 			queryView.Status = FirstTaskEntities.Enums.Statuses.Active;
 			var query = mapper.Map<ServiceHistoryQueryList>(queryView);
 			var entities = historyRep.List(query);

@@ -116,14 +116,14 @@
 				items: [
 					{
 						field: "Id", label: "", editor: function (container, options) {
-							var input = $('<input id="editId" name="Id" type="hidden"/>');
+							var input = $('<input id="editCompaniesId" name="Id" type="hidden"/>');
 							input.appendTo(container);
 						}
 					},
 					{
 						field: "Name", label: "Назваине", placeholder: "Укажите название", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editName" name="Name" required="required" />');
+							var input = $('<input id="editCompaniesName" name="Name" required="required" />');
 							input.appendTo(container);
 							input.kendoTextBox();
 						}
@@ -131,7 +131,7 @@
 					{
 						field: "BIN", label: "BIN", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editBin" name="BIN" required="required" />');
+							var input = $('<input id="editCompaniesBin" name="BIN" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -142,7 +142,7 @@
 					{
 						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editDate" name="DateOfBegin" required="required" />');
+							var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала сотрудничества",
@@ -153,7 +153,7 @@
 					{
 						field: "Phone", label: "Телефон", validation: { required: true },
 						editor: function (container, options) {
-							var input = $('<input id="editPhone" name="Phone" required="required" />');
+							var input = $('<input id="editCompaniesPhone" name="Phone" required="required" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
@@ -192,7 +192,15 @@
 	});
 
 	function EditCompany(oldService) {
-		$("#companyEditForm #editId").val(oldService.Id);
+		var filteredBIN = EditBIN(oldService.BIN);
+		var filteredDate = new Date(oldService.DateOfBegin).toLocaleDateString();
+		var filteredPhone = EditNumber(oldService.Phone);
+
+		$("#companyEditForm #editCompaniesId").val(oldService.Id);
+		$("#companyEditForm #editCompaniesName").val(oldService.Name);
+		$("#companyEditForm #editCompaniesBin").val(filteredBIN);
+		$("#companyEditForm #editCompaniesDateOfBegin").val(filteredDate);
+		$("#companyEditForm #editCompaniesPhone").val(filteredPhone);
 
 		$("#companyEditWindow").data("kendoDialog").open();
 
@@ -200,16 +208,16 @@
 	}
 
 	// Filters
+
+	$("body").on("click", "#btnCompanySearch", function () {
+		var grid = $("#companiesGrid").data("kendoGrid");
+		grid.dataSource.read();
+	});
+
 	$("#companiesToolbar").kendoToolBar({
 	});
 
-	$("#nameFilter").kendoTextBox({
-		change: function () {
-			let grid = $("#companiesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-			grid.dataSource.read();
-		}
-	});
+	$("#nameFilter").kendoTextBox({});
 
 	$("#statusesListCompanies").kendoDropDownList({
 		dataTextField: "text",
@@ -217,11 +225,7 @@
 		dataSource: [
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
-		],
-		change: function () {
-			let grid = $("#companiesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
+		]
 	});
 
 	$("#companiesSortingTypes").kendoDropDownList({
@@ -230,11 +234,7 @@
 		dataSource: [
 			{ text: "Названию", value: "Name" },
 			{ text: "Дате начала", value: "DateOfBegin" }
-		],
-		change: function () {
-			let grid = $("#companiesGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
+		]
 	});
 
 	// Delete
@@ -317,6 +317,7 @@
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "Name", title: "Название компании", width: "30%" },
 			{ field: "Phone", title: "Номер телефона", width: "10%" },
+			{ field: "BIN", title: "БИН", width: "10%" },
 			{ field: "DateOfBegin", title: "Дата добавления", width: "10%", format: "{0: dd-MM-yyyy}" },
 			{
 				field: "Status", title: "Статус", width: "5%", values: [
@@ -350,7 +351,8 @@
 				width: "30%",
 			},
 		],
+		height: 620,
 		pageable: true,
-		scrollable: false,
+		scrollable: true,
 	});
 });

@@ -21,6 +21,7 @@ namespace FirstTask.Controllers
 		{
 			this.manager = manager;
 		}
+
 		public ActionResult Index()
 		{
 			return View();

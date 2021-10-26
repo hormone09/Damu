@@ -6,7 +6,7 @@ $(document).ready(function () {
 	var notification = notifElement.data("kendoNotification");
 
 
-	// Insert
+	// Insert 
 	$("body").on("click", "#employeeInsertButton", function () {
 		let window = $("#employeeInsertWindow").data("kendoDialog");
 		window.open();
@@ -235,9 +235,9 @@ $(document).ready(function () {
 	formEdit.bind("submit", function (e) {
 		let data = {
 			Id: $("#empEditId").val(),
-			DateOfBegin: $("#empEditDateOfBegin").data("kendoDatePicker").value(),
+			DateOfBegin: new Date($("#empEditDateOfBegin").data("kendoDatePicker").value()).toLocaleDateString(),
 			Company: { Id: $("#empEditCompanyId").val() },
-			BirthdayDate: $("#empEditBirthdayDate").data("kendoDatePicker").value(),
+			BirthdayDate: new Date($("#empEditBirthdayDate").data("kendoDatePicker").value()).toLocaleDateString(),
 			FullName: $("#empEditFullName").val(),
 			PersonalNumber: $("#empEditPesonalNumber").val(),
 			Phone: $("#empEditPhone").val()
@@ -266,7 +266,18 @@ $(document).ready(function () {
 	});
 
 	function EditEmployee(oldService) {
-		$("#editEmployeeForm #editId").val(oldService.Id);
+		var filteredBirthdayDate = new Date(oldService.BirthdayDate).toLocaleDateString();
+		var filteredDateOfBegin = new Date(oldService.DateOfBegin).toLocaleDateString();
+		var filteredPersonalNumber = EditBIN(oldService.PersonalNumber);
+		var filteredPhone = EditNumber(oldService.Phone);
+
+		$("#editEmployeeForm #empEditId").val(oldService.Id);
+		$("#editEmployeeForm #empEditFullName").val(oldService.FullName);
+		$("#editEmployeeForm #empEditPhone").val(filteredPhone);
+		$("#editEmployeeForm #empEditPesonalNumber").val(filteredPersonalNumber);
+		$("#editEmployeeForm #empEditBirthdayDate").val(filteredBirthdayDate);
+		$("#editEmployeeForm #empEditCompanyId").data("kendoComboBox").value(oldService.Company.Id);
+		$("#editEmployeeForm #empEditDateOfBegin").val(filteredDateOfBegin);
 
 		$("#editEmployeeWindow").data("kendoDialog").open();
 
@@ -310,26 +321,22 @@ $(document).ready(function () {
 	};
 
 	// Filters
-	$("#employeeToolbar").kendoToolBar({
+
+	$("body").on("click", "#employeeSearchButton", function () {
+		var grid = $("#emloyeeGrid").data("kendoGrid");
+		grid.dataSource.read();
 	});
-	$("#fullNameFilter").kendoTextBox({
-		change: function () {
-			let grid = $("#emloyeeGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-			grid.dataSource.read();
-		}
-	});
+	$("#employeeToolbar").kendoToolBar({});
+
+	$("#fullNameFilter").kendoTextBox({});
+
 	$("#statusesList").kendoDropDownList({
 		dataTextField: "text",
 		dataValueField: "value",
 		dataSource: [
 			{ text: "Активные", value: 1 },
 			{ text: "Отключенные", value: 2 },
-		],
-		change: function () {
-			let grid = $("#emloyeeGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
+		]
 	});
 
 	$("#companyFilter").kendoComboBox({
@@ -338,10 +345,6 @@ $(document).ready(function () {
 		dataValueField: "Id",
 		filter: "contains",
 		dataSource: companies,
-		change: function () {
-			let grid = $("#emloyeeGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
 
 	$("#employeeSortingTypes").kendoDropDownList({
@@ -351,11 +354,9 @@ $(document).ready(function () {
 			{ text: "Имени", value: "FullName" },
 			{ text: "Дата рождения", value: "BirthdayDate" }
 		],
-		change: function () {
-			let grid = $("#emloyeeGrid").data("kendoGrid");
-			grid.dataSource.page(1);
-		}
 	});
+
+
 
 	// GRID
 	var dataSource = new kendo.data.DataSource({
@@ -404,11 +405,11 @@ $(document).ready(function () {
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "FullName", title: "Полное имя", width: "10%" },
-			{ field: "PersonalNumber", title: "ИИН", width: "5%" },
-			{ field: "Phone", title: "Номер", width: "15%" },
-			{ field: "Company.Name", title: "Название компании", width: "5%" },
-			{ field: "BirthdayDate", title: "Дата рождения", width: "8%", format: "{0: dd-MM-yyyy}" },
-			{ field: "DateOfBegin", title: "Дата начала работы", width: "7%", format: "{0: dd-MM-yyyy}" },
+			{ field: "PersonalNumber", title: "ИИН", width: "10%" },
+			{ field: "Phone", title: "Номер", width: "10%" },
+			{ field: "Company.Name", title: "Название компании", width: "10%" },
+			{ field: "BirthdayDate", title: "Дата рождения", width: "15%", format: "{0: dd-MM-yyyy}" },
+			{ field: "DateOfBegin", title: "Дата начала работы", width: "15%", format: "{0: dd-MM-yyyy}" },
 			{
 				field: "Status", title: "Статус", width: "5%", values: [
 					{ text: "Активно", value: 1 },
@@ -439,7 +440,8 @@ $(document).ready(function () {
 				]
 			},
 		],
+		height: 620,
 		pageable: true,
-		scrollable: false,
+		scrollable: true,
 	});
 });

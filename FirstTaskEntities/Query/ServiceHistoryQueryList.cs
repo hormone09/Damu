@@ -9,9 +9,13 @@ namespace FirstTaskEntities.Query
 	public class ServiceHistoryQueryList : QueryListBase
 	{
 		/// <summary>
-		/// Дата периодоа, в который были оказанны услуги,
-		/// в SQL запросе брать от сюда только месяц
+		/// Дата начала недели, выбранной в расписании
 		/// </summary>
-		public DateTime DatePeriod { get; set; }
+		public DateTime DateBegin { get; set; }
+
+		/// <summary>
+		/// Дата конца недели, выбранной в расписании
+		/// </summary>
+		public DateTime DateEnd { get; set; }
 	}
 }

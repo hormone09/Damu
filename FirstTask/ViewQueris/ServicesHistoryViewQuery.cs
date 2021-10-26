@@ -7,6 +7,7 @@ namespace FirstTask.ViewQueris
 {
 	public class ServicesHistoryViewQuery : ViewQueryBase
 	{
-		public DateTime DatePeriod { get; set; }
+		public DateTime DateBegin { get; set; }
+		public DateTime DateEnd { get; set; }
 	}
 }
