@@ -51,65 +51,47 @@ namespace FirstTask.Managers
 
 		public MessageHandler Edit(ServiceProvidedModel model)
 		{
-			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == 0 || model.ServicePrice == null)
-				return new MessageHandler(false, strings.FormError);
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			if (model.DateOfBegin <= DateTime.Now)
-			{
-				model.Status = Statuses.Active;
-				model.DateOfFinish = null;
-			}
-			else
-			{
-				model.Status = Statuses.Disabled;
-			}
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 
 			var entity = mapper.Map<ServiceProvided>(model);
 			entity.CompanyId = model.Company.Id;
 			entity.ServiceId = model.Service.Id;
 
-			var currentService = servicesRepository.Find(entity.ServiceId);
-			currentService.Price = (decimal)model.ServicePrice;
-
-
 			try
 			{
 				providedRepository.Update(entity);
-				servicesRepository.Update(currentService);
 
 				return new MessageHandler(true, strings.EditSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
 		public MessageHandler Add(ServiceProvidedModel model)
 		{
-			if (model.Company == null || model.Service == null || model.DateOfBegin == null || model.ServicePrice == null)
-				return new MessageHandler(false, strings.FormError);
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			if (model.DateOfBegin <= DateTime.Now)
-				model.Status = Statuses.Active;
-			else
-				model.Status = Statuses.Disabled;
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 
 			var entity = mapper.Map<ServiceProvided>(model);
-
-			var currentService = servicesRepository.Find(entity.ServiceId);
-			currentService.Price = (decimal)model.ServicePrice;
 
 			try
 			{
 				providedRepository.Add(entity);
-				servicesRepository.Update(currentService);
 
 				return new MessageHandler(true, strings.AddSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
@@ -124,6 +106,20 @@ namespace FirstTask.Managers
 			catch (Exception)
 			{
 				return new MessageHandler(false, strings.DatabaseError);
+			}
+		}
+
+		public MessageHandler Activate(int id)
+		{
+			try
+			{
+				providedRepository.Activate(id);
+
+				return new MessageHandler(true, strings.ActivateSuccess);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
 			}
 		}
 	}

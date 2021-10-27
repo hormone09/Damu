@@ -10,6 +10,7 @@ using System.Configuration;
 using FirstTaskEntities.Repository;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Query;
+using System.Threading;
 
 namespace DapperTest
 {
@@ -26,15 +27,26 @@ namespace DapperTest
 
 		static void Main(string[] args)
 		{
-
+			AddServices();
+			Thread.Sleep(2000);
+			Console.WriteLine("Сервисы загружены!");
+			AddCompanies();
+			Thread.Sleep(2000);
+			Console.WriteLine("Компании загружены!");
+			AddEmployee();
+			Thread.Sleep(2000);
+			Console.WriteLine("Сотрудники загружены!");
+			AddServicesProvided();
+			Thread.Sleep(2000);
+			Console.WriteLine("Оказываемые услуги загружены!");
 			AddHistory();
-			//AddServicesProvided();
-			//AddCompanies();
-			//AddEmployee();
+			Console.WriteLine("История загружена!");
+
+			Console.ReadKey();
 		}
 		static void AddCompanies()
 		{
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 150; i++)
 			{
 				var obj = new Company
 				{
@@ -51,15 +63,15 @@ namespace DapperTest
 
 		static void AddServices()
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 150; i++)
 			{
 				var obj = new Service
 				{
-					Code = "12345",
-					DateOfBegin = DateTime.Now,
-					Name = "EditorTEST",
-					Price = 5000,
-					Status = Statuses.Disabled
+					Code = "x11.111.111",
+					DateOfBegin = DateTime.Parse("12.10.2021"),
+					Name = $"Service number {i}",
+					Price = 500 + (i*24),
+					Status = Statuses.Active
 				};
 
 				serviceRep.Add(obj);
@@ -68,20 +80,21 @@ namespace DapperTest
 
 		static void AddServicesProvided()
 		{
-			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
-			int[] servicesMas = serviceRep.List(new ServiceQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 10000000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] servicesMas = serviceRep.List(new ServiceQueryList { Skip = 0, Limit = 10000000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
 			Random random = new Random();
 
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 150; i++)
 			{
-				var companyId = random.Next(0, companiesMas.Length - 1);
-				var serviceId = random.Next(0, servicesMas.Length - 1);
+				var companyId = companiesMas[random.Next(0, companiesMas.Length - 1)];
+				var serviceId = servicesMas[random.Next(0, servicesMas.Length - 1)];
 				var obj = new ServiceProvided
 				{
 					CompanyId = companyId,
 					ServiceId = serviceId,
-					DateOfBegin = DateTime.Parse("09.09.2021"),
-					Status = Statuses.Active
+					DateOfBegin = DateTime.Parse("15.10.2021"),
+					Status = Statuses.Active,
+					ServicePrice = 500 + (i * 57)
 				};
 
 				serviceProvidedRep.Add(obj);
@@ -90,19 +103,20 @@ namespace DapperTest
 
 		static void AddEmployee()
 		{
-			int[] mas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 20 }).Select(x => x.Id).Distinct().ToArray();
+			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 10000000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
 			Random random = new Random();
 
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 250; i++)
 			{
+				var companyId = companiesMas[random.Next(0, companiesMas.Length - 1)];
 				var obj = new Employee
 				{
-					CompanyId = random.Next(6, 10),
+					CompanyId = companyId,
 					BirthdayDate = DateTime.Now,
 					DateOfBegin = DateTime.Now,
-					FullName = "Name",
+					FullName = $"Employee Number {i}",
 					PersonalNumber = "123456789101",
-					Phone = "123123",
+					Phone = "87012730270",
 					Status = Statuses.Active
 				};
 
@@ -112,12 +126,12 @@ namespace DapperTest
 
 		static void AddHistory()
 		{
-			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
-			int[] servicesMas = serviceRep.List(new ServiceQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
-			int[] employeeMas = employeeRep.List(new EmployeeQueryList { Skip = 0, Limit = 100, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] companiesMas = companyRep.List(new CompanyQueryList { Skip = 0, Limit = 1000000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] servicesMas = serviceRep.List(new ServiceQueryList { Skip = 0, Limit = 100000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
+			int[] employeeMas = employeeRep.List(new EmployeeQueryList { Skip = 0, Limit = 100000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
 			Random random = new Random();
 
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				var companyId = companiesMas[random.Next(0, companiesMas.Length - 1)];
 				var serviceId = servicesMas[random.Next(0, servicesMas.Length - 1)];

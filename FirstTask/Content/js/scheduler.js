@@ -33,17 +33,6 @@ $(document).ready(function () {
 				label: "Получение отчета оказанных услуг",
 				items: [
 					{
-						field: "Date", label: "Выберите день для отчета", validation: { required: true },
-						editor: function (container, options) {
-							var input = $('<input id="reportDate" name="Date"/>');
-							input.appendTo(container);
-							input.kendoDatePicker({
-								placeholder: "Укажите точную дату",
-								format: 'MM/dd/yy',
-							});
-						}
-					},
-					{
 						field: "CompanyId", label: "Компания", validation: { required: false },
 						editor: function (container, options) {
 							var input = $('<input id="reportCompanyId" name="CompanyId"/>');
@@ -53,8 +42,7 @@ $(document).ready(function () {
 								dataTextField: "Name",
 								dataValueField: "Id",
 								filter: "contains",
-								dataSource: employee,
-								optionLabel: "Все",
+								dataSource: companies
 							});
 						}
 					},
@@ -89,6 +77,28 @@ $(document).ready(function () {
 						}
 					},
 					{
+						field: "Date", label: "Отчет в период с", validation: { required: true },
+						editor: function (container, options) {
+							var flexContainer = $('<div style="display: flex; font-weight: bold; justify-content: space-around; margin: 10px 0px;"/></div>');
+							var input1 = $('<input id="reportDateBegin" name="DateBegin"/>');
+							var input2 = $('<input id="reportDateEnd" name="DateEnd"/>');
+							var p1 = $('<p>с </p>');
+							var p2 = $('<p>по </p>');
+							input1.appendTo(flexContainer);
+							input1.kendoDatePicker({
+								placeholder: "Укажите точную дату",
+								format: 'MM/dd/yy',
+							});
+							p2.appendTo(flexContainer);
+							input2.appendTo(flexContainer);
+							input2.kendoDatePicker({
+								placeholder: "Укажите точную дату",
+								format: 'MM/dd/yy',
+							});
+							flexContainer.appendTo(container);
+						}
+					},
+					{
 						field: "Type", label: "Тип конечного файла", validation: { required: false },
 						editor: function (container, options) {
 							var input = $('<input id="reportReportType" name="Type"/>');
@@ -116,13 +126,14 @@ $(document).ready(function () {
 		e.preventDefault();
 		let url = window.location.href;
 
-		var date = $("#reportDate").val();
+		var date1 = $("#reportDateBegin").val();
+		var date2 = $("#reportDateEnd").val();
 		var companyId = $("#reportCompanyId").val();
 		var serviceId = $("#reportServiceId").val();
 		var employeeId = $("#reportEmployeeId").val();
 		var type = $("#reportReportType").val();
 
-		window.open("GetReport/?Date=" + date + "&CompanyId=" + companyId + "&ServiceId=" + serviceId + "&EmployeeId=" + employeeId + "&Type=" + type);
+		window.open("GetReport/?DateBegin=" + date1 + "&DateEnd=" + date2 + "&CompanyId=" + companyId + "&ServiceId=" + serviceId + "&EmployeeId=" + employeeId + "&Type=" + type);
 
 		$("#reportWindow").data("kendoDialog").close();
 	});

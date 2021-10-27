@@ -127,8 +127,10 @@ namespace FirstTask.Managers
 
 		public StiMvcActionResult GetReport(ReportViewQuery query)
 		{
-			if (query.Date == null)
-				query.Date = DateTime.Now;
+			if (query.DateBegin == null)
+				query.DateBegin = DateTime.Now;
+			if (query.DateEnd == null)
+				query.DateEnd = query.DateBegin;
 
 			string filterEmpty = "'Все'";
 			string hasFilter = "Задана";
@@ -144,14 +146,16 @@ namespace FirstTask.Managers
 			var report = new StiReport();
 			report.Load(query.Path);
 
-			report["Date"] = query.Date;
+			report["DateBegin"] = query.DateBegin;
+			report["DateEnd"] = query.DateEnd;
 			report["CompanyId"] = query.CompanyId;
 			report["EmployeeId"] = query.EmployeeId;
 			report["ServiceId"] = query.ServiceId;
 			report.Dictionary.Variables["ServiceFilter"].Value = serviceName;
 			report.Dictionary.Variables["CompanyFilter"].Value = companyName;
 			report.Dictionary.Variables["EmployeeFilter"].Value = employeeName;
-			report.Dictionary.Variables["Date"].Value = ((DateTime)query.Date).ToLongDateString();
+			report.Dictionary.Variables["DateBegin"].Value = ((DateTime)query.DateBegin).ToLongDateString();
+			report.Dictionary.Variables["DateEnd"].Value = ((DateTime)query.DateEnd).ToLongDateString();
 
 			switch (query.Type)
 			{

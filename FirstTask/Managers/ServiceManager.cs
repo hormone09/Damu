@@ -41,23 +41,12 @@ namespace FirstTask.Managers
 
 		public MessageHandler Edit(ServiceModel model)
 		{
-			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0 || model.Id <= 0)
-				return new MessageHandler(false, strings.FormError);
 
-			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$";
-			if (!Regex.IsMatch(model.Code, pattern))
-				return new MessageHandler(false, strings.FormatError);
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			if (model.DateOfBegin <= DateTime.Now)
-			{
-				model.Status = Statuses.Active;
-				model.DateOfFinish = null;
-			}
-			else
-			{
-				model.Status = Statuses.Disabled;
-			}
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			var entity = mapper.Map<Service>(model);
 
 			try
@@ -66,26 +55,19 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.EditSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
 		public MessageHandler Add(ServiceModel model)
 		{
-			if (string.IsNullOrEmpty(model.Code) || string.IsNullOrEmpty(model.Name) || model.Price <= 0)
-				return new MessageHandler(false, strings.FormError);
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			string pattern = "[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$";
-			if (!Regex.IsMatch(model.Code, pattern))
-				return new MessageHandler(false, strings.FormError);
-
-			if (model.DateOfBegin <= DateTime.Now)
-				model.Status = Statuses.Active;
-			else
-				model.Status = Statuses.Disabled;
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			var entity = mapper.Map<Service>(model);
 
 			try
@@ -94,9 +76,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.AddSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
@@ -112,9 +94,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.DeleteSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
@@ -126,9 +108,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.ActivateSuccess);
 			}
-			catch(Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.ActivateFailed);
+				throw ex;
 			}
 		}
 	}

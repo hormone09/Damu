@@ -4,6 +4,8 @@ using FirstTask.Managers;
 using FirstTask.ViewQueris;
 using FirstTask.Models;
 using System.Collections.Generic;
+using FirstTask.Handlers;
+using System.Linq;
 
 namespace FirstTask.Controllers
 {
@@ -32,6 +34,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult AddService(ServiceModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Add(model);
 
 			return Json(result);
@@ -40,6 +47,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult EditService(ServiceModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Edit(model);
 
 			return Json(result);

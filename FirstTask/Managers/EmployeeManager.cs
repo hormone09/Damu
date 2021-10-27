@@ -44,30 +44,16 @@ namespace FirstTask.Managers
 		
 		public MessageHandler Edit(EmployeeModel model)
 		{
-			if (string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Phone)
-				|| model.DateOfBegin == null || model.BirthdayDate == null || model.Company.Id == 0)
-				return new MessageHandler(false, strings.FormError);
-
 			int minEmployeeAge = 18;
 
-			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
+			if ((DateTime.Now - (DateTime)model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
 				return new MessageHandler(false, strings.AgeError);
 
-			if (model.DateOfBegin <= DateTime.Now)
-			{
-				model.Status = Statuses.Active;
-				model.DateOfFinish = null;
-			}
-			else
-			{
-				model.Status = Statuses.Disabled;
-			}
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			string personalNumberPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
-			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
-			if (!Regex.IsMatch(model.PersonalNumber, personalNumberPattern) || !Regex.IsMatch(model.Phone, phonePattern))
-				return new MessageHandler(false, strings.FormatError);
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
@@ -79,34 +65,24 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.EditSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
 		public MessageHandler Add(EmployeeModel model)
 		{
-			if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.PersonalNumber) || string.IsNullOrEmpty(model.Phone)
-				|| model.BirthdayDate == null || model.DateOfBegin == null)
-				return new MessageHandler(false, strings.FormError);
-
 			int minEmployeeAge = 18;
 
-			if ((DateTime.Now - model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
+			if ((DateTime.Now - (DateTime)model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
 				return new MessageHandler(false, strings.AgeError);
 
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			if (model.DateOfBegin <= DateTime.Now)
-				model.Status = Statuses.Active;
-			else
-				model.Status = Statuses.Disabled;
-
-			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
-			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
-			if (!Regex.IsMatch(model.PersonalNumber, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
-				return new MessageHandler(false, strings.FormatError);
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
@@ -118,9 +94,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.AddSuccess);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw ex;
 			}
 		}
 
@@ -135,6 +111,20 @@ namespace FirstTask.Managers
 			catch (Exception)
 			{
 				return new MessageHandler(false, strings.DatabaseError);
+			}
+		}
+
+		public MessageHandler Activate(int id)
+		{
+			try
+			{
+				emloyeeRep.Activate(id);
+
+				return new MessageHandler(true, strings.ActivateSuccess);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
 			}
 		}
 	}

@@ -14,6 +14,7 @@ namespace FirstTask.ViewQueris
 		public int? ServiceId { get; set; }
 		public int? EmployeeId { get; set; }
 		public ReportTypes Type { get; set; }
-		public DateTime? Date { get; set; }
+		public DateTime? DateBegin { get; set; }
+		public DateTime? DateEnd { get; set; }
 	}
 }

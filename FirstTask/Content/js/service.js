@@ -8,19 +8,19 @@ $(document).ready(function () {
 
 	// Insert
 	$("body").on("click", "#btn-insert", function () {
-		let window = $("#insert-window").data("kendoDialog");
+		let window = $("#servicesInsertWindow").data("kendoDialog");
 		window.open();
 	});
 
 	$("body").on("click", "#serviceCloseInsertWindow", function () {
-		$("#insert-window").data("kendoDialog").close();
+		$("#servicesInsertWindow").data("kendoDialog").close();
 	});
 
 	$("body").on("click", "#serviceCloseEditWindow", function () {
 		$("#edit-window").data("kendoDialog").close();
 	});
 
-	$("#insert-window").kendoDialog({
+	$("#servicesInsertWindow").kendoDialog({
 		modal: true,
 		width: "400px",
 		closable: true,
@@ -28,7 +28,7 @@ $(document).ready(function () {
 		title: false,
 	});
 
-	var formInsert = $("#insert-form").kendoForm({
+	var formInsert = $("#servicesInsertForm").kendoForm({
 		visible: false,
 		items: [
 			{
@@ -94,13 +94,14 @@ $(document).ready(function () {
 					var grid = $("#servicesGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$('#servicesInsertForm')[0].reset();
+					$("#servicesInsertWindow").data("kendoDialog").close();
 				}
 				else
 					return notification.error(json.Error);
 			}
 		});
 
-		$("#insert-window").data("kendoDialog").close();
 
 		return false;
 	});
@@ -188,6 +189,7 @@ $(document).ready(function () {
 					var grid = $("#servicesGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$("#edit-window").data("kendoDialog").close();
 				}
 				else {
 					notification.error(json.Error);
@@ -195,7 +197,6 @@ $(document).ready(function () {
 			}
 		});
 
-		$("#edit-window").data("kendoDialog").close();
 
 		return false;
 	});

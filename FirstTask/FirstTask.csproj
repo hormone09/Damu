@@ -236,6 +236,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.ru-RU.resx</DependentUpon>
     </Compile>
+    <Compile Include="ValidationMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValidationMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewQueris\CompanyViewQuery.cs" />
     <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
     <Compile Include="ViewQueris\ReportViewQuery.cs" />
@@ -317,6 +322,7 @@
     <Content Include="Content\js\emloyee.js" />
     <Content Include="Content\js\company.js" />
     <Content Include="Content\js\serviceProvided.js" />
+    <Content Include="Content\js\styles.js" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1-t.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\2-t.png" />
@@ -6538,6 +6544,10 @@
     <EmbeddedResource Include="Resources\Messages.ru-RU.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.ru-RU.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidationMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

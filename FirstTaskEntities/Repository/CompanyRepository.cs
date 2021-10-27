@@ -91,5 +91,14 @@ namespace FirstTaskEntities.Repository
 			}
 			return result;
 		}
+
+		public void Activate(int id)
+		{
+			using (var connection = new SqlConnection(connectionString))
+			{
+				string query = "UPDATE Companies SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
+				connection.Query<Company>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
+			}
+		}
 	}
 }

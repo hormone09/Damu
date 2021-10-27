@@ -36,24 +36,11 @@ namespace FirstTask.Managers
 		}
 		public MessageHandler Edit(CompanyModel model)
 		{
-			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone) || model.Id <= 0)
-				return new MessageHandler(false, strings.FormError);
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			if(model.DateOfBegin <= DateTime.Now)
-			{
-				model.Status = Statuses.Active;
-				model.DateOfFinish = null;
-			}
-			else
-			{
-				model.Status = Statuses.Disabled;
-			}
-
-			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
-			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
-			if(!Regex.IsMatch(model.BIN, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
-				return new MessageHandler(false, strings.FormatError);
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			model.BIN = model.BIN.Replace("-", "");
 			model.Phone = model.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
 			var entity = mapper.Map<Company>(model);
@@ -64,27 +51,20 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.EditSuccess);
 			}
-			catch (Exception)
+			catch (Exception exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw exception;
 			}
 		}
 
 		public MessageHandler Add(CompanyModel model)
 		{
-			if (string.IsNullOrEmpty(model.BIN) || string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Phone))
-				return new MessageHandler(false, strings.FormError);
 
-			if (model.DateOfBegin <= DateTime.Now)
-				model.Status = Statuses.Active;
-			else
-				model.Status = Statuses.Disabled;
+			if (model.DateOfBegin > DateTime.Now)
+				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
 
-			string binPattern = @"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$";
-			string phonePattern = @"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$";
-			if (!Regex.IsMatch(model.BIN, binPattern) || !Regex.IsMatch(model.Phone, phonePattern))
-				return new MessageHandler(false, strings.FormatError);
-
+			model.Status = Statuses.Active;
+			model.DateOfFinish = null;
 			model.BIN = model.BIN.Replace("-", "");
 			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			var entity = mapper.Map<Company>(model);
@@ -95,9 +75,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.AddSuccess);
 			}
-			catch (Exception)
+			catch (Exception exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw exception;
 			}
 		}
 
@@ -112,9 +92,23 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, strings.DeleteSuccess);
 			}
-			catch (Exception)
+			catch (Exception exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				throw exception;
+			}
+		}
+
+		public MessageHandler Activate(int id)
+		{
+			try
+			{
+				companyRep.Activate(id);
+
+				return new MessageHandler(true, strings.ActivateSuccess);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
 			}
 		}
 	}

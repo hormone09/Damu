@@ -272,3 +272,4 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.Web.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.WebDesign.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.WebDesign.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Svg.pdb
+C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.ValidationMessages.resources

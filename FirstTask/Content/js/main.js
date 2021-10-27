@@ -50,17 +50,13 @@ function getCompanyList() {
 		}
 	});
 
-	var nameArray = [];
-	var count = ajax.length;
-	for (var i = 0; i < count; i++) {
-		var temp = {
-			Name: ajax[i].Name,
-			Id: ajax[i].Id
-		};
-		nameArray[i] = temp;
+	for (var i = 0; i < ajax.length; i++) {
+		ajax[i].BIN = EditBIN(ajax[i].BIN);
+		ajax[i].Phone = EditNumber(ajax[i].Phone)
+		ajax[i].DateOfBegin = new Date();
 	}
 
-	return nameArray;
+	return ajax;
 }
 
 function getServiceList() {
@@ -83,17 +79,11 @@ function getServiceList() {
 		}
 	});
 
-	var nameArray = [];
-	var count = ajax.length;
-	for (var i = 0; i < count; i++) {
-		var temp = {
-			Name: ajax[i].Name,
-			Id: ajax[i].Id
-		};
-		nameArray[i] = temp;
+	for (var i = 0; i < ajax.length; i++) {
+		ajax[i].DateOfBegin = new Date();
 	}
 
-	return nameArray;
+	return ajax;
 }
 
 
@@ -116,17 +106,13 @@ function getEmployeeList() {
 		}
 	});
 
-	var nameArray = [];
-	var count = ajax.length;
-	for (var i = 0; i < count; i++) {
-		var temp = {
-			FullName: ajax[i].FullName,
-			Id: ajax[i].Id
-		};
-		nameArray[i] = temp;
+	for (var i = 0; i < ajax.length; i++) {
+		ajax[i].PersonalNumber = EditBIN(ajax[i].PersonalNumber);
+		ajax[i].Phone = EditNumber(ajax[i].Phone)
+		ajax[i].DateOfBegin = new Date();
 	}
 
-	return nameArray;
+	return ajax;
 }
 
 var employee = getEmployeeList();

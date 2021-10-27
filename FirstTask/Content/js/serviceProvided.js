@@ -95,9 +95,9 @@
 	formInsert.bind("submit", function (e) {
 
 		let data = {
+			Company: companies.find(x => x.Id == $("#sProvidedInsertCompanyId").val()),
+			Service: services.find(x => x.Id == $("#sProvidedInsertServiceId").val()),
 			DateOfBegin: $("#sProvidedInsertDateOfBegin").data("kendoDatePicker").value(),
-			Company: { Id: $("#sProvidedInsertCompanyId").val() },
-			Service: { Id: $("#sProvidedInsertServiceId").val() },
 			ServicePrice: $("#sProvidedInsertServicePrice").val()
 		};
 
@@ -111,13 +111,14 @@
 					var grid = $("#providedGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$('#sProvidedInsertForm')[0].reset();
+					$("#sProvidedInsertWindow").data("kendoDialog").close();
 				}
 				else
 					return notification.error(json.Error);
 			}
 		});
 
-		$("#sProvidedInsertWindow").data("kendoDialog").close();
 
 		return false;
 	});
@@ -206,8 +207,8 @@
 		let data = {
 			Id: $("#sProvidedEditId").val(),
 			DateOfBegin: new Date($("#sProvidedEditDateOfBegin").data("kendoDatePicker").value()),
-			Company: { Id: $("#sProvidedEditCompanyId").val() },
-			Service: { Id: $("#sProvidedEditServiceId").val() },
+			Company: companies.find(x => x.Id == $("#sProvidedEditCompanyId").val()),
+			Service: services.find(x => x.Id == $("#sProvidedEditServiceId").val()),
 			ServicePrice: $("#sProvidedEditServicePrice").val()
 		};
 
@@ -221,6 +222,7 @@
 					var grid = $("#providedGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$("#editSProvidedWindow").data("kendoDialog").close();
 				}
 				else {
 					notification.error(json.Error);
@@ -228,7 +230,6 @@
 			}
 		});
 
-		$("#editSProvidedWindow").data("kendoDialog").close();
 
 		return false;
 	});
@@ -237,7 +238,7 @@
 		console.log(oldService);
 		$("#editSProvidedForm #sProvidedEditId").val(oldService.Id);
 		$("#editSProvidedForm #sProvidedEditServiceId").data("kendoComboBox").value(oldService.Service.Id);
-		$("#editSProvidedForm #sProvidedEditServicePrice").data("kendoNumericTextBox").value(oldService.Service.Price);
+		$("#editSProvidedForm #sProvidedEditServicePrice").data("kendoNumericTextBox").value(oldService.ServicePrice);
 		$("#editSProvidedForm #sProvidedEditCompanyId").data("kendoComboBox").value(oldService.Company.Id);
 		$("#editSProvidedForm #sProvidedEditDateOfBegin").val(new Date(oldService.DateOfBegin).toLocaleDateString());
 
@@ -245,6 +246,25 @@
 
 		return false;
 	}
+
+	function ActivateSProvided(id) {
+		$.ajax({
+			url: "/ServiceProvided/ActivateServiceProvided/",
+			type: "POST",
+			data: { id: id },
+			success: function (json) {
+				if (json.IsSuccess == true) {
+					var grid = $("#providedGrid").data("kendoGrid");
+					grid.dataSource.read();
+					notification.success(json.Message);
+				}
+				else {
+					notification.error(json.Message);
+				}
+			}
+		})
+	}
+
 
 	// Delete
 	function DeleteSProvided(id) {
@@ -367,7 +387,7 @@
 		columns: [
 			{ field: "Id", title: "Id", width: "5%", hidden: true },
 			{ field: "Service.Name", title: "Название услуги", width: "20%" },
-			{ field: "Service.Price", title: "Стоимость услуги", width: "15%" },
+			{ field: "ServicePrice", title: "Стоимость услуги", width: "15%" },
 			{ field: "Company.Name", title: "Название компании", width: "15%" },
 			{ field: "DateOfBegin", title: "Дата начала действия", width: "10%", format: "{0: dd-MM-yyyy}" },
 			{
@@ -388,6 +408,16 @@
 							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 							DeleteSProvided(dataItem.Id);
 						},
+					},
+					{
+						name: "Activate",
+						className: "btn-activate",
+						text: "Востановить",
+						visible: function (dataItem) { return dataItem.Status == 2 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							ActivateSProvided(dataItem.Id);
+						}
 					},
 					{
 						name: "Edit",

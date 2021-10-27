@@ -51,8 +51,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO ServiceProvided (ServiceId, CompanyId, DateOfBegin, DateOfFinish, Status) VALUES (@ServiceId, @CompanyId, @DateOfBegin, null, @Status)";
-				connection.Query(query, new { ServiceId = entity.ServiceId, CompanyId = entity.CompanyId, DateOfBegin = entity.DateOfBegin, Status = entity.Status });
+				string query = "INSERT INTO ServiceProvided (ServiceId, CompanyId, DateOfBegin, DateOfFinish, Status, ServicePrice) VALUES (@ServiceId, @CompanyId, @DateOfBegin, null, @Status, @ServicePrice)";
+				connection.Query(query, new { ServiceId = entity.ServiceId, CompanyId = entity.CompanyId, DateOfBegin = entity.DateOfBegin, Status = entity.Status, ServicePrice = entity.ServicePrice});
 			}
 		}
 
@@ -60,8 +60,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE ServiceProvided SET ServiceId = @ServiceId, CompanyId = @CompanyId, DateOfBegin = @DateOfBegin, DateOfFinish = @DateOfFinish, Status = @Status WHERE Id= @Id";
-				connection.Query<ServiceProvided>(query, new { Id = entity.Id, ServiceId = entity.ServiceId, CompanyId = entity.CompanyId, DateOfBegin = entity.DateOfBegin, DateOfFinish = entity.DateOfFinish, Status = entity.Status });
+				string query = "UPDATE ServiceProvided SET ServiceId = @ServiceId, CompanyId = @CompanyId, DateOfBegin = @DateOfBegin, DateOfFinish = @DateOfFinish, Status = @Status, ServicePrice = @ServicePrice WHERE Id= @Id";
+				connection.Query<ServiceProvided>(query, new { Id = entity.Id, ServiceId = entity.ServiceId, CompanyId = entity.CompanyId, DateOfBegin = entity.DateOfBegin, DateOfFinish = entity.DateOfFinish, Status = entity.Status, ServicePrice = entity.ServicePrice });
 			}
 		}
 
@@ -71,6 +71,15 @@ namespace FirstTaskEntities.Repository
 			{
 				string query = "UPDATE ServiceProvided SET Status = @Status, DateOfFinish = @Finish WHERE Id = @Id";
 				connection.Query<ServiceProvided>(query, new { Id = id, Status = Statuses.Disabled, Finish = DateTime.Now});
+			}
+		}
+
+		public void Activate(int id)
+		{
+			using (var connection = new SqlConnection(connectionString))
+			{
+				string query = "UPDATE ServiceProvided SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
+				connection.Query<ServiceProvided>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
 			}
 		}
 	}

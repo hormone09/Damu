@@ -107,7 +107,7 @@ $(document).ready(function () {
 	formInsert.bind("submit", function (e) {
 		let data = {
 			DateOfBegin: $("#empInsertDateOfBegin").data("kendoDatePicker").value(),
-			Company: { Id: $("#empInsertCompanyId").val() },
+			Company: companies.find(x => x.Id == $("#empInsertCompanyId").val()),
 			BirthdayDate: $("#empInsertBirthdayDate").data("kendoDatePicker").value(),
 			FullName: $("#empInsertFullName").val(),
 			PersonalNumber: $("#empInsertPesonalNumber").val(),
@@ -124,13 +124,14 @@ $(document).ready(function () {
 					var grid = $("#emloyeeGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$('#employeeInsertForm')[0].reset();
+					$("#employeeInsertWindow").data("kendoDialog").close();
 				}
 				else
 					return notification.error(json.Error);
 			}
 		});
 
-		$("#employeeInsertWindow").data("kendoDialog").close();
 
 		return false;
 	});
@@ -233,10 +234,11 @@ $(document).ready(function () {
 	});
 
 	formEdit.bind("submit", function (e) {
+		let companyId = $("#empEditCompanyId").val();
 		let data = {
 			Id: $("#empEditId").val(),
 			DateOfBegin: new Date($("#empEditDateOfBegin").data("kendoDatePicker").value()).toLocaleDateString(),
-			Company: { Id: $("#empEditCompanyId").val() },
+			Company: companies.find(x => x.Id == companyId),
 			BirthdayDate: new Date($("#empEditBirthdayDate").data("kendoDatePicker").value()).toLocaleDateString(),
 			FullName: $("#empEditFullName").val(),
 			PersonalNumber: $("#empEditPesonalNumber").val(),
@@ -253,6 +255,7 @@ $(document).ready(function () {
 					var grid = $("#emloyeeGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$("#editEmployeeWindow").data("kendoDialog").close();
 				}
 				else {
 					notification.error(json.Error);
@@ -260,7 +263,6 @@ $(document).ready(function () {
 			}
 		});
 
-		$("#editEmployeeWindow").data("kendoDialog").close();
 
 		return false;
 	});
@@ -283,6 +285,25 @@ $(document).ready(function () {
 
 		return false;
 	}
+
+	function ActivateEmployee(id) {
+		$.ajax({
+			url: "/Employee/ActivateEmployee/",
+			type: "POST",
+			data: { id: id },
+			success: function (json) {
+				if (json.IsSuccess == true) {
+					var grid = $("#emloyeeGrid").data("kendoGrid");
+					grid.dataSource.read();
+					notification.success(json.Message);
+				}
+				else {
+					notification.error(json.Message);
+				}
+			}
+		})
+	}
+
 
 	// Delete
 	function DeleteEmployee(id) {
@@ -427,6 +448,16 @@ $(document).ready(function () {
 							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 							DeleteEmployee(dataItem.Id);
 						},
+					},
+					{
+						name: "Activate",
+						className: "btn-activate",
+						text: "Востановить",
+						visible: function (dataItem) { return dataItem.Status == 2 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							ActivateEmployee(dataItem.Id);
+						}
 					},
 					{
 						name: "Edit",

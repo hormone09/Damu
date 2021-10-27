@@ -5,6 +5,8 @@ using FirstTask.ViewQueris;
 
 using FirstTaskEntities.Models;
 
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace FirstTask.Controllers
 
 		public ActionResult Index()
         {
+
             return View();
 		}
 
@@ -38,6 +41,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult AddCompany(CompanyModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Add(model);
 
 			return Json(result);
@@ -46,6 +54,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult EditCompany(CompanyModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Edit(model);
 
 			return Json(result);
@@ -55,6 +68,14 @@ namespace FirstTask.Controllers
 		public JsonResult DeleteCompany(int id)
 		{
 			var result = manager.Delete(id);
+
+			return Json(result);
+		}
+
+		[HttpPost]
+		public JsonResult ActivateCompany(int id)
+		{
+			var result = manager.Activate(id);
 
 			return Json(result);
 		}

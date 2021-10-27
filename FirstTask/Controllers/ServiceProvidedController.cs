@@ -1,6 +1,9 @@
-﻿using FirstTask.Managers;
+﻿using FirstTask.Handlers;
+using FirstTask.Managers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
+
+using System.Linq;
 using System.Web.Mvc;
 
 namespace FirstTask.Controllers
@@ -30,6 +33,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult AddProvidedService(ServiceProvidedModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Add(model);
 
 			return Json(result);
@@ -38,6 +46,11 @@ namespace FirstTask.Controllers
 		[HttpPost]
 		public JsonResult EditProvidedService(ServiceProvidedModel model)
 		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new MessageHandler(false, ModelState.Values.Select(x => x.Errors).First(x => x.Count > 0).First().ErrorMessage));
+			}
+
 			var result = manager.Edit(model);
 
 			return Json(result);
@@ -47,6 +60,14 @@ namespace FirstTask.Controllers
 		public JsonResult DeleteProvidedService(int id)
 		{
 			var result = manager.Delete(id);
+
+			return Json(result);
+		}
+
+		[HttpPost]
+		public JsonResult ActivateServiceProvided(int id)
+		{
+			var result = manager.Activate(id);
 
 			return Json(result);
 		}

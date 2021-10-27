@@ -29,5 +29,6 @@ namespace FirstTask.Handlers
 		public string ActivateSuccess { get { return rm.GetString("ActivateSuccess", culture); } }
 		public string ActivateFailed { get { return rm.GetString("ActivateFailed", culture); } }
 		public string AgeError { get { return rm.GetString("AgeError", culture); } }
+		public string DateOfBeginNonCorrect { get { return rm.GetString("DateOfBeginNonCorrect", culture); } }
 	}
 }

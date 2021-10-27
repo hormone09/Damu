@@ -24,6 +24,11 @@ namespace FirstTaskEntities.Models
 		public int CompanyId { get; set; }
 
 		/// <summary>
+		/// Итоговая стоимость оказанной услуги
+		/// </summary>
+		public decimal ServicePrice { get; set; }
+
+		/// <summary>
 		/// Дата начала оказания услуги компанией
 		/// </summary>
 		public DateTime DateOfBegin { get; set; }

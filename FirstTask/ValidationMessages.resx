@@ -117,36 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActivateFailed" xml:space="preserve">
-    <value>Запись не была востановленна!</value>
+  <data name="CompnayNameLength" xml:space="preserve">
+    <value>Название компании должно состоять из более чем 6 символов!</value>
   </data>
-  <data name="ActivateSuccess" xml:space="preserve">
-    <value>Запись была успешно востановленна!</value>
+  <data name="EmployeeNameLength" xml:space="preserve">
+    <value>Имя сотрудника должно содержать более 10 символов!</value>
   </data>
-  <data name="AddSuccess" xml:space="preserve">
-    <value>Добавление прошло успешно!</value>
+  <data name="FormatBIN" xml:space="preserve">
+    <value>Неправильный формат БИН!</value>
   </data>
-  <data name="AgeError" xml:space="preserve">
-    <value>Возраст сотрудника должен быть больше 18 лет!</value>
+  <data name="FormatIIN" xml:space="preserve">
+    <value>Неправильный формат ИИН!</value>
   </data>
-  <data name="DatabaseError" xml:space="preserve">
-    <value>Ошибка внесения изменений в базу данных!</value>
-    <comment>Ошибка в SQL</comment>
+  <data name="FormatPhone" xml:space="preserve">
+    <value>Неправильный формат номера телефона!</value>
   </data>
-  <data name="DateOfBeginNonCorrect" xml:space="preserve">
-    <value>Дата начала не может быть больше сегодняшней!</value>
+  <data name="FormatServiceCode" xml:space="preserve">
+    <value>Формат кода услуги должен быть: "x11.111.111"</value>
   </data>
-  <data name="DeleteSuccess" xml:space="preserve">
-    <value>Удаление прошло успешно!</value>
+  <data name="IsRequired" xml:space="preserve">
+    <value>Все поля формы являются обязательными!</value>
   </data>
-  <data name="EditSuccess" xml:space="preserve">
-    <value>Обновление данных прошло успешно!</value>
-  </data>
-  <data name="FormatError" xml:space="preserve">
-    <value>Неправельный формат некоторых данных! (Телефон/ИИН/БИН/Код)</value>
-  </data>
-  <data name="FormError" xml:space="preserve">
-    <value>Заполните корректно все поля!</value>
-    <comment>Ошибка введения данных на форме.</comment>
+  <data name="ServiceNameLength" xml:space="preserve">
+    <value>Название услуги должно содержать более 6 символов!</value>
   </data>
 </root>

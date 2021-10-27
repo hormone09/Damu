@@ -18,7 +18,7 @@
 
 	$("#companiesInsertWindow").kendoDialog({
 		modal: true,
-		width: "400px",
+		width: "700px",
 		closable: false,
 		visible: false,
 		title: false,
@@ -31,12 +31,13 @@
 
 	var formInsert = $("#companiesInsertForm").kendoForm({
 		visible: false,
+		validatable: { validationSummary: false },
 		items: [
 			{
 				type: "group",
-				label: "Добавление новой компании",
+				label: "Добавление новой организации",
 				items: [
-					{ field: "Name", placeholder: "Укажите название", label: "Назваине", validation: { required: true } },
+					{ field: "Name", placeholder: "Укажите название", label: "Название", validation: { required: true } },
 					{
 						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
 						editor: function (container, options) {
@@ -44,7 +45,7 @@
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала сотрудничества",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yy'
 							});
 						}
 					},
@@ -72,7 +73,7 @@
 				]
 			}
 		],
-		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>Отмена</button>"
+		buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>Отмена</button></div>"
 	});
 
 	formInsert.bind("submit", function (e) {
@@ -86,13 +87,15 @@
 					var grid = $("#companiesGrid").data("kendoGrid");
 					grid.dataSource.read();
 					notification.success(json.Message);
+					$('#companiesInsertForm')[0].reset();
+					$("#companiesInsertWindow").data("kendoDialog").close();
 				}
-				else
+				else {
 					notification.error(json.Error);
+				}
 			}
 		});
 
-		$("#companiesInsertWindow").data("kendoDialog").close();
 
 		return false;
 	});
@@ -121,17 +124,17 @@
 						}
 					},
 					{
-						field: "Name", label: "Назваине", placeholder: "Укажите название", validation: { required: true },
+						field: "Name", label: "Назваине", placeholder: "Укажите название",
 						editor: function (container, options) {
-							var input = $('<input id="editCompaniesName" name="Name" required="required" />');
+							var input = $('<input id="editCompaniesName" name="Name"/>');
 							input.appendTo(container);
 							input.kendoTextBox();
 						}
 					},
 					{
-						field: "BIN", label: "BIN", validation: { required: true },
+						field: "BIN", label: "BIN",
 						editor: function (container, options) {
-							var input = $('<input id="editCompaniesBin" name="BIN" required="required" />');
+							var input = $('<input id="editCompaniesBin" name="BIN"/>');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -140,9 +143,9 @@
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала сотрудничества",
 						editor: function (container, options) {
-							var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin"/>');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала сотрудничества",
@@ -151,16 +154,23 @@
 						}
 					},
 					{
-						field: "Phone", label: "Телефон", validation: { required: true },
+						field: "Phone", label: "Телефон",
 						editor: function (container, options) {
-							var input = $('<input id="editCompaniesPhone" name="Phone" required="required" />');
+							var input = $('<input id="editCompaniesPhone" name="Phone"/>');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
 								mask: "0-(000)-000-00-00"
 							});
 						}
-					}
+					},
+					{
+						field: "companyEditValidator", label: "",
+						editor: function (container, options) {
+							var input = $('<label class="validationFormMessage" id="companyEditValidator" name="companyEditValidator"></label>');
+							input.appendTo(container);
+						}
+					},
 				]
 			}
 		],
@@ -168,25 +178,30 @@
 	});
 
 	formEdit.bind("submit", function (e) {
-		var data = formEdit.serializeArray();
 
-		$.ajax({
-			url: "/Company/EditCompany/",
-			type: "POST",
-			data: data,
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#companiesGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-				}
-				else {
-					notification.error(json.Error);
-				}
-			}
-		});
+		e.preventDefault();
+		
+		let IsValid = ValidateEditForm();
+		if (IsValid) {
+			var data = formEdit.serializeArray();
 
-		$("#companyEditWindow").data("kendoDialog").close();
+			$.ajax({
+				url: "/Company/EditCompany/",
+				type: "POST",
+				data: data,
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						var grid = $("#companiesGrid").data("kendoGrid");
+						grid.dataSource.read();
+						notification.success(json.Message);
+						$("#companyEditWindow").data("kendoDialog").close();
+					}
+					else {
+						notification.error(json.Error);
+					}
+				}
+			});
+		}
 
 		return false;
 	});
@@ -205,6 +220,54 @@
 		$("#companyEditWindow").data("kendoDialog").open();
 
 		return false;
+	}
+
+	function ActivateCompany(id) {
+		$.ajax({
+			url: "/Company/ActivateCompany/",
+			type: "POST",
+			data: { id: id },
+			success: function (json) {
+				if (json.IsSuccess == true) {
+					var grid = $("#companiesGrid").data("kendoGrid");
+					grid.dataSource.read();
+					notification.success(json.Message);
+				}
+				else {
+					notification.error(json.Message);
+				}
+			}
+		})
+	}
+
+	// Validator
+	function ValidateEditForm() {
+		if ($("#companyEditForm #editCompaniesName").val().length < 6) {
+			$('#companyEditValidator').text("Название организации должно состоять из более чем 6 символов!");
+			return false;
+		}
+
+		if ($("#companyEditForm #editCompaniesBin").val().length < 15) {
+			$('#companyEditValidator').text("Название организации должно состоять из более чем 12 символов!");
+			return false;
+		}
+
+		if ($("#companyEditForm #editCompaniesDateOfBegin").val() == null) {
+			$('#companyEditValidator').text("Укажите дату начала работы!");
+			return false;
+		}
+
+		if ($("#companyEditForm #editCompaniesPhone").val().replace("_", "").length < 10) {
+			$('#companyEditValidator').text("Телефон заполнен не корректно!");
+			return false;
+		}
+
+		$('#companyEditValidator').text(" ");
+		return true;
+	}
+
+	function ValidateInsertForm() {
+
 	}
 
 	// Filters
@@ -337,6 +400,16 @@
 							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 							DeleteCompany(dataItem.Id);
 						},
+					},
+					{
+						name: "Activate",
+						className: "btn-activate",
+						text: "Востановить",
+						visible: function (dataItem) { return dataItem.Status == 2 },
+						click: function (e) {
+							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+							ActivateCompany(dataItem.Id);
+						}
 					},
 					{
 						name: "Edit",

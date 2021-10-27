@@ -20,7 +20,8 @@ namespace Reports
         public string ServiceFilter;
         public string CompanyFilter;
         public string EmployeeFilter;
-        public new string Date;
+        public string DateBegin;
+        public string DateEnd;
         public Stimulsoft.Report.Components.StiPage Page2;
         public Stimulsoft.Report.Components.StiPageHeaderBand PageHeaderBand1;
         public Stimulsoft.Report.Components.StiText Text1;
@@ -32,6 +33,8 @@ namespace Reports
         public Stimulsoft.Report.Components.StiText Text7;
         public Stimulsoft.Report.Components.StiText Text8;
         public Stimulsoft.Report.Components.StiText Text9;
+        public Stimulsoft.Report.Components.StiText Text20;
+        public Stimulsoft.Report.Components.StiText Text21;
         public Stimulsoft.Report.Components.StiContainer Container1;
         public Stimulsoft.Report.Components.StiHeaderBand HeaderBand1;
         public Stimulsoft.Report.Components.StiText Text11;
@@ -56,7 +59,8 @@ namespace Reports
             this.States.Push(stateName, this, "ServiceFilter", this.ServiceFilter);
             this.States.Push(stateName, this, "CompanyFilter", this.CompanyFilter);
             this.States.Push(stateName, this, "EmployeeFilter", this.EmployeeFilter);
-            this.States.Push(stateName, this, "Date", this.Date);
+            this.States.Push(stateName, this, "DateBegin", this.DateBegin);
+            this.States.Push(stateName, this, "DateEnd", this.DateEnd);
         }
         
         public override void RestoreState(System.String stateName)
@@ -65,7 +69,8 @@ namespace Reports
             this.ServiceFilter = ((string)(this.States.Pop(stateName, this, "ServiceFilter")));
             this.CompanyFilter = ((string)(this.States.Pop(stateName, this, "CompanyFilter")));
             this.EmployeeFilter = ((string)(this.States.Pop(stateName, this, "EmployeeFilter")));
-            this.Date = ((string)(this.States.Pop(stateName, this, "Date")));
+            this.DateBegin = ((string)(this.States.Pop(stateName, this, "DateBegin")));
+            this.DateEnd = ((string)(this.States.Pop(stateName, this, "DateEnd")));
         }
         
         public void Text1__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
@@ -75,7 +80,7 @@ namespace Reports
         
         public void Text2__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
         {
-            e.Value = "Дата:";
+            e.Value = "Период:";
         }
         
         public void Text3__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
@@ -110,7 +115,17 @@ namespace Reports
         
         public void Text9__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
         {
-            e.Value = ToString(sender, Date, true);
+            e.Value = ToString(sender, DateBegin, true);
+        }
+        
+        public void Text20__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
+        {
+            e.Value = "   по:    ";
+        }
+        
+        public void Text21__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
+        {
+            e.Value = ToString(sender, DateEnd, true);
         }
         
         public void Text11__GetValue(object sender, Stimulsoft.Report.Events.StiGetValueEventArgs e)
@@ -169,7 +184,8 @@ namespace Reports
             this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "ServiceFilter", "ServiceFilter", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, true));
             this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "CompanyFilter", "CompanyFilter", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, false));
             this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "EmployeeFilter", "EmployeeFilter", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, false));
-            this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "Date", "Date", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, true));
+            this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "DateBegin", "DateBegin", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, true));
+            this.Dictionary.Variables.Add(new Stimulsoft.Report.Dictionary.StiVariable("", "DateEnd", "DateEnd", "", typeof(string), "", false, Stimulsoft.Report.Dictionary.StiVariableInitBy.Value, true));
             this.NeedsCompiling = false;
             // 
             // Variables init
@@ -177,7 +193,8 @@ namespace Reports
             this.ServiceFilter = "";
             this.CompanyFilter = "";
             this.EmployeeFilter = "";
-            this.Date = "";
+            this.DateBegin = "";
+            this.DateEnd = "";
             this.EngineVersion = Stimulsoft.Report.Engine.StiEngineVersion.EngineV1;
             this.ReferencedAssemblies = new System.String[] {
                     "System.Dll",
@@ -192,13 +209,13 @@ namespace Reports
             // 
             // ReportChanged
             // 
-            this.ReportChanged = new DateTime(2021, 10, 20, 16, 23, 40, 812);
+            this.ReportChanged = new DateTime(2021, 10, 27, 15, 51, 31, 654);
             // 
             // ReportCreated
             // 
             this.ReportCreated = new DateTime(2021, 10, 19, 14, 1, 1, 0);
             this.ReportFile = "C:\\Users\\Domu\\Desktop\\ServicesHistoryReport.mrt";
-            this.ReportGuid = "d6c1742460cd4f2ca3e7e563a583577b";
+            this.ReportGuid = "d375d86944764903ae61b1709d007426";
             this.ReportName = "Отчет";
             this.ReportUnit = Stimulsoft.Report.StiReportUnitType.Centimeters;
             this.ReportVersion = "2013.1.1600";
@@ -246,6 +263,7 @@ namespace Reports
             this.Text2.Guid = "0315c4ab51404411ac3af78ef4e0ab2f";
             this.Text2.Name = "Text2";
             this.Text2.GetValue += new Stimulsoft.Report.Events.StiGetValueEventHandler(this.Text2__GetValue);
+            this.Text2.Type = Stimulsoft.Report.Components.StiSystemTextType.Expression;
             this.Text2.Border = new Stimulsoft.Base.Drawing.StiBorder(Stimulsoft.Base.Drawing.StiBorderSides.None, System.Drawing.Color.Black, 1, Stimulsoft.Base.Drawing.StiPenStyle.Solid, false, 4, new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black), false);
             this.Text2.Brush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Transparent);
             this.Text2.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Bold);
@@ -354,7 +372,7 @@ namespace Reports
             // Text9
             // 
             this.Text9 = new Stimulsoft.Report.Components.StiText();
-            this.Text9.ClientRectangle = new Stimulsoft.Base.Drawing.RectangleD(4, 1, 4, 0.6);
+            this.Text9.ClientRectangle = new Stimulsoft.Base.Drawing.RectangleD(4, 1, 3, 0.6);
             this.Text9.Name = "Text9";
             this.Text9.GetValue += new Stimulsoft.Report.Events.StiGetValueEventHandler(this.Text9__GetValue);
             this.Text9.Border = new Stimulsoft.Base.Drawing.StiBorder(Stimulsoft.Base.Drawing.StiBorderSides.None, System.Drawing.Color.Black, 1, Stimulsoft.Base.Drawing.StiPenStyle.Solid, false, 4, new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black), false);
@@ -366,6 +384,39 @@ namespace Reports
             this.Text9.Margins = new Stimulsoft.Report.Components.StiMargins(0, 0, 0, 0);
             this.Text9.TextBrush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black);
             this.Text9.TextOptions = new Stimulsoft.Base.Drawing.StiTextOptions(false, false, false, 0F, System.Drawing.Text.HotkeyPrefix.None, System.Drawing.StringTrimming.None);
+            // 
+            // Text20
+            // 
+            this.Text20 = new Stimulsoft.Report.Components.StiText();
+            this.Text20.ClientRectangle = new Stimulsoft.Base.Drawing.RectangleD(7, 1, 1.4, 0.6);
+            this.Text20.Guid = "7cd69f7b765f44c981c6a0e2545e592b";
+            this.Text20.Name = "Text20";
+            this.Text20.GetValue += new Stimulsoft.Report.Events.StiGetValueEventHandler(this.Text20__GetValue);
+            this.Text20.Type = Stimulsoft.Report.Components.StiSystemTextType.Expression;
+            this.Text20.Border = new Stimulsoft.Base.Drawing.StiBorder(Stimulsoft.Base.Drawing.StiBorderSides.None, System.Drawing.Color.Black, 1, Stimulsoft.Base.Drawing.StiPenStyle.Solid, false, 4, new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black), false);
+            this.Text20.Brush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Transparent);
+            this.Text20.Font = new System.Drawing.Font("Times New Roman", 14F, System.Drawing.FontStyle.Bold);
+            this.Text20.Indicator = null;
+            this.Text20.Interaction = null;
+            this.Text20.Margins = new Stimulsoft.Report.Components.StiMargins(0, 0, 0, 0);
+            this.Text20.TextBrush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black);
+            this.Text20.TextOptions = new Stimulsoft.Base.Drawing.StiTextOptions(false, false, false, 0F, System.Drawing.Text.HotkeyPrefix.None, System.Drawing.StringTrimming.None);
+            // 
+            // Text21
+            // 
+            this.Text21 = new Stimulsoft.Report.Components.StiText();
+            this.Text21.ClientRectangle = new Stimulsoft.Base.Drawing.RectangleD(8.4, 1, 3.6, 0.6);
+            this.Text21.Name = "Text21";
+            this.Text21.GetValue += new Stimulsoft.Report.Events.StiGetValueEventHandler(this.Text21__GetValue);
+            this.Text21.Border = new Stimulsoft.Base.Drawing.StiBorder(Stimulsoft.Base.Drawing.StiBorderSides.None, System.Drawing.Color.Black, 1, Stimulsoft.Base.Drawing.StiPenStyle.Solid, false, 4, new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black), false);
+            this.Text21.Brush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Transparent);
+            this.Text21.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
+            this.Text21.Guid = null;
+            this.Text21.Indicator = null;
+            this.Text21.Interaction = null;
+            this.Text21.Margins = new Stimulsoft.Report.Components.StiMargins(0, 0, 0, 0);
+            this.Text21.TextBrush = new Stimulsoft.Base.Drawing.StiSolidBrush(System.Drawing.Color.Black);
+            this.Text21.TextOptions = new Stimulsoft.Base.Drawing.StiTextOptions(false, false, false, 0F, System.Drawing.Text.HotkeyPrefix.None, System.Drawing.StringTrimming.None);
             this.PageHeaderBand1.Guid = null;
             this.PageHeaderBand1.Interaction = null;
             // 
@@ -604,6 +655,10 @@ namespace Reports
             this.Text8.Parent = this.PageHeaderBand1;
             this.Text9.Page = this.Page2;
             this.Text9.Parent = this.PageHeaderBand1;
+            this.Text20.Page = this.Page2;
+            this.Text20.Parent = this.PageHeaderBand1;
+            this.Text21.Page = this.Page2;
+            this.Text21.Parent = this.PageHeaderBand1;
             this.Container1.Page = this.Page2;
             this.Container1.Parent = this.Page2;
             this.HeaderBand1.Page = this.Page2;
@@ -645,7 +700,9 @@ namespace Reports
                         this.Text6,
                         this.Text7,
                         this.Text8,
-                        this.Text9});
+                        this.Text9,
+                        this.Text20,
+                        this.Text21});
             // 
             // Add to HeaderBand1.Components
             // 
@@ -703,7 +760,8 @@ namespace Reports
                         new Stimulsoft.Report.Dictionary.StiDataParameter("CompanyId", 8, 0),
                         new Stimulsoft.Report.Dictionary.StiDataParameter("ServiceId", 8, 0),
                         new Stimulsoft.Report.Dictionary.StiDataParameter("EmployeeId", 8, 0),
-                        new Stimulsoft.Report.Dictionary.StiDataParameter("Date", 31, 7)});
+                        new Stimulsoft.Report.Dictionary.StiDataParameter("DateBegin", 12, 50),
+                        new Stimulsoft.Report.Dictionary.StiDataParameter("DateEnd", 31, 7)});
             this.DataSources.Add(this.Test);
             this.Dictionary.Databases.Add(new Stimulsoft.Report.Dictionary.StiSqlDatabase("FitrstTask", "FitrstTask", "Integrated Security=True;Data Source=DESKTOP-8LKEMKN;Initial Catalog=FirstTask;Password=;User ID=", false));
             this.Test.Connecting += new System.EventHandler(this.GetTest_SqlCommand);
@@ -711,11 +769,11 @@ namespace Reports
         
         public void GetTest_SqlCommand(object sender, System.EventArgs e)
         {
-            this.Test.SqlCommand = "IF @CompanyId > 0 AND @ServiceId > 0 AND @EmployeeId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\nCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) \r\nAND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId AND EmployeeId = EmployeeId)\r\n\r\nELSE IF @CompanyId > 0 AND @ServiceId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.I" +
-"d = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId)\r\n\r\nELSE IF @CompanyId > 0 AND @EmployeeId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId AND EmployeeId = @EmployeeId)\r\n\r\nELSE IF @EmployeeId > 0 AND @ServiceId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON" +
-" Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.EmployeeId = @EmployeeId AND ServiceId = @ServiceId)\r\n\r\nELSE IF @CompanyId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.CompanyId = @CompanyId)\r\n\r\nELSE IF @ServiceId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r" +
-"\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.ServiceId = @ServiceId)\r\n\r\nELSE IF @EmployeeId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date) AND ServicesHistory.EmployeeId = @EmployeeId)\r\n\r\nELSE\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, " +
-"Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE DAY(DateOfCreate) = DAY(@Date) AND MONTH(DateOfCreate) = MONTH(@Date))";
+            this.Test.SqlCommand = "IF @CompanyId > 0 AND @ServiceId > 0 AND @EmployeeId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\nCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd) \r\nAND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId AND EmployeeId = EmployeeId)\r\n\r\nELSE IF @CompanyId > 0 AND @ServiceId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.E" +
+"mployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd) \r\nAND ServicesHistory.CompanyId = @CompanyId AND ServiceId = @ServiceId)\r\n\r\nELSE IF @CompanyId > 0 AND @EmployeeId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd)\r\nAND ServicesHistory.CompanyId = @CompanyId AND EmployeeId = @EmployeeId)\r\n\r\nELSE IF @EmployeeId > 0 AND @ServiceId > 0\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Emp" +
+"loyee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd) \r\nAND ServicesHistory.EmployeeId = @EmployeeId AND ServiceId = @ServiceId)\r\n\r\nELSE IF @CompanyId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <=" +
+" CONVERT(date, @DateEnd) \r\nAND ServicesHistory.CompanyId = @CompanyId)\r\n\r\nELSE IF @ServiceId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd)\r\nAND ServicesHistory.ServiceId = @ServiceId)\r\n\r\nELSE IF @EmployeeId > 0 \r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companie" +
+"s ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd)\r\nAND ServicesHistory.EmployeeId = @EmployeeId)\r\n\r\nELSE\r\n(SELECT  Services.Name as ServiceName, Services.Price as ServicePrice, Employee.FullName as EmployeeName, Companies.Name as CompanyName, \r\n\tCOUNT(*) OVER() AS TotalRows\tFROM ServicesHistory \r\n\tINNER JOIN Services ON Services.Id = ServicesHistory.ServiceId\r\nINNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId\r\nINNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId\r\nWHERE CONVERT(date, DateOfCreate) >= CONVERT(date, @DateBegin) AND CONVERT(date, DateOfCreate) <= CONVERT(date, @DateEnd))";
         }
         
         #region DataSource Test

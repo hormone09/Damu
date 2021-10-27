@@ -31,9 +31,10 @@ body {
 	font-family: 'Franklin Gothic';
 }
 button {
-	height: 20px;
+	font-weight: bold;
+	height: 25px;
 	border-radius: 6%;
-	font-size: 13px;
+	font-size: 12px;
 	color: white;
 	background-color: dodgerblue;
 	border: none;
@@ -181,6 +182,20 @@ h1{
 }
 .k-nav-today {
 	height: 25px;
+}
+.k-calendar {
+	font-size: 12px;
+}
+.k-dialog {
+	font-size: 14px;
+}
+
+.k-form {
+	margin: 0px;
+	font-size: 12px;
+}
+.validationFormMessage {
+	color: red;
 }
 
 @keyframes rigth-block {
