@@ -194,8 +194,12 @@ h1{
 	margin: 0px;
 	font-size: 12px;
 }
+.validateContainer{
+	height: 50px;
+}
 .validationFormMessage {
 	color: red;
+	margin: 20px 0px;
 }
 
 @keyframes rigth-block {

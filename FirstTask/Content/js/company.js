@@ -132,7 +132,7 @@
 						}
 					},
 					{
-						field: "BIN", label: "BIN",
+						field: "BIN", label: "БИН",
 						editor: function (container, options) {
 							var input = $('<input id="editCompaniesBin" name="BIN"/>');
 							input.appendTo(container);
@@ -165,45 +165,16 @@
 						}
 					},
 					{
-						field: "companyEditValidator", label: "",
+						field: "Validator", label: "",
 						editor: function (container, options) {
-							var input = $('<label class="validationFormMessage" id="companyEditValidator" name="companyEditValidator"></label>');
-							input.appendTo(container);
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
 						}
 					},
 				]
 			}
 		],
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>Отмена</button>"
-	});
-
-	formEdit.bind("submit", function (e) {
-
-		e.preventDefault();
-		
-		let IsValid = ValidateEditForm();
-		if (IsValid) {
-			var data = formEdit.serializeArray();
-
-			$.ajax({
-				url: "/Company/EditCompany/",
-				type: "POST",
-				data: data,
-				success: function (json) {
-					if (json.IsSuccess == true) {
-						var grid = $("#companiesGrid").data("kendoGrid");
-						grid.dataSource.read();
-						notification.success(json.Message);
-						$("#companyEditWindow").data("kendoDialog").close();
-					}
-					else {
-						notification.error(json.Error);
-					}
-				}
-			});
-		}
-
-		return false;
 	});
 
 	function EditCompany(oldService) {
@@ -241,39 +212,55 @@
 	}
 
 	// Validator
-	function ValidateEditForm() {
-		if ($("#companyEditForm #editCompaniesName").val().length < 6) {
-			$('#companyEditValidator').text("Название организации должно состоять из более чем 6 символов!");
-			return false;
+
+	$("#companyEditForm").validate({
+		rules: {
+			Name: {
+				required: true,
+				minlength: 6
+			},
+			BIN: {
+				required: true,
+			}
+		},
+		messages: {
+			Name: {
+				required: "Необходимо указать название компании!",
+				minlength: "Название компании должно содержать минимум 6 символов!"
+			},
+			BIN: {
+				required: "Необходимо указать BIN!"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function () {
+			var data = formEdit.serializeArray();
+
+			$.ajax({
+				url: "/Company/EditCompany/",
+				type: "POST",
+				data: data,
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						var grid = $("#companiesGrid").data("kendoGrid");
+						grid.dataSource.read();
+						notification.success(json.Message);
+						$("#companyEditWindow").data("kendoDialog").close();
+					}
+					else {
+						notification.error(json.Error);
+					}
+				}
+			});
 		}
-
-		if ($("#companyEditForm #editCompaniesBin").val().length < 15) {
-			$('#companyEditValidator').text("Название организации должно состоять из более чем 12 символов!");
-			return false;
-		}
-
-		if ($("#companyEditForm #editCompaniesDateOfBegin").val() == null) {
-			$('#companyEditValidator').text("Укажите дату начала работы!");
-			return false;
-		}
-
-		if ($("#companyEditForm #editCompaniesPhone").val().replace("_", "").length < 10) {
-			$('#companyEditValidator').text("Телефон заполнен не корректно!");
-			return false;
-		}
-
-		$('#companyEditValidator').text(" ");
-		return true;
-	}
-
-	function ValidateInsertForm() {
-
-	}
+	});
 
 	// Filters
 
 	$("body").on("click", "#btnCompanySearch", function () {
-		var grid = $("#companiesGrid").data("kendoGrid");
+		var grid = $("#companiesGrid").data("kendoGrid");dit
 		grid.dataSource.read();
 	});
 
