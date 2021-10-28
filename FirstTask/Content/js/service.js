@@ -46,7 +46,7 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Price", label: "Price", placeholder: "Укажите стоимость", validation: { required: true },
+						field: "Price", label: "Стоимость", placeholder: "Укажите стоимость", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="insertPrice" name="Price" required="required" />');
 							input.appendTo(container);
@@ -62,7 +62,7 @@ $(document).ready(function () {
 							var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
@@ -75,6 +75,13 @@ $(document).ready(function () {
 								mask: "L00.000.000"
 							});
 						}
+					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
+						}
 					}
 				]
 			}
@@ -82,28 +89,68 @@ $(document).ready(function () {
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>Отмена</button>"
 	});
 
-	formInsert.bind("submit", function (e) {
-		var data = formInsert.serializeArray();
-
-		$.ajax({
-			url: "/Service/AddService/",
-			type: "POST",
-			data: data,
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#servicesGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$('#servicesInsertForm')[0].reset();
-					$("#servicesInsertWindow").data("kendoDialog").close();
-				}
-				else
-					return notification.error(json.Error);
+	$("#servicesInsertForm").validate({
+		rules: {
+			Name: {
+				required: true,
+				minlength: 6,
+			},
+			Price: {
+				required: true,
+				maxlength: 20
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Code: {
+				required: true,
+				pattern: "^[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$"
 			}
-		});
+		},
+		messages: {
+			Name: {
+				required: "Необходимо указать название услуги!",
+				minlength: "Название услуги должно содержать минимум 6 символов!",
+			},
+			Price: {
+				required: "Необходимо указать стоимость!",
+				maxlength: "Стоимость услуги должна ограничеваться 20-ю символами!"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Code: {
+				required: "Необходимо указать код услуги!",
+				pattern: "Укажите код услуги в формате Z11.111.111"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function () {
+			var data = formInsert.serializeArray();
 
-
-		return false;
+			$.ajax({
+				url: "/Service/AddService/",
+				type: "POST",
+				data: data,
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						var grid = $("#servicesGrid").data("kendoGrid");
+						grid.dataSource.read();
+						notification.success(json.Message);
+						$('#servicesInsertForm')[0].reset();
+						$("#servicesInsertWindow").data("kendoDialog").close();
+					}
+					else
+						return notification.error(json.Error);
+				}
+			});
+		}
 	});
 
 	// Edit
@@ -129,9 +176,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Name", label: "Назваине",  validation: { required: true },
+						field: "Name", label: "Название",
 						editor: function (container, options) {
-							var input = $('<input id="editServicesName" name="Name" required="required" />');
+							var input = $('<input id="editServicesName" name="Name"/>');
 							input.appendTo(container);
 							input.kendoTextBox({
 								placeholder: "Укажите наименование услуги",
@@ -139,9 +186,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "Price", label: "Price", placeholder: "Укажите стоимость", validation: { required: true },
+						field: "Price", label: "Стоимость", placeholder: "Укажите стоимость",
 						editor: function (container, options) {
-							var input = $('<input id="editServicesPrice" name="Price" required="required" />');
+							var input = $('<input id="editServicesPrice" name="Price" />');
 							input.appendTo(container);
 							input.kendoNumericTextBox({
 								placeholder: "Введите стоимость ",
@@ -150,25 +197,32 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала работы",
 						editor: function (container, options) {
-							var input = $('<input id="editServicesDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="editServicesDateOfBegin" name="DateOfBegin" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Введите точную дату",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
 					{
-						field: "Code", label: "Код услуги", validation: { required: true },
+						field: "Code", label: "Код услуги",
 						editor: function (container, options) {
-							var input = $('<input id="editServicesCode" name="Code" required="required" />');
+							var input = $('<input id="editServicesCode" name="Code" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите код в формате 'Z00.000.000'",
 								mask: "L00.000.000"
 							});
+						}
+					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
 						}
 					}
 				]
@@ -177,28 +231,71 @@ $(document).ready(function () {
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseEditWindow' type='button'>Отмена</button>"
 	});
 
-	formEdit.bind("submit", function (e) {
-		var data = formEdit.serializeArray();
+	// Edit Validation and Submit
 
-		$.ajax({
-			url: "/Service/EditService/",
-			type: "POST",
-			data: data,
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#servicesGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$("#edit-window").data("kendoDialog").close();
-				}
-				else {
-					notification.error(json.Error);
-				}
+	$("#editServiceForm").validate({
+		rules: {
+			Name: {
+				required: true,
+				minlength: 6,
+			},
+			Price: {
+				required: true,
+				maxlength: 20
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Code: {
+				required: true,
+				pattern: "^[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$"
 			}
-		});
+		},
+		messages: {
+			Name: {
+				required: "Необходимо указать название услуги!",
+				minlength: "Название услуги должно содержать минимум 6 символов!",
+			},
+			Price: {
+				required: "Необходимо указать стоимость!",
+				maxlength: "Стоимость услуги должна ограничеваться 20-ю символами!"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Code: {
+				required: "Необходимо указать код услуги!",
+				pattern: "Укажите код услуги в формате Z11.111.111"
+			}
+		},
+		debug: true,
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function () {
+			var data = formEdit.serializeArray();
 
-
-		return false;
+			$.ajax({
+				url: "/Service/EditService/",
+				type: "POST",
+				data: data,
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						var grid = $("#servicesGrid").data("kendoGrid");
+						grid.dataSource.read();
+						notification.success(json.Message);
+						$("#edit-window").data("kendoDialog").close();
+					}
+					else {
+						notification.error(json.Error);
+					}
+				}
+			});
+		}
 	});
 
 	function EditService(oldService) {
@@ -387,7 +484,11 @@ $(document).ready(function () {
 			},
 		],
 		height: 620,
-		pageable: true,
+		pageable: {
+			messages: {
+				display: '<button type="button" id="btn-insert">Добавить</button>'
+			}
+		},
 		scrollable: true,
 	});
 });

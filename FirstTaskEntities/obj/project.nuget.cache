@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Li9QYDnce+TiwuzbS0cdhmjKU0PLrfVPrWBd8/TL83mi45wE1A326YbyHYeXoxsFda6UTBzIwwbf8Y39yvUQAw==",
+  "dgSpecHash": "/BbK+h7XSq+m46e0KRnWNz143BMqehQd+2Wisn5vbOZ78SyiK4xi3+oBq10qhaTCLELwWr5vujkRyy5vw19oLA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Владимир\\Desktop\\Code\\Work\\FirstTaskEntities\\FirstTaskEntities.csproj",
+  "projectFilePath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Владимир\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512"
+    "C:\\Users\\Domu\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512"
   ],
   "logs": []
 }

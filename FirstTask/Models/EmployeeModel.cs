@@ -1,6 +1,6 @@
 ﻿using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
-
+using FirstTask.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

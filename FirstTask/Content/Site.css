@@ -177,9 +177,13 @@ h1{
 	animation-name: table;
 	animation-duration: 2s;
 }
+.k-scheduler-fullday{
+	visibility: hidden;
+}
 .k-scheduler-content .k-scheduler-table tr td {
 	height: 70px;
 }
+
 .k-nav-today {
 	height: 25px;
 }
@@ -189,13 +193,13 @@ h1{
 .k-dialog {
 	font-size: 14px;
 }
-
 .k-form {
 	margin: 0px;
 	font-size: 12px;
 }
 .validateContainer{
 	height: 50px;
+	width: 110%;
 }
 .validationFormMessage {
 	color: red;

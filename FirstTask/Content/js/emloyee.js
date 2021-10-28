@@ -24,7 +24,7 @@ $(document).ready(function () {
 		$("#employeeInsertWindow").data("kendoDialog").close();
 	});
 
-	var formInsert = $("#employeeInsertForm").kendoForm({
+	$("#employeeInsertForm").kendoForm({
 		visible: false,
 		formData: {
 		},
@@ -34,16 +34,16 @@ $(document).ready(function () {
 				label: "Добавление нового сотрудника",
 				items: [
 					{
-						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ", validation: { required: true },
+						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ",
 						editor: function (container, options) {
-							var input = $('<input id="empInsertFullName" name="FullName" required="required" />');
+							var input = $('<input id="empInsertFullName" name="FullName" />');
 							input.appendTo(container);
 							input.kendoTextBox();
 						}
 					},
 					{
-						field: "Phone", label: "Телефон", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input id="empInsertPhone" name="Phone" required="required" />');
+						field: "Phone", label: "Телефон", editor: function (container, options) {
+							var input = $('<input id="empInsertPhone" name="Phone" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
@@ -52,31 +52,31 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "BirthdayDate", label: "Дата рождения", validation: { required: true },
+						field: "BirthdayDate", label: "Дата рождения",
 						editor: function (container, options) {
-							var input = $('<input id="empInsertBirthdayDate" name="BirthdayDate" required="required" />');
+							var input = $('<input id="empInsertBirthdayDate" name="BirthdayDate" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату рождения",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала работы",
 						editor: function (container, options) {
-							var input = $('<input id="empInsertDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="empInsertDateOfBegin" name="DateOfBegin" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала работы",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
 					{
-						field: "PersonalNumber", label: "ИИН", validation: { required: true },
+						field: "PersonalNumber", label: "ИИН",
 						editor: function (container, options) {
-							var input = $('<input id="empInsertPesonalNumber" name="PersonalNumber" required="required" />');
+							var input = $('<input id="empInsertPesonalNumber" name="PersonalNumber" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -85,9 +85,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "CompanyId", label: "Компания", validation: { required: true },
+						field: "CompanyId", label: "Компания",
 						editor: function (container, options) {
-							var input = $('<input id="empInsertCompanyId" name="CompanyId" required="required" />');
+							var input = $('<input id="empInsertCompanyId" name="CompanyId" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -98,42 +98,106 @@ $(document).ready(function () {
 							});
 						}
 					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
+						}
+					}
 				]
 			},
 		],
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>Отмена</button>"
 	});
-
-	formInsert.bind("submit", function (e) {
-		let data = {
-			DateOfBegin: $("#empInsertDateOfBegin").data("kendoDatePicker").value(),
-			Company: companies.find(x => x.Id == $("#empInsertCompanyId").val()),
-			BirthdayDate: $("#empInsertBirthdayDate").data("kendoDatePicker").value(),
-			FullName: $("#empInsertFullName").val(),
-			PersonalNumber: $("#empInsertPesonalNumber").val(),
-			Phone: $("#empInsertPhone").val()
-		}
-
-		$.ajax({
-			url: "/Employee/AddEmployee/",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#emloyeeGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$('#employeeInsertForm')[0].reset();
-					$("#employeeInsertWindow").data("kendoDialog").close();
-				}
-				else
-					return notification.error(json.Error);
+	$("#employeeInsertForm").validate({
+		rules: {
+			FullName: {
+				required: true,
+				minlength: 10,
+				lettersonly: true
+			},
+			PersonalNumber: {
+				required: true,
+				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+			},
+			BirthdayDate: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
 			}
-		});
+		},
+		messages: {
+			FullName: {
+				required: "Необходимо указать полное имя сотрудника!",
+				minlength: "Длина имени должна быть больше 10 символов!",
+				lettersonly: "Имя сотрудника должно включать в себя только буквы кириллицы!"
+			},
+			PersonalNumber: {
+				required: "Необходимо указать ИИН!",
+				pattern: "Укажите ИИН в формате 'XXX-XXX-XXX-XXX'"
+			},
+			BirthdayDate: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function (e) {
+			var comboBoxesIsValid = ComboBoxsValidation(["empInsertCompanyId"]);
+			if (comboBoxesIsValid) {
+				let data = {
+					DateOfBegin: $("#empInsertDateOfBegin").data("kendoDatePicker").value(),
+					Company: companies.find(x => x.Id == $("#empInsertCompanyId").val()),
+					BirthdayDate: $("#empInsertBirthdayDate").data("kendoDatePicker").value(),
+					FullName: $("#empInsertFullName").val(),
+					PersonalNumber: $("#empInsertPesonalNumber").val(),
+					Phone: $("#empInsertPhone").val()
+				}
 
-
-		return false;
+				$.ajax({
+					url: "/Employee/AddEmployee/",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess == true) {
+							var grid = $("#emloyeeGrid").data("kendoGrid");
+							grid.dataSource.read();
+							notification.success(json.Message);
+							$('#employeeInsertForm')[0].reset();
+							$("#employeeInsertWindow").data("kendoDialog").close();
+						}
+						else
+							return notification.error(json.Error);
+					}
+				});
+			}
+			else {
+				notification.error("Необходимо указать услугу и компанию!");
+			}
+		}
 	});
 
 	// Edit
@@ -149,7 +213,7 @@ $(document).ready(function () {
 		title: false,
 	});
 
-	var formEdit = $("#editEmployeeForm").kendoForm({
+	$("#editEmployeeForm").kendoForm({
 		visible: true,
 		items: [
 			{
@@ -163,16 +227,16 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ", validation: { required: true },
+						field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ",
 						editor: function (container, options) {
-							var input = $('<input id="empEditFullName" name="FullName" required="required" />');
+							var input = $('<input id="empEditFullName" name="FullName" />');
 							input.appendTo(container);
 							input.kendoTextBox();
 						}
 					},
 					{
-						field: "Phone", label: "Телефон", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input id="empEditPhone" name="Phone" required="required" />');
+						field: "Phone", label: "Телефон", editor: function (container, options) {
+							var input = $('<input id="empEditPhone" name="Phone" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
@@ -181,9 +245,9 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "PersonalNumber", label: "ИИН", validation: { required: true },
+						field: "PersonalNumber", label: "ИИН",
 						editor: function (container, options) {
-							var input = $('<input id="empEditPesonalNumber" name="PersonalNumber" required="required" />');
+							var input = $('<input id="empEditPesonalNumber" name="PersonalNumber" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -192,20 +256,20 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "BirthdayDate", label: "Дата рождения", validation: { required: true },
+						field: "BirthdayDate", label: "Дата рождения",
 						editor: function (container, options) {
-							var input = $('<input id="empEditBirthdayDate" name="BirthdayDate" required="required" />');
+							var input = $('<input id="empEditBirthdayDate" name="BirthdayDate" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату рождения",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
 					{
-						field: "CompanyId", label: "Компания", validation: { required: true },
+						field: "CompanyId", label: "Компания",
 						editor: function (container, options) {
-							var input = $('<input id="empEditCompanyId" name="CompanyId"  required="required" />');
+							var input = $('<input id="empEditCompanyId" name="CompanyId" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -217,54 +281,120 @@ $(document).ready(function () {
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала работы",
 						editor: function (container, options) {
-							var input = $('<input id="empEditDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="empEditDateOfBegin" name="DateOfBegin" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала работы",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
+						}
+					}
 				]
 			}
 		],
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>Отмена</button>"
 	});
 
-	formEdit.bind("submit", function (e) {
-		let companyId = $("#empEditCompanyId").val();
-		let data = {
-			Id: $("#empEditId").val(),
-			DateOfBegin: new Date($("#empEditDateOfBegin").data("kendoDatePicker").value()).toLocaleDateString(),
-			Company: companies.find(x => x.Id == companyId),
-			BirthdayDate: new Date($("#empEditBirthdayDate").data("kendoDatePicker").value()).toLocaleDateString(),
-			FullName: $("#empEditFullName").val(),
-			PersonalNumber: $("#empEditPesonalNumber").val(),
-			Phone: $("#empEditPhone").val()
-		}
-
-		$.ajax({
-			url: "/Employee/EditEmployee/",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#emloyeeGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$("#editEmployeeWindow").data("kendoDialog").close();
-				}
-				else {
-					notification.error(json.Error);
-				}
+	$("#editEmployeeForm").validate({
+		rules: {
+			FullName: {
+				required: true,
+				minlength: 10,
+				lettersonly: true
+			},
+			PersonalNumber: {
+				required: true,
+				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+			},
+			BirthdayDate: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
 			}
-		});
+		},
+		messages: {
+			FullName: {
+				required: "Необходимо указать полное имя сотрудника!",
+				minlength: "Длина имени должна быть больше 10 символов!",
+				lettersonly: "Имя сотрудника должно включать в себя только буквы кириллицы!"
+			},
+			PersonalNumber: {
+				required: "Необходимо указать ИИН!",
+				pattern: "Укажите ИИН в формате 'XXX-XXX-XXX-XXX'"
+			},
+			BirthdayDate: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function (e) {
+			var comboBoxesIsValid = ComboBoxsValidation(["empEditCompanyId"]);
+			if (comboBoxesIsValid) {
 
+				let companyId = $("#empEditCompanyId").val();
+				let data = {
+					Id: $("#empEditId").val(),
+					DateOfBegin: new Date($("#empEditDateOfBegin").data("kendoDatePicker").value()).toLocaleDateString(),
+					Company: companies.find(x => x.Id == companyId),
+					BirthdayDate: new Date($("#empEditBirthdayDate").data("kendoDatePicker").value()).toLocaleDateString(),
+					FullName: $("#empEditFullName").val(),
+					PersonalNumber: $("#empEditPesonalNumber").val(),
+					Phone: $("#empEditPhone").val()
+				}
 
-		return false;
+				$.ajax({
+					url: "/Employee/EditEmployee/",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess == true) {
+							var grid = $("#emloyeeGrid").data("kendoGrid");
+							grid.dataSource.read();
+							notification.success(json.Message);
+							$("#editEmployeeWindow").data("kendoDialog").close();
+						}
+						else {
+							notification.error(json.Error);
+						}
+					}
+				});
+			}
+			else {
+				notification.error("Необходимо указать услугу и компанию!");
+			}
+		}
 	});
 
 	function EditEmployee(oldService) {
@@ -472,7 +602,11 @@ $(document).ready(function () {
 			},
 		],
 		height: 620,
-		pageable: true,
+		pageable: {
+			messages: {
+				display: '<button type="button" id="employeeSearchButton">Добавить</button>'
+			}
+		},
 		scrollable: true,
 	});
 });

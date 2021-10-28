@@ -231,12 +231,12 @@
     <Compile Include="Models\ServiceProvidedModel.cs" />
     <Compile Include="Models\ServicesHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Messages.ru-RU.Designer.cs">
+    <Compile Include="Resources\ManagerMessages.ru-RU.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.ru-RU.resx</DependentUpon>
+      <DependentUpon>ManagerMessages.ru-RU.resx</DependentUpon>
     </Compile>
-    <Compile Include="ValidationMessages.Designer.cs">
+    <Compile Include="Resources\ValidationMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ValidationMessages.resx</DependentUpon>
@@ -6541,11 +6541,11 @@
     <TypeScriptCompile Include="Content\kendoui.for.jquery.2021.3.914.trial\typescript\kendo.all.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Messages.ru-RU.resx">
+    <EmbeddedResource Include="Resources\ManagerMessages.ru-RU.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.ru-RU.Designer.cs</LastGenOutput>
+      <LastGenOutput>ManagerMessages.ru-RU.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ValidationMessages.resx">
+    <EmbeddedResource Include="Resources\ValidationMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -5,4 +5,6 @@
 	$('.k-combobox').width(170);
 	$('.k-maskedtextbox').width(120);
 	$('.k-dialog').width(400);
+	$('.k-nav-today').text("Сегодня");
+	$('.btn-edit').text("123123")
 });

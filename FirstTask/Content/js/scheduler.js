@@ -175,7 +175,7 @@ $(document).ready(function () {
 						DateBegin: dateBegin,
 						DateEnd: dateEnd
 					};
-					console.log(json)
+
 					return kendo.stringify(json);
 				}
 				else if (type == "create") {
@@ -231,18 +231,22 @@ $(document).ready(function () {
 	});
 	$("#scheduler").kendoScheduler({
 		dataSource: dataSource,
-		startTime: new Date("2021/01/01 07:00 AM"),
-		endTime: new Date("2021/12/01 06:00 PM"),
+		startTime: new Date("2021/01/01 07:00"),
+		endTime: new Date("2021/12/01 18:00"),
+		showWorkHours: "none",
+		majorTimeHeaderTemplate: kendo.template("<strong>#=kendo.toString(date, 'HH:mm')#</strong><sup></sup>"),
 		height: "600px",
 		databound: "",
 		views: [
 			{
 				type: "workWeek",
-				minorTickCount: 1, // display one time slot per major tick
+				title: "Week",
+				minorTickCount: 1,
 				majorTick: 15,
 				slotHeight: 10,
 				dateHeaderTemplate: kendo.template("<span class='days-name'>#=kendo.toString(date, 'dd.MM.yyyy')#</span>"),
 				allDaySlot: false,
+				selectedDateFormat: "{0:dddd dd.MM.yyyy}"
 			}],
 		dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd/M')#</u> - (#=percentage(date)#%)"),
 		editable: {
@@ -250,7 +254,7 @@ $(document).ready(function () {
 			window: {
 				title: "Оказанная услуга",
 				width: "650px",
-				height: "370px",
+				height: "400px",
 				scrollable: false
 			}
 		},

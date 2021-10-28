@@ -27,7 +27,7 @@
 		title: false,
 	});
 
-	var formInsert = $("#sProvidedInsertForm").kendoForm({
+	$("#sProvidedInsertForm").kendoForm({
 		visible: false,
 		formData: {
 		},
@@ -49,9 +49,9 @@
 								dataSource: companies
 							});
 						}
-					},
+					}, 
 					{
-						field: "Service.Id", label: "Услуга", validation: { required: true },
+						field: "ServiceId", label: "Услуга", validation: { required: true },
 						editor: function (container, options) {
 							var input = $('<input id="sProvidedInsertServiceId" name="ServiceId"  />');
 							input.appendTo(container);
@@ -82,45 +82,73 @@
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите точную дату",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
+						}
+					}
 				]
 			}
 		],
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='sProvidedCloseInsertWindow' type='button'>Отмена</button>"
 	});
 
-	formInsert.bind("submit", function (e) {
-
-		let data = {
-			Company: companies.find(x => x.Id == $("#sProvidedInsertCompanyId").val()),
-			Service: services.find(x => x.Id == $("#sProvidedInsertServiceId").val()),
-			DateOfBegin: $("#sProvidedInsertDateOfBegin").data("kendoDatePicker").value(),
-			ServicePrice: $("#sProvidedInsertServicePrice").val()
-		};
-
-		$.ajax({
-			url: "/ServiceProvided/AddProvidedService/",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#providedGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$('#sProvidedInsertForm')[0].reset();
-					$("#sProvidedInsertWindow").data("kendoDialog").close();
-				}
-				else
-					return notification.error(json.Error);
+	$("#sProvidedInsertForm").validate({
+		rules: {
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
 			}
-		});
+		},
+		messages: {
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function (e) {
+			var comboBoxesIsValid = ComboBoxsValidation(["sProvidedInsertServiceId", "sProvidedInsertCompanyId"]);
+			if (comboBoxesIsValid) {
+				let data = {
+					Company: companies.find(x => x.Id == $("#sProvidedInsertCompanyId").val()),
+					Service: services.find(x => x.Id == $("#sProvidedInsertServiceId").val()),
+					DateOfBegin: $("#sProvidedInsertDateOfBegin").data("kendoDatePicker").value(),
+					ServicePrice: $("#sProvidedInsertServicePrice").val()
+				};
 
-
-		return false;
+				$.ajax({
+					url: "/ServiceProvided/AddProvidedService/",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess == true) {
+							var grid = $("#providedGrid").data("kendoGrid");
+							grid.dataSource.read();
+							notification.success(json.Message);
+							$('#sProvidedInsertForm')[0].reset();
+							$("#sProvidedInsertWindow").data("kendoDialog").close();
+						}
+						else
+							return notification.error(json.Error);
+					}
+				});
+			}
+			else {
+				notification.error("Необходимо указать услугу и компанию!");
+			}
+		}
 	});
 
 
@@ -133,7 +161,7 @@
 		title: false,
 	});
 
-	var formEdit = $("#editSProvidedForm").kendoForm({
+	$("#editSProvidedForm").kendoForm({
 		visible: true,
 		items: [
 			{
@@ -148,9 +176,9 @@
 						}
 					},
 					{
-						field: "Company.Id", label: "Компания", validation: { required: true },
+						field: "CompanyId", label: "Компания",
 						editor: function (container, options) {
-							var input = $('<input id="sProvidedEditCompanyId" name="CompanyId"  required="required" />');
+							var input = $('<input id="sProvidedEditCompanyId" name="CompanyId" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -162,9 +190,9 @@
 						}
 					},
 					{
-						field: "Service.Id", label: "Услуга", validation: { required: true },
+						field: "ServiceId", label: "Услуга",
 						editor: function (container, options) {
-							var input = $('<input id="sProvidedEditServiceId" name="ServiceId"  required="required" />');
+							var input = $('<input id="sProvidedEditServiceId" name="ServiceId" />');
 							input.appendTo(container);
 							input.kendoComboBox({
 								placeholder: "Введите название",
@@ -176,9 +204,9 @@
 						}
 					},
 					{
-						field: "ServicePrice", label: "Price", validation: { required: true },
+						field: "ServicePrice", label: "Price",
 						editor: function (container, options) {
-							var input = $('<input id="sProvidedEditServicePrice" name="ServicePrice" required="required" />');
+							var input = $('<input id="sProvidedEditServicePrice" name="ServicePrice" />');
 							input.appendTo(container);
 							input.kendoNumericTextBox({
 								placeholder: "Введите стоимость услуги",
@@ -187,9 +215,9 @@
 						}
 					},
 					{
-						field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+						field: "DateOfBegin", label: "Дата начала работы",
 						editor: function (container, options) {
-							var input = $('<input id="sProvidedEditDateOfBegin" name="DateOfBegin" required="required" />');
+							var input = $('<input id="sProvidedEditDateOfBegin" name="DateOfBegin" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите точную дату",
@@ -203,39 +231,60 @@
 		buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='sProvidedCloseEditWindow' type='button'>Отмена</button>"
 	});
 
-	formEdit.bind("submit", function (e) {
-		let data = {
-			Id: $("#sProvidedEditId").val(),
-			DateOfBegin: new Date($("#sProvidedEditDateOfBegin").data("kendoDatePicker").value()),
-			Company: companies.find(x => x.Id == $("#sProvidedEditCompanyId").val()),
-			Service: services.find(x => x.Id == $("#sProvidedEditServiceId").val()),
-			ServicePrice: $("#sProvidedEditServicePrice").val()
-		};
-
-		$.ajax({
-			url: "/ServiceProvided/EditProvidedService/",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify(data),
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#providedGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$("#editSProvidedWindow").data("kendoDialog").close();
-				}
-				else {
-					notification.error(json.Error);
-				}
+	$("#editSProvidedForm").validate({
+		rules: {
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
 			}
-		});
+		},
+		messages: {
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
+				pastDate: "Дата не может быть больше действующей!"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function (e) {
+			var comboBoxesIsValid = ComboBoxsValidation(["sProvidedEditCompanyId", "sProvidedEditServiceId"]);
+			if (comboBoxesIsValid) {
+				let data = {
+					Id: $("#sProvidedEditId").val(),
+					DateOfBegin: new Date($("#sProvidedEditDateOfBegin").data("kendoDatePicker").value()),
+					Company: companies.find(x => x.Id == $("#sProvidedEditCompanyId").val()),
+					Service: services.find(x => x.Id == $("#sProvidedEditServiceId").val()),
+					ServicePrice: $("#sProvidedEditServicePrice").val()
+				};
 
-
-		return false;
+				$.ajax({
+					url: "/ServiceProvided/EditProvidedService/",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess == true) {
+							var grid = $("#providedGrid").data("kendoGrid");
+							grid.dataSource.read();
+							notification.success(json.Message);
+							$("#editSProvidedWindow").data("kendoDialog").close();
+						}
+						else {
+							notification.error(json.Error);
+						}
+					}
+				});
+			}
+			else {
+				notification.error("Необходимо указать услугу и компанию!");
+			}
+		}
 	});
 
 	function EditSProvided(oldService) {
-		console.log(oldService);
 		$("#editSProvidedForm #sProvidedEditId").val(oldService.Id);
 		$("#editSProvidedForm #sProvidedEditServiceId").data("kendoComboBox").value(oldService.Service.Id);
 		$("#editSProvidedForm #sProvidedEditServicePrice").data("kendoNumericTextBox").value(oldService.ServicePrice);
@@ -340,7 +389,9 @@
 		dataTextField: "text",
 		dataValueField: "value",
 		dataSource: [
-			{ text: "Дата начала работы", value: "DateOfBegin" }
+			{ text: "Дата начала работы", value: "DateOfBegin" },
+			{ text: "Возрастанию стоимости", value: "ServicePrice" },
+			{ text: "Убыванию стоимости", value: "ServicePrice DESC" },
 		],
 	});
 
@@ -355,6 +406,7 @@
 			},
 			parameterMap: function (options) {
 				var data = {
+					SortingType: $("#sProvidedSortingTypes").val(),
 					Page: options.page,
 					PageSize: options.pageSize,
 					Status: $("#sProvidedStatusesList").val(),
@@ -432,7 +484,11 @@
 			},
 		],
 		height: 620,
-		pageable: true,
+		pageable: {
+			messages: {
+				display: '<button type="button" id="sProvidedInsertButton">Добавить</button>'
+			}
+		},
 		scrollable: true,
 	});
 });

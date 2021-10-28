@@ -235,7 +235,6 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\DatabaseEditor.exe.config
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.csproj.GenerateResource.cache
 C:\Users\Domu\Desktop\Code\FirstTask\bin\ru-RU\FirstTask.resources.dll
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\ru-RU\FirstTask.resources.dll
-C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.Messages.ru-RU.resources
 C:\Users\Domu\Desktop\Code\FirstTask\bin\LibExcel.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Base.dll
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Blockly.dll
@@ -272,7 +271,6 @@ C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.Web.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.WebDesign.pdb
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Report.WebDesign.xml
 C:\Users\Domu\Desktop\Code\FirstTask\bin\Stimulsoft.Svg.pdb
-C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.ValidationMessages.resources
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\ru-RU\FirstTask.resources.dll
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\DatabaseEditor.exe
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\LibExcel.dll
@@ -317,3 +315,5 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Valida
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.Messages.ru-RU.resources
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.csproj.GenerateResource.cache
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\ru-RU\FirstTask.resources.dll
+C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ValidationMessages.resources
+C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources

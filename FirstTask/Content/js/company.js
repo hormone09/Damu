@@ -31,17 +31,23 @@
 
 	var formInsert = $("#companiesInsertForm").kendoForm({
 		visible: false,
-		validatable: { validationSummary: false },
 		items: [
 			{
 				type: "group",
 				label: "Добавление новой организации",
 				items: [
-					{ field: "Name", placeholder: "Укажите название", label: "Название", validation: { required: true } },
 					{
-						field: "DateOfBegin", label: "Дата начала сотрудничества", validation: { required: true },
+						field: "Name", label: "Название", placeholder: "Укажите название",
 						editor: function (container, options) {
-							var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
+							var input = $('<input id="insertCompaniesName" name="Name"/>');
+							input.appendTo(container);
+							input.kendoTextBox();
+						}
+					},
+					{
+						field: "DateOfBegin", label: "Дата начала сотрудничества",
+						editor: function (container, options) {
+							var input = $('<input id="insertDate" name="DateOfBegin" />');
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала сотрудничества",
@@ -50,9 +56,9 @@
 						}
 					},
 					{
-						field: "BIN", label: "BIN", validation: { required: true },
+						field: "BIN", label: "BIN",
 						editor: function (container, options) {
-							var input = $('<input name="BIN" required="required" />');
+							var input = $('<input name="BIN" />');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите 12 чисел",
@@ -61,13 +67,20 @@
 						}
 					},
 					{
-						field: "Phone", label: "Телефон", validation: { required: true }, editor: function (container, options) {
-							var input = $('<input name="Phone" required="required" />');
+						field: "Phone", label: "Телефон", editor: function (container, options) {
+							var input = $('<input name="Phone"/>');
 							input.appendTo(container);
 							input.kendoMaskedTextBox({
 								placeholder: "Укажите номер телефона",
 								mask: "0-(000)-000-00-00"
 							});
+						}
+					},
+					{
+						field: "Validator", label: "",
+						editor: function (container, options) {
+							var block = $('<div class="validateContainer"/>');
+							block.appendTo(container);
 						}
 					}
 				]
@@ -76,28 +89,69 @@
 		buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>Отмена</button></div>"
 	});
 
-	formInsert.bind("submit", function (e) {
-		var data = formInsert.serializeArray();
-		$.ajax({
-			url: "/Company/AddCompany/",
-			type: "POST",
-			data: data,
-			success: function (json) {
-				if (json.IsSuccess == true) {
-					var grid = $("#companiesGrid").data("kendoGrid");
-					grid.dataSource.read();
-					notification.success(json.Message);
-					$('#companiesInsertForm')[0].reset();
-					$("#companiesInsertWindow").data("kendoDialog").close();
-				}
-				else {
-					notification.error(json.Error);
-				}
+	// Insert Validator and Submit
+	$("#companiesInsertForm").validate({
+		rules: {
+			Name: {
+				required: true,
+				minlength: 6,
+			},
+			BIN: {
+				required: true,
+				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
 			}
-		});
-
-
-		return false;
+		},
+		messages: {
+			Name: {
+				required: "Необходимо указать название компании!",
+				minlength: "Название компании должно содержать минимум 6 символов!",
+			},
+			BIN: {
+				required: "Необходимо указать БИН!",
+				pattern: "Укажите БИН в формате 'XXX-XXX-XXX-XXX'"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Phone: {
+				required: "Необходимо указать номер телефона!",
+				pattern: "Укажите номер телефона в формате X-(XXX)-XXX-XX-XX"
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorLabelContainer: ".validateContainer",
+		submitHandler: function () {
+			var data = formInsert.serializeArray();
+			$.ajax({
+				url: "/Company/AddCompany/",
+				type: "POST",
+				data: data,
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						var grid = $("#companiesGrid").data("kendoGrid");
+						grid.dataSource.read();
+						notification.success(json.Message);
+						$('#companiesInsertForm')[0].reset();
+						$("#companiesInsertWindow").data("kendoDialog").close();
+					}
+					else {
+						notification.error(json.Error);
+					}
+				}
+			});
+		}
 	});
 
 	// Edit
@@ -115,7 +169,7 @@
 		items: [
 			{
 				type: "group",
-				label: "Редактирование данных компании",
+				label: "Редактирование данных организации",
 				items: [
 					{
 						field: "Id", label: "", editor: function (container, options) {
@@ -149,7 +203,7 @@
 							input.appendTo(container);
 							input.kendoDatePicker({
 								placeholder: "Укажите дату начала сотрудничества",
-								format: 'dd/MM/yy',
+								format: 'dd/MM/yyyy',
 							});
 						}
 					},
@@ -167,7 +221,7 @@
 					{
 						field: "Validator", label: "",
 						editor: function (container, options) {
-							var block = $('<div class="validateContainer"/>');
+							var block = $('<div class="validateContainer"/></div>');
 							block.appendTo(container);
 						}
 					},
@@ -211,30 +265,46 @@
 		})
 	}
 
-	// Validator
-
+	// Edit Validator and Submit
 	$("#companyEditForm").validate({
 		rules: {
 			Name: {
 				required: true,
-				minlength: 6
+				minlength: 6,
 			},
 			BIN: {
 				required: true,
+				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
 			}
 		},
 		messages: {
 			Name: {
 				required: "Необходимо указать название компании!",
-				minlength: "Название компании должно содержать минимум 6 символов!"
+				minlength: "Название компании должно содержать минимум 6 символов!",
 			},
 			BIN: {
-				required: "Необходимо указать BIN!"
+				required: "Необходимо указать BIN!",
+				pattern: "Укажите БИН в формате 'XXX-XXX-XXX-XXX'"
+			},
+			DateOfBegin: {
+				required: "Необходимо указать дату!",
+				dateFilter: "Укажите дату в формате!",
+				pastDate: "Дата не может быть больше действующей!"
+			},
+			Phone: {
+				required: "Необходимо указать номер телефона!",
+				pattern: "Укажите номер телефона в формате X-(XXX)-XXX-XX-XX"
 			}
 		},
-		focusInvalid: true,
-		errorClass: "validationFormMessage",
-		errorLabelContainer: ".validateContainer",
 		submitHandler: function () {
 			var data = formEdit.serializeArray();
 
@@ -254,13 +324,19 @@
 					}
 				}
 			});
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorPlacement: function (error, element) {
+			$(".validateContainer").empty();
+			error.appendTo('.validateContainer');
 		}
 	});
 
 	// Filters
 
 	$("body").on("click", "#btnCompanySearch", function () {
-		var grid = $("#companiesGrid").data("kendoGrid");dit
+		var grid = $("#companiesGrid").data("kendoGrid");
 		grid.dataSource.read();
 	});
 
@@ -401,18 +477,20 @@
 					{
 						name: "Edit",
 						className: "btn-edit",
-						text: "Редактирование",
+						text: "Редактирование",s
 						click: function (e) {
 							var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 							EditCompany(dataItem);
 						},
-					},
+					}
 				],
 				width: "30%",
 			},
 		],
 		height: 620,
-		pageable: true,
+		pageable: {   
+				display: '<button type="button" id="btnCompanyInsert">Добавить</button>' }
+		},
 		scrollable: true,
 	});
 });
