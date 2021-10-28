@@ -311,9 +311,9 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\Stimulsoft.Report.Web.
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\Stimulsoft.Report.WebDesign.pdb
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\Stimulsoft.Report.WebDesign.xml
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\bin\Stimulsoft.Svg.pdb
-C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.ValidationMessages.resources
-C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.Messages.ru-RU.resources
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.csproj.GenerateResource.cache
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\ru-RU\FirstTask.resources.dll
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ValidationMessages.resources
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources
+C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.ValidationMessages.resources
+C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources

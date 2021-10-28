@@ -13,14 +13,14 @@ namespace FirstTask.Handlers
 	{
 		private ResourceManager rm;
 		private CultureInfo culture;
-
+		
 		public MessagesStrings()
 		{
 			rm = new ResourceManager("FirstTask.Resources.ManagerMessages", Assembly.GetExecutingAssembly());
 			culture = Thread.CurrentThread.CurrentCulture;
 		}
-
-		public string AddSuccess { get { return rm.GetString("AddSuccess", culture); } }
+		
+		public string AddSuccess { get {  return rm.GetString("AddSuccess", culture); } }
 		public string ActivateSuccess { get { return rm.GetString("ActivateSuccess", culture); } }
 		public string ActivateFailed { get { return rm.GetString("ActivateFailed", culture); } }
 		public string AgeError { get { return rm.GetString("AgeError", culture); } }

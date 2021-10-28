@@ -31,13 +31,15 @@ body {
 	font-family: 'Franklin Gothic';
 }
 button {
-	font-weight: bold;
-	height: 25px;
-	border-radius: 6%;
-	font-size: 12px;
-	color: white;
-	background-color: dodgerblue;
-	border: none;
+	font-family: aktiv-grotesk-extended, sans-serif;
+	font-weight: 700;
+	border: 2px solid #000;
+	border-radius: 3rem;
+	overflow: hidden;
+	color: #fff;
+	content: '';
+	background-color: #000;
+	transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
 }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
