@@ -1,28 +1,25 @@
-﻿@using System.Resources;
-@using System.Reflection;
+﻿@using FirstTask.Handlers;
 
 @{
 	ViewBag.Title = "Реестр услуг";
+	var localizer = new LocalizHandler();
 }
 
-@{
-	var resourceManager = new ResourceManager("FirstTask.Resources.ValidationMessages", Assembly.GetExecutingAssembly());
-}
 
-<h2>Реестр услуг</h2>
-<h1>@resourceManager.GetString("FormatError")</h1>
+<h2>@localizer.GetValue("HeadingServices")</h2>
+<h1></h1>
 <span id="allNotif"></span>
 
 <div class="container">
 	<div id="servicesGrid">
 		<div id="toolbar">
-			<p>Статус: </p>
+			<p>@localizer.GetValue("FilterStatus")</p>
 			<div id="serviceStatusesList"></div>
-			<p>Сортировать по: </p>
+			<p>@localizer.GetValue("FilterSorting")</p>
 			<div id="orderByTypes"></div>
-			<p>Наименование: </p>
+			<p>@localizer.GetValue("FilterName")</p>
 			<input type="text" name="Name" id="serviceNameFilter" />
-			<button type="button" id="btn-search">Поиск</button>
+			<button type="button" id="btn-search">@localizer.GetValue("ButtonSearch")</button>
 		</div>
 	</div>
 
@@ -36,7 +33,7 @@
 
 	<div>
 		<div id="delete-window" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">Вы действительно хотите удалить эту услугу?</h3>
+			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
 		</div>
 	</div>
 </div>
@@ -77,22 +74,22 @@
 			items: [
 				{
 					type: "group",
-					label: "Добавление новой услуги",
+					label: "@localizer.GetValue("ServiceInsertFormHeader")",
 					items: [
 						{
-							field: "Name", label: "Назваине", validation: { required: true },
+							field: "Name", label: "@localizer.GetValue("LabelName")",
 							editor: function (container, options) {
-								var input = $('<input id="insertName" name="Name" required="required" />');
+								var input = $('<input id="insertName" name="Name" />');
 								input.appendTo(container);
 								input.kendoTextBox({
-									placeholder: "Укажите наименование услуги",
+									placeholder: "@localizer.GetValue("PlaceholderName")",
 								});
 							}
 						},
 						{
-							field: "Price", label: "Стоимость", placeholder: "Укажите стоимость", validation: { required: true },
+							field: "Price", label: "@localizer.GetValue("LabelPrice")", placeholder: "@localizer.GetValue("PlaceholderPrice")",
 							editor: function (container, options) {
-								var input = $('<input id="insertPrice" name="Price" required="required" />');
+								var input = $('<input id="insertPrice" name="Price" />');
 								input.appendTo(container);
 								input.kendoNumericTextBox({
 									placeholder: "Введите стоимость ",
@@ -101,9 +98,9 @@
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
-								var input = $('<input id="insertDate" name="DateOfBegin" required="required" />');
+								var input = $('<input id="insertDate" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
 									format: 'dd/MM/yyyy',
@@ -111,9 +108,9 @@
 							}
 						},
 						{
-							field: "Code", label: "Код услуги", validation: { required: true },
+							field: "Code", label: "@localizer.GetValue("LabelCode")",
 							editor: function (container, options) {
-								var input = $('<input id="editCode" name="Code" required="required" />');
+								var input = $('<input id="editCode" name="Code" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
 									mask: "L00.000.000"
@@ -130,7 +127,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button>"
 		});
 
 		$("#servicesInsertForm").validate({
@@ -155,21 +152,19 @@
 			},
 			messages: {
 				Name: {
-					required: "Необходимо указать название услуги!",
-					minlength: "Название услуги должно содержать минимум 6 символов!",
+					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
 				},
 				Price: {
-					required: "Необходимо указать стоимость!",
-					maxlength: "Стоимость услуги должна ограничеваться 20-ю символами!"
+					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageDateNonCorrect")",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Code: {
-					required: "Необходимо указать код услуги!",
-					pattern: "Укажите код услуги в формате Z11.111.111"
+					required: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
 				}
 			},
 			focusInvalid: true,
@@ -211,7 +206,7 @@
 			items: [
 				{
 					type: "group",
-					label: "Редактирование параметров услуги",
+					label: "@localizer.GetValue("ServiceEditFormHeader")",
 					items: [
 						{
 							field: "Id", label: "", editor: function (container, options) {
@@ -220,39 +215,37 @@
 							}
 						},
 						{
-							field: "Name", label: "Название",
+							field: "Name", label: "@localizer.GetValue("LabelName")",
 							editor: function (container, options) {
 								var input = $('<input id="editServicesName" name="Name"/>');
 								input.appendTo(container);
 								input.kendoTextBox({
-									placeholder: "Укажите наименование услуги",
+									placeholder: "@localizer.GetValue("PlaceholderName")",
 								});
 							}
 						},
 						{
-							field: "Price", label: "Стоимость", placeholder: "Укажите стоимость",
+							field: "Price", label: "@localizer.GetValue("LabelPrice")", placeholder: "@localizer.GetValue("PlaceholderPrice")",
 							editor: function (container, options) {
 								var input = $('<input id="editServicesPrice" name="Price" />');
 								input.appendTo(container);
 								input.kendoNumericTextBox({
-									placeholder: "Введите стоимость ",
 									culture: "de-DE"
 								});
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы",
+							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
 								var input = $('<input id="editServicesDateOfBegin" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Введите точную дату",
 									format: 'dd/MM/yyyy',
 								});
 							}
 						},
 						{
-							field: "Code", label: "Код услуги",
+							field: "Code", label: "@localizer.GetValue("LabelCode")",
 							editor: function (container, options) {
 								var input = $('<input id="editServicesCode" name="Code" />');
 								input.appendTo(container);
@@ -284,8 +277,7 @@
 					minlength: 6,
 				},
 				Price: {
-					required: true,
-					maxlength: 20
+					required: true
 				},
 				DateOfBegin: {
 					required: true,
@@ -299,24 +291,21 @@
 			},
 			messages: {
 				Name: {
-					required: "Необходимо указать название услуги!",
-					minlength: "Название услуги должно содержать минимум 6 символов!",
+					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
 				},
 				Price: {
-					required: "Необходимо указать стоимость!",
-					maxlength: "Стоимость услуги должна ограничеваться 20-ю символами!"
+					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageDateNonCorrect")",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Code: {
-					required: "Необходимо указать код услуги!",
-					pattern: "Укажите код услуги в формате Z11.111.111"
+					required: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
 				}
 			},
-			debug: true,
 			focusInvalid: true,
 			errorClass: "validationFormMessage",
 			errorLabelContainer: ".validateContainer",
@@ -424,8 +413,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Активные", value: 1 },
-				{ text: "Отключенные", value: 2 },
+				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
 			]
 		});
 
@@ -433,9 +422,9 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Названию", value: "Name" },
-				{ text: "Возрастанию цены", value: "Price" },
-				{ text: "Убыванию цены", value: "Price DESC" }
+				{ text: "@localizer.GetValue("SortingByName")", value: "Name" },
+				{ text: "@localizer.GetValue("SortingByPriceUp")", value: "Price" },
+				{ text: "@localizer.GetValue("SortingByPriceDown")", value: "Price DESC" }
 			]
 		});
 
@@ -483,14 +472,14 @@
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Name", title: "Название услуги", width: "30%" },
-				{ field: "Price", title: "Цена", width: "10%" },
-				{ field: "Code", title: "Код ", width: "10%" },
-				{ field: "DateOfBegin", title: "Дата образования", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Name", title: "@localizer.GetValue("LabelName")", width: "30%" },
+				{ field: "Price", title: "@localizer.GetValue("LabelPrice")", width: "10%" },
+				{ field: "Code", title: "@localizer.GetValue("LabelCode")", width: "10%" },
+				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "10%", format: "{0: dd-MM-yyyy}" },
 				{
 					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "Активно", value: 1 },
-						{ text: "Удалено", value: 2 }
+						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+						{ text: "@localizer.GetValue("StatusDisable")", value: 2 }
 					]
 				},
 				{
@@ -498,7 +487,7 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "Удаление",
+							text: "@localizer.GetValue("ButtonDelete")",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -508,7 +497,7 @@
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "Востановить",
+							text: "@localizer.GetValue("ButtonActivate")",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -518,7 +507,7 @@
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "Редактирование",
+							text: "@localizer.GetValue("ButtonEdit")",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 								EditService(dataItem);
@@ -530,7 +519,7 @@
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="btn-insert">Добавить</button>'
+					display: '<button type="button" id="btn-insert">@localizer.GetValue("ButtonAdd")</button>'
 				}
 			},
 			scrollable: true,

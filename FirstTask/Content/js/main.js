@@ -118,10 +118,6 @@ function getEmployeeList() {
 	return ajax;
 }
 
-var employee = getEmployeeList();
-var services = getServiceList();
-var companies = getCompanyList();
-
 // Validation
 
 function ComboBoxsValidation(boxesIdes) {
@@ -139,6 +135,7 @@ function ComboBoxsValidation(boxesIdes) {
 }
 
 $(document).ready(function () {
+
 	jQuery.validator.addMethod("lettersonly", function (value, element) {
 		return this.optional(element) || /^[А-я\s]*$/.test(value);
 	});

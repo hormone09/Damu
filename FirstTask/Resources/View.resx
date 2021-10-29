@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ButtonActivate" xml:space="preserve">
+    <value>Востановить</value>
+  </data>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Добавление</value>
+  </data>
+  <data name="ButtonCancellation" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="ButtonEdit" xml:space="preserve">
+    <value>Редактирование</value>
+  </data>
+  <data name="ButtonPrint" xml:space="preserve">
+    <value>Печать</value>
+  </data>
+  <data name="ButtonSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="ButtonSearch" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="ButtonToday" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="CompanyEditFormHeader" xml:space="preserve">
+    <value>Редактирование данных организации</value>
+  </data>
+  <data name="CompanyInsertFormHeader" xml:space="preserve">
+    <value>Добавление новой организации</value>
+  </data>
+  <data name="DeleteWarningMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить запись?</value>
+  </data>
+  <data name="EmployeeEditFormHeader" xml:space="preserve">
+    <value>Редактирование данных сотрудника</value>
+  </data>
+  <data name="EmployeeFormHeader" xml:space="preserve">
+    <value>Добавление сотрудника организации</value>
+  </data>
+  <data name="FilterCompany" xml:space="preserve">
+    <value>Организация:</value>
+  </data>
+  <data name="FilterFullName" xml:space="preserve">
+    <value>Имя:</value>
+  </data>
+  <data name="FilterName" xml:space="preserve">
+    <value>Название:</value>
+  </data>
+  <data name="FilterService" xml:space="preserve">
+    <value>Услуга:</value>
+  </data>
+  <data name="FilterSorting" xml:space="preserve">
+    <value>Сортировать по:</value>
+  </data>
+  <data name="FilterStatus" xml:space="preserve">
+    <value>Статус:</value>
+  </data>
+  <data name="HeadingCompanies" xml:space="preserve">
+    <value>Реестр организаций</value>
+  </data>
+  <data name="HeadingEmployee" xml:space="preserve">
+    <value>Регистрация и ведение сотрудников организации</value>
+  </data>
+  <data name="HeadingServices" xml:space="preserve">
+    <value>Реестр услуг</value>
+  </data>
+  <data name="HeadingServicesHistory" xml:space="preserve">
+    <value>Оказанные услуги</value>
+  </data>
+  <data name="HeadingServicesProvided" xml:space="preserve">
+    <value>Реестр услуг оказываемых организацией</value>
+  </data>
+  <data name="LabelBIN" xml:space="preserve">
+    <value>БИН</value>
+  </data>
+  <data name="LabelBirthdayDate" xml:space="preserve">
+    <value>Дата рождения</value>
+  </data>
+  <data name="LabelCode" xml:space="preserve">
+    <value>Код услуги</value>
+  </data>
+  <data name="LabelCompany" xml:space="preserve">
+    <value>Организация</value>
+  </data>
+  <data name="LabelDateOfBegin" xml:space="preserve">
+    <value>Дата начала работы</value>
+  </data>
+  <data name="LabelEmployee" xml:space="preserve">
+    <value>Сотрудник</value>
+  </data>
+  <data name="LabelFullName" xml:space="preserve">
+    <value>Полное имя</value>
+  </data>
+  <data name="LabelName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="LabelPersonalNumber" xml:space="preserve">
+    <value>ИИН</value>
+  </data>
+  <data name="LabelPhone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="LabelPrice" xml:space="preserve">
+    <value>Стоимость</value>
+  </data>
+  <data name="LabelReportPeriod" xml:space="preserve">
+    <value>Период отчетности с </value>
+  </data>
+  <data name="LabelService" xml:space="preserve">
+    <value>Услуга</value>
+  </data>
+  <data name="LabelStatus" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="LabelType" xml:space="preserve">
+    <value>Формат отчета</value>
+  </data>
+  <data name="PlaceholderBIN" xml:space="preserve">
+    <value>Укажите БИН</value>
+  </data>
+  <data name="PlaceholderBirthdayDate" xml:space="preserve">
+    <value>Укажите дату рождения</value>
+  </data>
+  <data name="PlaceholderCompany" xml:space="preserve">
+    <value>Выберите компанию</value>
+  </data>
+  <data name="PlaceholderDateOfBegin" xml:space="preserve">
+    <value>Укажите дату начала работы</value>
+  </data>
+  <data name="PlaceholderEmployee" xml:space="preserve">
+    <value>Выберите сотрудника организации</value>
+  </data>
+  <data name="PlaceholderFullName" xml:space="preserve">
+    <value>Введите имя</value>
+  </data>
+  <data name="PlaceholderName" xml:space="preserve">
+    <value>Введите название</value>
+  </data>
+  <data name="PlaceholderPersonalNumber" xml:space="preserve">
+    <value>Укажите полное имя</value>
+  </data>
+  <data name="PlaceholderPhone" xml:space="preserve">
+    <value>Укажите номер телефона</value>
+  </data>
+  <data name="PlaceholderService" xml:space="preserve">
+    <value>Выберите услугу</value>
+  </data>
+  <data name="ReportFormHeader" xml:space="preserve">
+    <value>Получение отчета</value>
+  </data>
+  <data name="SchedulerFormHeader" xml:space="preserve">
+    <value>Изменение расписания</value>
+  </data>
+  <data name="ServiceEditFormHeader" xml:space="preserve">
+    <value>Редактирование данных услуги</value>
+  </data>
+  <data name="ServiceInsertFormHeader" xml:space="preserve">
+    <value>Добавление новой услуги</value>
+  </data>
+  <data name="ServiceProvidedEditFormHeader" xml:space="preserve">
+    <value>Редактирование данных оказываемой услуги</value>
+  </data>
+  <data name="ServiceProvidedInsertFormHeader" xml:space="preserve">
+    <value>Добавление оказываемой услуги</value>
+  </data>
+  <data name="SortingByBirthdayDate" xml:space="preserve">
+    <value>По дате рождения</value>
+  </data>
+  <data name="SortingByDateOfBegin" xml:space="preserve">
+    <value>По дате начала работы</value>
+  </data>
+  <data name="SortingByFullName" xml:space="preserve">
+    <value>По имени</value>
+  </data>
+  <data name="SortingByName" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="SortingByPriceDown" xml:space="preserve">
+    <value>По убиыванию цены</value>
+  </data>
+  <data name="SortingByPriceUp" xml:space="preserve">
+    <value>По возрастанию цены</value>
+  </data>
+  <data name="StatusActive" xml:space="preserve">
+    <value>Активно</value>
+  </data>
+  <data name="StatusDisable" xml:space="preserve">
+    <value>Удалено</value>
+  </data>
+  <data name="ValidationComboBox" xml:space="preserve">
+    <value>Услуга/Организация/Сотрудник не выбраны!</value>
+  </data>
+  <data name="ValidationMessageDateNonCorrect" xml:space="preserve">
+    <value>Дата не может быть больше действующей!</value>
+  </data>
+  <data name="ValidationMessageFormatError" xml:space="preserve">
+    <value>Укажите данные в формате:</value>
+  </data>
+  <data name="ValidationMessageInputRequired" xml:space="preserve">
+    <value>Это поле является обязательным!</value>
+  </data>
+  <data name="ValidationMessageMinLenght" xml:space="preserve">
+    <value>Поле должно содержать минимальное количество симолов:</value>
+  </data>
+</root>

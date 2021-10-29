@@ -317,3 +317,4 @@ C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ValidationMes
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.ValidationMessages.resources
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources
+C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.View.resources

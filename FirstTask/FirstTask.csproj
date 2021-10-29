@@ -215,6 +215,7 @@
     <Compile Include="Controllers\ServiceProvidedController.cs" />
     <Compile Include="Controllers\ServicesHistoryController.cs" />
     <Compile Include="Enums\ReportTypes.cs" />
+    <Compile Include="Handlers\LocalizHandler.cs" />
     <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -240,6 +241,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ValidationMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\View.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>View.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewQueris\CompanyViewQuery.cs" />
     <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
@@ -6548,6 +6554,10 @@
     <EmbeddedResource Include="Resources\ValidationMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\View.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>View.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

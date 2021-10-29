@@ -1,22 +1,24 @@
-﻿
+﻿@using FirstTask.Handlers;
+
 @{
-	ViewBag.Title = "Реестр организаций";
+	var localizer = new LocalizHandler();
+	ViewBag.Title = localizer.GetValue("HeadingCompanies");
 }
 
-<h2>Реестр организаций</h2>
+<h2>@localizer.GetValue("HeadingCompanies")</h2>
 
 <span id="companyNotifications"></span>
 
 <div class="container">
 	<div id="companiesGrid">
 		<div id="companiesToolbar">
-			<p>Статус: </p>
+			<p>@localizer.GetValue("FilterStatus")</p>
 			<div id="statusesListCompanies"></div>
-			<p>Сортировать по: </p>
+			<p>@localizer.GetValue("FilterSorting")</p>
 			<div id="companiesSortingTypes"></div>
-			<p>Наименование: </p>
+			<p>@localizer.GetValue("FilterName")</p>
 			<input type="text" name="Name" id="nameFilter" />
-			<button type="button" id="btnCompanySearch">Поиск</button>
+			<button type="button" id="btnCompanySearch">@localizer.GetValue("ButtonSearch")</button>
 		</div>
 	</div>
 
@@ -30,7 +32,7 @@
 
 	<div>
 		<div id="companiesDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">Вы действительно хотите удалить данные этой компании?</h3>
+			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
 		</div>
 	</div>
 </div>
@@ -72,10 +74,10 @@
 			items: [
 				{
 					type: "group",
-					label: "Добавление новой организации",
+					label: "@localizer.GetValue("CompanyInsertFormHeader")",
 					items: [
 						{
-							field: "Name", label: "Название", placeholder: "Укажите название",
+							field: "Name", label: "@localizer.GetValue("LabelName")", placeholder: "@localizer.GetValue("PlaceholderName")",
 							editor: function (container, options) {
 								var input = $('<input id="insertCompaniesName" name="Name"/>');
 								input.appendTo(container);
@@ -83,23 +85,23 @@
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала сотрудничества",
+							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
 								var input = $('<input id="insertDate" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите дату начала сотрудничества",
-									format: 'dd/MM/yy'
+									placeholder: "@localizer.GetValue("PlaceholderDateOfBegin")",
+									format: 'dd/MM/yyyy'
 								});
 							}
 						},
 						{
-							field: "BIN", label: "BIN",
+							field: "BIN", label: "@localizer.GetValue("LabelBIN")",
 							editor: function (container, options) {
 								var input = $('<input name="BIN" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите 12 чисел",
+									placeholder: "@localizer.GetValue("PlaceholderBIN")",
 									mask: "000-000-000-000"
 								});
 							}
@@ -109,7 +111,7 @@
 								var input = $('<input name="Phone"/>');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите номер телефона",
+									placeholder: "@localizer.GetValue("PlaceholderPhone")",
 									mask: "0-(000)-000-00-00"
 								});
 							}
@@ -124,9 +126,8 @@
 					]
 				}
 			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>Отмена</button></div>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button></div>"
 		});
-
 		// Insert Validator and Submit
 		$("#companiesInsertForm").validate({
 			rules: {
@@ -150,26 +151,29 @@
 			},
 			messages: {
 				Name: {
-					required: "Необходимо указать название компании!",
-					minlength: "Название компании должно содержать минимум 6 символов!",
+					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 6",
 				},
 				BIN: {
-					required: "Необходимо указать БИН!",
-					pattern: "Укажите БИН в формате 'XXX-XXX-XXX-XXX'"
+					required: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageFormatError") 'XXX-XXX-XXX-XXX'"
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Phone: {
-					required: "Необходимо указать номер телефона!",
-					pattern: "Укажите номер телефона в формате X-(XXX)-XXX-XX-XX"
+					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError") 'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
+			},
 			submitHandler: function () {
 				var data = formInsert.serializeArray();
 				$.ajax({
@@ -206,68 +210,56 @@
 			visible: true,
 			items: [
 				{
-					type: "group",
-					label: "Редактирование данных организации",
-					items: [
-						{
-							field: "Id", label: "", editor: function (container, options) {
-								var input = $('<input id="editCompaniesId" name="Id" type="hidden"/>');
-								input.appendTo(container);
-							}
-						},
-						{
-							field: "Name", label: "Назваине", placeholder: "Укажите название",
-							editor: function (container, options) {
-								var input = $('<input id="editCompaniesName" name="Name"/>');
-								input.appendTo(container);
-								input.kendoTextBox();
-							}
-						},
-						{
-							field: "BIN", label: "БИН",
-							editor: function (container, options) {
-								var input = $('<input id="editCompaniesBin" name="BIN"/>');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "Укажите 12 чисел",
-									mask: "000-000-000-000"
-								});
-							}
-						},
-						{
-							field: "DateOfBegin", label: "Дата начала сотрудничества",
-							editor: function (container, options) {
-								var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin"/>');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									placeholder: "Укажите дату начала сотрудничества",
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "Phone", label: "Телефон",
-							editor: function (container, options) {
-								var input = $('<input id="editCompaniesPhone" name="Phone"/>');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "Укажите номер телефона",
-									mask: "0-(000)-000-00-00"
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/></div>');
-								block.appendTo(container);
-							}
-						},
-					]
+					field: "Name", label: "@localizer.GetValue("LabelName")", placeholder: "@localizer.GetValue("PlaceholderName")",
+					editor: function (container, options) {
+						var input = $('<input id="editCompaniesName" name="Name"/>');
+						input.appendTo(container);
+						input.kendoTextBox();
+					}
+				},
+				{
+					field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
+					editor: function (container, options) {
+						var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin" />');
+						input.appendTo(container);
+						input.kendoDatePicker({
+							placeholder: "@localizer.GetValue("PlaceholderDateOfBegin")",
+							format: 'dd/MM/yyyy'
+						});
+					}
+				},
+				{
+					field: "BIN", label: "@localizer.GetValue("LabelBIN")",
+					editor: function (container, options) {
+						var input = $('<input id="editCompaniesBin" name="BIN" />');
+						input.appendTo(container);
+						input.kendoMaskedTextBox({
+							placeholder: "@localizer.GetValue("PlaceholderBIN")",
+							mask: "000-000-000-000"
+						});
+					}
+				},
+				{
+					field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
+						var input = $('<input id="editCompaniesPhone" name="Phone"/>');
+						input.appendTo(container);
+						input.kendoMaskedTextBox({
+							placeholder: "@localizer.GetValue("PlaceholderPhone")",
+							mask: "0-(000)-000-00-00"
+						});
+					}
+				},
+				{
+					field: "Validator", label: "",
+					editor: function (container, options) {
+						var block = $('<div class="validateContainer"/>');
+						block.appendTo(container);
+					}
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
 		});
+
 
 		function EditCompany(oldService) {
 			var filteredBIN = EditBIN(oldService.BIN);
@@ -326,21 +318,21 @@
 			},
 			messages: {
 				Name: {
-					required: "Необходимо указать название компании!",
-					minlength: "Название компании должно содержать минимум 6 символов!",
+					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 6",
 				},
 				BIN: {
-					required: "Необходимо указать BIN!",
-					pattern: "Укажите БИН в формате 'XXX-XXX-XXX-XXX'"
+					required: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageFormatError") 'XXX-XXX-XXX-XXX'"
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Phone: {
-					required: "Необходимо указать номер телефона!",
-					pattern: "Укажите номер телефона в формате X-(XXX)-XXX-XX-XX"
+					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired")",
+					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError")'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			submitHandler: function () {
@@ -387,8 +379,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Активные", value: 1 },
-				{ text: "Отключенные", value: 2 },
+				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
 			]
 		});
 
@@ -396,8 +388,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Названию", value: "Name" },
-				{ text: "Дате начала", value: "DateOfBegin" }
+				{ text: "@localizer.GetValue("SortingByName")", value: "Name" },
+				{ text: "@localizer.GetValue("SortingByDateOfBegin")", value: "DateOfBegin" }
 			]
 		});
 
@@ -479,14 +471,14 @@
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Name", title: "Название компании", width: "30%" },
-				{ field: "Phone", title: "Номер телефона", width: "10%" },
-				{ field: "BIN", title: "БИН", width: "10%" },
-				{ field: "DateOfBegin", title: "Дата добавления", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Name", title: "@localizer.GetValue("LabelCompany")", width: "30%" },
+				{ field: "Phone", title: "@localizer.GetValue("LabelPhone")", width: "10%" },
+				{ field: "BIN", title: "@localizer.GetValue("LabelBIN")", width: "10%" },
+				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "10%", format: "{0: dd-MM-yyyy}" },
 				{
-					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "Активно", value: 1 },
-						{ text: "Удалено", value: 2 }
+					field: "Status", title: "@localizer.GetValue("LabelStatus")", width: "5%", values: [
+						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+						{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
 					]
 				},
 
@@ -495,7 +487,7 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "Удаление",
+							text: "@localizer.GetValue("ButtonDelete")",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -505,7 +497,7 @@
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "Востановить",
+							text: "@localizer.GetValue("ButtonActivate")",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -515,7 +507,7 @@
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "Редактирование",
+							text: "@localizer.GetValue("ButtonEdit")",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 								EditCompany(dataItem);
@@ -526,7 +518,11 @@
 				},
 			],
 			height: 620,
-			pageable: true,
+			pageable: {
+				messages: {
+					display: '<button type="button" id="btnCompanyInsert">@localizer.GetValue("ButtonAdd")</button>'
+				}
+			},
 			scrollable: true,
 		});
 	});

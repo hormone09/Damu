@@ -1,24 +1,26 @@
-﻿
+﻿@using FirstTask.Handlers;
+
 @{
-	ViewBag.Title = "Регистрация и ведение сотрудников организации";
+	var localizer = new LocalizHandler();
+	ViewBag.Title = localizer.GetValue("HeadingEmployee");
 }
 
-<h2>Регистрация и ведение сотрудников организации</h2>
+<h2>@localizer.GetValue("HeadingEmployee")</h2>
 
 <span id="employeeNotifications"></span>
 
 <div class="container">
 	<div id="emloyeeGrid" class="grid">
 		<div id="employeeToolbar">
-			<p>Статус: </p>
+			<p>@localizer.GetValue("FilterStatus")</p>
 			<div id="statusesList"></div>
-			<p>Полное имя: </p>
+			<p>@localizer.GetValue("FilterFullName")</p>
 			<input type="text" name="FullName" id="fullNameFilter" />
-			<p>Компания: </p>
+			<p>@localizer.GetValue("FilterCompany")</p>
 			<div id="companyFilter"></div>
-			<p>Сортировать по: </p>
+			<p>@localizer.GetValue("FilterSorting")</p>
 			<div id="employeeSortingTypes"></div>
-			<button type="button" id="employeeSearchButton">Поиск</button>
+			<button type="button" id="employeeSearchButton">@localizer.GetValue("ButtonSearch")</button>
 		</div>
 	</div>
 
@@ -32,7 +34,7 @@
 
 	<div>
 		<div id="employeeDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">Вы действительно хотите удалить эту услугу?</h3>
+			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
 		</div>
 	</div>
 </div>
@@ -40,13 +42,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
+		var companies = getCompanyList();
 
 		var notifElement = $("#employeeNotifications");
 		notifElement.kendoNotification();
 		var notification = notifElement.data("kendoNotification");
 
 
-		// Insert 
+		// Insert
 		$("body").on("click", "#employeeInsertButton", function () {
 			let window = $("#employeeInsertWindow").data("kendoDialog");
 			window.open();
@@ -71,10 +74,10 @@
 			items: [
 				{
 					type: "group",
-					label: "Добавление нового сотрудника",
+					label: "@localizer.GetValue("EmployeeFormHeader")",
 					items: [
 						{
-							field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ",
+							field: "FullName", label: "@localizer.GetValue("LabelFullName")", placeholder: "@localizer.GetValue("PlaceholderFullName")",
 							editor: function (container, options) {
 								var input = $('<input id="empInsertFullName" name="FullName" />');
 								input.appendTo(container);
@@ -82,55 +85,52 @@
 							}
 						},
 						{
-							field: "Phone", label: "Телефон", editor: function (container, options) {
+							field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
 								var input = $('<input id="empInsertPhone" name="Phone" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите номер телефона",
 									mask: "0-(000)-000-00-00"
 								});
 							}
 						},
 						{
-							field: "BirthdayDate", label: "Дата рождения",
+							field: "BirthdayDate", label: "@localizer.GetValue("LabelBirthdayDate")",
 							editor: function (container, options) {
 								var input = $('<input id="empInsertBirthdayDate" name="BirthdayDate" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите дату рождения",
 									format: 'dd/MM/yyyy',
 								});
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы",
+							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
 								var input = $('<input id="empInsertDateOfBegin" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите дату начала работы",
 									format: 'dd/MM/yyyy',
 								});
 							}
 						},
 						{
-							field: "PersonalNumber", label: "ИИН",
+							field: "PersonalNumber", label: "@localizer.GetValue("LabelPersonalNumber")",
 							editor: function (container, options) {
 								var input = $('<input id="empInsertPesonalNumber" name="PersonalNumber" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите 12 чисел",
+									placeholder: "@localizer.GetValue("PlaceholderPersonalNumber")",
 									mask: "000-000-000-000"
 								});
 							}
 						},
 						{
-							field: "CompanyId", label: "Компания",
+							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
 							editor: function (container, options) {
 								var input = $('<input id="empInsertCompanyId" name="CompanyId" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizer.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -148,7 +148,7 @@
 					]
 				},
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
 		});
 		$("#employeeInsertForm").validate({
 			rules: {
@@ -178,27 +178,27 @@
 			},
 			messages: {
 				FullName: {
-					required: "Необходимо указать полное имя сотрудника!",
-					minlength: "Длина имени должна быть больше 10 символов!",
-					lettersonly: "Имя сотрудника должно включать в себя только буквы кириллицы!"
+					required: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 10",
+					lettersonly: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidateLettersOnly")"
 				},
 				PersonalNumber: {
-					required: "Необходимо указать ИИН!",
-					pattern: "Укажите ИИН в формате 'XXX-XXX-XXX-XXX'"
+					required: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageInputRequired"): ",
+					pattern: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageFormatError"):'XXX-XXX-XXX-XXX'"
 				},
 				BirthdayDate: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired"): ",
+					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			focusInvalid: true,
@@ -235,7 +235,7 @@
 					});
 				}
 				else {
-					notification.error("Необходимо указать услугу и компанию!");
+					notification.error("@localizer.GetValue("ValidationComboBox")");
 				}
 			}
 		});
@@ -258,7 +258,7 @@
 			items: [
 				{
 					type: "group",
-					label: "Редактирование параметров сотрудника",
+					label: "@localizer.GetValue("EmployeeEditForm")",
 					items: [
 						{
 							field: "Id", label: "", editor: function (container, options) {
@@ -267,7 +267,7 @@
 							}
 						},
 						{
-							field: "FullName", label: "Полное имя", placeholder: "Укажите полное имя: ",
+							field: "FullName", label: "@localizer.GetValue("LabelFullName")", placeholder: "@localizer.GetValue("PlaceholderFullName")",
 							editor: function (container, options) {
 								var input = $('<input id="empEditFullName" name="FullName" />');
 								input.appendTo(container);
@@ -275,44 +275,43 @@
 							}
 						},
 						{
-							field: "Phone", label: "Телефон", editor: function (container, options) {
+							field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
 								var input = $('<input id="empEditPhone" name="Phone" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите номер телефона",
+									placeholder: "@localizer.GetValue("PlaceholderPhone")",
 									mask: "0-(000)-000-00-00"
 								});
 							}
 						},
 						{
-							field: "PersonalNumber", label: "ИИН",
+							field: "PersonalNumber", label: "@localizer.GetValue("LabelPersonalNumber")",
 							editor: function (container, options) {
 								var input = $('<input id="empEditPesonalNumber" name="PersonalNumber" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "Укажите 12 чисел",
+									placeholder: "@localizer.GetValue("PlaceholderPersonalNumber")",
 									mask: "000-000-000-000"
 								});
 							}
 						},
 						{
-							field: "BirthdayDate", label: "Дата рождения",
+							field: "BirthdayDate", label: "@localizer.GetValue("LabelBirthdayDate")",
 							editor: function (container, options) {
 								var input = $('<input id="empEditBirthdayDate" name="BirthdayDate" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите дату рождения",
 									format: 'dd/MM/yyyy',
 								});
 							}
 						},
 						{
-							field: "CompanyId", label: "Компания",
+							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
 							editor: function (container, options) {
 								var input = $('<input id="empEditCompanyId" name="CompanyId" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizer.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -321,12 +320,11 @@
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы",
+							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
 								var input = $('<input id="empEditDateOfBegin" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите дату начала работы",
 									format: 'dd/MM/yyyy',
 								});
 							}
@@ -341,7 +339,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
 		});
 
 		$("#editEmployeeForm").validate({
@@ -372,27 +370,27 @@
 			},
 			messages: {
 				FullName: {
-					required: "Необходимо указать полное имя сотрудника!",
-					minlength: "Длина имени должна быть больше 10 символов!",
-					lettersonly: "Имя сотрудника должно включать в себя только буквы кириллицы!"
+					required: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 10",
+					lettersonly: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidateLettersOnly")"
 				},
 				PersonalNumber: {
-					required: "Необходимо указать ИИН!",
-					pattern: "Укажите ИИН в формате 'XXX-XXX-XXX-XXX'"
+					required: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageInputRequired"): ",
+					pattern: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageFormatError"):'XXX-XXX-XXX-XXX'"
 				},
 				BirthdayDate: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
+					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
 				},
 				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired"): ",
+					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			focusInvalid: true,
@@ -432,7 +430,7 @@
 					});
 				}
 				else {
-					notification.error("Необходимо указать услугу и компанию!");
+					notification.error("@localizer.GetValue("ValidationComboBox")");
 				}
 			}
 		});
@@ -519,19 +517,21 @@
 		});
 		$("#employeeToolbar").kendoToolBar({});
 
-		$("#fullNameFilter").kendoTextBox({});
+		$("#fullNameFilter").kendoTextBox({
+			placeholder: "@localizer.GetValue("PlaceholderFullName")"
+		});
 
 		$("#statusesList").kendoDropDownList({
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Активные", value: 1 },
-				{ text: "Отключенные", value: 2 },
+				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
 			]
 		});
 
 		$("#companyFilter").kendoComboBox({
-			placeholder: "Введите название",
+			placeholder: "@localizer.GetValue("FilterCompany")",
 			dataTextField: "Name",
 			dataValueField: "Id",
 			filter: "contains",
@@ -542,8 +542,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Имени", value: "FullName" },
-				{ text: "Дата рождения", value: "BirthdayDate" }
+				{ text: "@localizer.GetValue("SortingByFullName")", value: "FullName" },
+				{ text: "@localizer.GetValue("SortingByBirthdayDate")", value: "BirthdayDate" }
 			],
 		});
 
@@ -595,16 +595,16 @@
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "FullName", title: "Полное имя", width: "10%" },
-				{ field: "PersonalNumber", title: "ИИН", width: "10%" },
-				{ field: "Phone", title: "Номер", width: "10%" },
-				{ field: "Company.Name", title: "Название компании", width: "10%" },
-				{ field: "BirthdayDate", title: "Дата рождения", width: "15%", format: "{0: dd-MM-yyyy}" },
-				{ field: "DateOfBegin", title: "Дата начала работы", width: "15%", format: "{0: dd-MM-yyyy}" },
+				{ field: "FullName", title: "@localizer.GetValue("LabelFullName")", width: "10%" },
+				{ field: "PersonalNumber", title: "@localizer.GetValue("LabelPersonalNumber")", width: "10%" },
+				{ field: "Phone", title: "@localizer.GetValue("LabelPhone")", width: "10%" },
+				{ field: "Company.Name", title: "@localizer.GetValue("LabelCompany")", width: "10%" },
+				{ field: "BirthdayDate", title: "@localizer.GetValue("LabelBirthdayDate")", width: "15%", format: "{0: dd-MM-yyyy}" },
+				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "15%", format: "{0: dd-MM-yyyy}" },
 				{
 					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "Активно", value: 1 },
-						{ text: "Удалено", value: 2 }
+						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
+						{ text: "@localizer.GetValue("StatusDisable")", value: 2 }
 					]
 				},
 				{
@@ -612,7 +612,7 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "Удаление",
+							text: "@localizer.GetValue("ButtonDelete")",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -622,7 +622,7 @@
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "Востановить",
+							text: "@localizer.GetValue("ButtonActivate")",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -632,7 +632,7 @@
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "Редактирование",
+							text: "@localizer.GetValue("ButtonEdit")",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 								EditEmployee(dataItem);
@@ -644,7 +644,7 @@
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="employeeSearchButton">Добавить</button>'
+					display: '<button type="button" id="employeeInsertButton">@localizer.GetValue("ButtonAdd")</button>'
 				}
 			},
 			scrollable: true,

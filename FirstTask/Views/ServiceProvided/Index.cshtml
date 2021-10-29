@@ -1,24 +1,26 @@
-﻿
+﻿@using FirstTask.Handlers;
+
 @{
-	ViewBag.Title = "Реестр услуг оказываемых организацией";
+	var localizator = new LocalizHandler();
+	ViewBag.Title = localizator.GetValue("HeadingServicesProvided");
 }
 
-<h2>Реестр услуг оказываемых организацией</h2>
+<h2>@localizator.GetValue("HeadingServicesProvided")</h2>
 
 <span id="sProvidedNotifications"></span>
 
 <div class="container">
 	<div id="providedGrid">
 		<div id="sProvidedToolbar">
-			<p>Статус: </p>
+			<p>@localizator.GetValue("FilterStatus")</p>
 			<div id="sProvidedStatusesList"></div>
-			<p>Компания</p>
+			<p>@localizator.GetValue("FilterCompany")</p>
 			<input type="text" id="sCompany" />
-			<p>Услуга:</p>
+			<p>@localizator.GetValue("FilterService")</p>
 			<input type="text" id="sService" />
-			<p>Сортировать по: </p>
+			<p>@localizator.GetValue("FilterSorting")</p>
 			<div id="sProvidedSortingTypes"></div>
-			<button type="button" id="sProvidedSearchButton">Поиск</button>
+			<button type="button" id="sProvidedSearchButton">@localizator.GetValue("ButtonSearch")</button>
 		</div>
 	</div>
 
@@ -32,14 +34,15 @@
 
 	<div>
 		<div id="sProdivdedDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">Вы действительно хотите удалить эту услугу?</h3>
+			<h3 style="margin: 20px 0px;">@localizator.GetValue("DeleteWarningMessage")</h3>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-
+		var services = getServiceList();
+		var companies = getCompanyList();
 
 		var notifElement = $("#sProvidedNotifications");
 		notifElement.kendoNotification();
@@ -74,15 +77,15 @@
 			items: [
 				{
 					type: "group",
-					label: "Добавление оказываемых услуг",
+					label: "@localizator.GetValue("ServiceProvidedInsertFormHeader")",
 					items: [
 						{
-							field: "Company.Id", label: "Компания", validation: { required: true },
+							field: "Company.Id", label: "@localizator.GetValue("LabelCompany")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedInsertCompanyId" name="CompanyId"  />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizator.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -91,12 +94,12 @@
 							}
 						},
 						{
-							field: "ServiceId", label: "Услуга", validation: { required: true },
+							field: "ServiceId", label: "@localizator.GetValue("LabelService")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedInsertServiceId" name="ServiceId"  />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizator.GetValue("PlaceholderService")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -105,23 +108,21 @@
 							}
 						},
 						{
-							field: "ServicePrice", label: "Price", validation: { required: true },
+							field: "ServicePrice", label: "@localizator.GetValue("LabelPrice")",
 							editor: function (container, options) {
-								var input = $('<input id="sProvidedInsertServicePrice" name="ServicePrice" required="required" />');
+								var input = $('<input id="sProvidedInsertServicePrice" name="ServicePrice" />');
 								input.appendTo(container);
 								input.kendoNumericTextBox({
-									placeholder: "Введите стоимость",
 									culture: "de-DE"
 								});
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы", validation: { required: true },
+							field: "DateOfBegin", label: "@localizator.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
-								var input = $('<input id="sProvidedInsertDateOfBegin" name="DateOfBegin" required="required" />');
+								var input = $('<input id="sProvidedInsertDateOfBegin" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите точную дату",
 									format: 'dd/MM/yyyy',
 								});
 							}
@@ -136,7 +137,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='sProvidedCloseInsertWindow' type='button'>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseInsertWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button>"
 		});
 
 		$("#sProvidedInsertForm").validate({
@@ -149,10 +150,10 @@
 			},
 			messages: {
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
-				}
+					required: "@localizator.GetValue("LabelDateOfBegin"): @localizator.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizator.GetValue("LabelDateOfBegin"): @localizator.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizator.GetValue("ValidationMessageDateNonCorrect")"
+				},
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",
@@ -186,7 +187,7 @@
 					});
 				}
 				else {
-					notification.error("Необходимо указать услугу и компанию!");
+					notification.error("@localizator.GetValue("ValidationComboBox")");
 				}
 			}
 		});
@@ -206,7 +207,7 @@
 			items: [
 				{
 					type: "group",
-					label: "Редактирование параметров услуги",
+					label: "@localizator.GetValue("ServiceProvidedEditFormHeader")",
 					items: [
 						{
 							field: "Id", label: "", editor: function (container, options) {
@@ -216,12 +217,12 @@
 							}
 						},
 						{
-							field: "CompanyId", label: "Компания",
+							field: "CompanyId", label: "@localizator.GetValue("LabelCompany")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedEditCompanyId" name="CompanyId" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizator.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -230,12 +231,12 @@
 							}
 						},
 						{
-							field: "ServiceId", label: "Услуга",
+							field: "ServiceId", label: "@localizator.GetValue("LabelService")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedEditServiceId" name="ServiceId" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizator.GetValue("PlaceholderService")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -244,31 +245,29 @@
 							}
 						},
 						{
-							field: "ServicePrice", label: "Price",
+							field: "ServicePrice", label: "@localizator.GetValue("LabelPrice")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedEditServicePrice" name="ServicePrice" />');
 								input.appendTo(container);
 								input.kendoNumericTextBox({
-									placeholder: "Введите стоимость услуги",
 									culture: "de-DE"
 								});
 							}
 						},
 						{
-							field: "DateOfBegin", label: "Дата начала работы",
+							field: "DateOfBegin", label: "@localizator.GetValue("LabelDateOfBegin")",
 							editor: function (container, options) {
 								var input = $('<input id="sProvidedEditDateOfBegin" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "Укажите точную дату",
-									format: 'dd/MM/yy',
+									format: 'dd/MM/yyyy',
 								});
 							}
 						},
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='sProvidedCloseEditWindow' type='button'>Отмена</button>"
+			buttonsTemplate: "<button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseEditWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button>"
 		});
 
 		$("#editSProvidedForm").validate({
@@ -281,10 +280,10 @@
 			},
 			messages: {
 				DateOfBegin: {
-					required: "Необходимо указать дату!",
-					dateFilter: "Укажите дату в формате ДД/ММ/ГГГГ!",
-					pastDate: "Дата не может быть больше действующей!"
-				}
+					required: "@localizator.GetValue("LabelDateOfBegin"): @localizator.GetValue("ValidationMessageInputRequired")",
+					dateFilter: "@localizator.GetValue("LabelDateOfBegin"): @localizator.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
+					pastDate: "@localizator.GetValue("ValidationMessageDateNonCorrect")"
+				},
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",
@@ -319,7 +318,7 @@
 					});
 				}
 				else {
-					notification.error("Необходимо указать услугу и компанию!");
+					notification.error("@localizator.GetValue("ValidationComboBox")");
 				}
 			}
 		});
@@ -401,7 +400,7 @@
 		$("#sProvidedToolbar").kendoToolBar({});
 
 		$("#sCompany").kendoComboBox({
-			placeholder: "Введите название",
+			placeholder: "@localizator.GetValue("PlaceholderCompany")",
 			dataTextField: "Name",
 			dataValueField: "Id",
 			filter: "contains",
@@ -409,7 +408,7 @@
 		});
 
 		$("#sService").kendoComboBox({
-			placeholder: "Введите название",
+			placeholder: "@localizator.GetValue("PlaceholderService")",
 			dataTextField: "Name",
 			dataValueField: "Id",
 			filter: "contains",
@@ -420,8 +419,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Активные", value: 1 },
-				{ text: "Отключенные", value: 2 },
+				{ text: "@localizator.GetValue("StatusActive")", value: 1 },
+				{ text: "@localizator.GetValue("StatusDisable")", value: 2 },
 			],
 		});
 
@@ -429,9 +428,9 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "Дата начала работы", value: "DateOfBegin" },
-				{ text: "Возрастанию стоимости", value: "ServicePrice" },
-				{ text: "Убыванию стоимости", value: "ServicePrice DESC" },
+				{ text: "@localizator.GetValue("SortingByDateOfBegin")", value: "DateOfBegin" },
+				{ text: "@localizator.GetValue("SortingByPriceUp")", value: "ServicePrice" },
+				{ text: "@localizator.GetValue("SortingByPriceDown")", value: "ServicePrice DESC" },
 			],
 		});
 
@@ -478,14 +477,14 @@
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Service.Name", title: "Название услуги", width: "20%" },
-				{ field: "ServicePrice", title: "Стоимость услуги", width: "15%" },
-				{ field: "Company.Name", title: "Название компании", width: "15%" },
-				{ field: "DateOfBegin", title: "Дата начала действия", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Service.Name", title: "@localizator.GetValue("LabelService")", width: "20%" },
+				{ field: "ServicePrice", title: "@localizator.GetValue("LabelPrice")", width: "15%" },
+				{ field: "Company.Name", title: "@localizator.GetValue("LabelCompany")", width: "15%" },
+				{ field: "DateOfBegin", title: "@localizator.GetValue("LabelDateOfBegin")", width: "10%", format: "{0: dd-MM-yyyy}" },
 				{
 					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "Активно", value: 1 },
-						{ text: "Удалено", value: 2 }
+						{ text: "@localizator.GetValue("StatusActive")", value: 1 },
+						{ text: "@localizator.GetValue("StatusDisable")", value: 2 }
 					]
 				},
 
@@ -494,7 +493,7 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "Удаление",
+							text: "@localizator.GetValue("ButtonDelete")",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -504,7 +503,7 @@
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "Востановить",
+							text: "@localizator.GetValue("ButtonActivate")",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -514,7 +513,7 @@
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "Редактирование",
+							text: "@localizator.GetValue("ButtonEdit")",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 								EditSProvided(dataItem);
@@ -526,7 +525,7 @@
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="sProvidedInsertButton">Добавить</button>'
+					display: '<button type="button" id="sProvidedInsertButton">@localizator.GetValue("ButtonAdd")</button>'
 				}
 			},
 			scrollable: true,

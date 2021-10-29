@@ -1,9 +1,11 @@
-﻿
+﻿@using FirstTask.Handlers;
+
 @{
-	ViewBag.Title = "Оказанные услуги";
+	var localizer = new LocalizHandler();
+	ViewBag.Title = localizer.GetValue("HeadingServicesHistory");
 }
 <div class="container">
-	<h2>Оказанные услуги</h2>
+	<h2>@localizer.GetValue("HeadingServicesHistory")</h2>
 
 	<div id="scheduler"></div>
 
@@ -14,7 +16,7 @@
 	<div id="schedulerNotifications"></div>
 
 	<div>
-		<button id="reportWindowButton">Печать</button>
+		<button id="reportWindowButton">@localizer.GetValue("ButtonPrint")</button>
 	</div>
 </div>
 
@@ -28,6 +30,45 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
+
+		
+		var employee = getEmployeeList();
+		var services = getServiceList();
+		var companies = getCompanyList();
+
+		// Добавление возможности выбора всех записей при создании отчета
+		function EmployeeForReport() {
+			var newEmployee = Array.from(employee);
+			let newLenght = newEmployee.push({ Id: -1, FullName: "<-- Выбрать все -->" });
+
+			let buffer = newEmployee[0];
+			newEmployee[0] = newEmployee[newLenght-1];
+			newEmployee[newLenght] = buffer;
+
+			return newEmployee;
+		}
+
+		function ServicesForReport() {
+			var newServices = Array.from(services);
+			let newLenght = newServices.push({ Id: -1, Name: "<-- Выбрать все -->" });
+
+			let buffer = newServices[0];
+			newServices[0] = newServices[newLenght - 1];
+			newServices[newLenght - 1] = buffer;
+
+			return newServices;
+		}
+
+		function CompaniesForReport() {
+			var newCompanies = Array.from(companies);
+			let newLenght = newCompanies.push({ Id: -1, Name: "<-- Выбрать все -->" });
+
+			let buffer = newCompanies[0];
+			newCompanies[0] = newCompanies[newLenght - 1];
+			newCompanies[newLenght - 1] = buffer;
+
+			return newCompanies;
+		}
 
 		var notifElement = $("#schedulerNotifications");
 		notifElement.kendoNotification();
@@ -58,24 +99,24 @@
 			items: [
 				{
 					type: "group",
-					label: "Получение отчета оказанных услуг",
+					label: "@localizer.GetValue("ReportFormHeader")",
 					items: [
 						{
-							field: "CompanyId", label: "Компания", validation: { required: false },
+							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
 							editor: function (container, options) {
 								var input = $('<input id="reportCompanyId" name="CompanyId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите название",
+									placeholder: "@localizer.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: companies
+									dataSource: CompaniesForReport()
 								});
 							}
 						},
 						{
-							field: "ServiceId", label: "Услуга", validation: { required: false },
+							field: "ServiceId", label: "@localizer.GetValue("LabelService")",
 							editor: function (container, options) {
 								var input = $('<input id="reportServiceId" name="ServiceId"/>');
 								input.appendTo(container);
@@ -84,28 +125,26 @@
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: services,
-									optionLabel: "Все",
+									dataSource: ServicesForReport()
 								});
 							}
 						},
 						{
-							field: "EmployeeId", label: "Работник", validation: { required: false },
+							field: "EmployeeId", label: "@localizer.GetValue("LabelEmployee")",
 							editor: function (container, options) {
 								var input = $('<input id="reportEmployeeId" name="EmployeeId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Введите имя",
+									placeholder: "@localizer.GetValue("PlaceholderEmployee")",
 									dataTextField: "FullName",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: employee,
-									optionLabel: "Все",
+									dataSource: EmployeeForReport()
 								});
 							}
 						},
 						{
-							field: "Date", label: "Отчет в период с", validation: { required: true },
+							field: "Date", label: "@localizer.GetValue("LabelReportPeriod")",
 							editor: function (container, options) {
 								var flexContainer = $('<div style="display: flex; font-weight: bold; justify-content: space-around; margin: 10px 0px;"/></div>');
 								var input1 = $('<input id="reportDateBegin" name="DateBegin"/>');
@@ -114,20 +153,18 @@
 								var p2 = $('<p>по </p>');
 								input1.appendTo(flexContainer);
 								input1.kendoDatePicker({
-									placeholder: "Укажите точную дату",
-									format: 'MM/dd/yy',
+									format: 'MM/dd/yyyy',
 								});
 								p2.appendTo(flexContainer);
 								input2.appendTo(flexContainer);
 								input2.kendoDatePicker({
-									placeholder: "Укажите точную дату",
-									format: 'MM/dd/yy',
+									format: 'MM/dd/yyyy',
 								});
 								flexContainer.appendTo(container);
 							}
 						},
 						{
-							field: "Type", label: "Тип конечного файла", validation: { required: false },
+							field: "Type", label: "@localizer.GetValue("LabelType")",
 							editor: function (container, options) {
 								var input = $('<input id="reportReportType" name="Type"/>');
 								input.appendTo(container);
@@ -135,7 +172,7 @@
 									dataTextField: "text",
 									dataValueField: "value",
 									dataSource: [
-										{ text: "Exel", value: 1 },
+										{ text: "Excel", value: 1 },
 										{ text: "Word", value: 2 },
 										{ text: "PDF", value: 3 },
 										{ text: "XML", value: 4 },
@@ -147,7 +184,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-primary' type='submit'>Получить</button> <button class='btn-default' id='reportCloseWindow' type='button'>Закрыть</button>"
+			buttonsTemplate: "<button class='btn-primary' type='submit'>@localizer.GetValue("ButtonPrint")</button> <button class='btn-default' id='reportCloseWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button>"
 		});
 
 		formReport.bind("submit", function (e) {
@@ -259,6 +296,7 @@
 		});
 		$("#scheduler").kendoScheduler({
 			dataSource: dataSource,
+			deleteWindowTitle: "123123",
 			startTime: new Date("2021/01/01 07:00"),
 			endTime: new Date("2021/12/01 18:00"),
 			showWorkHours: "none",
@@ -274,17 +312,26 @@
 					slotHeight: 10,
 					dateHeaderTemplate: kendo.template("<span class='days-name'>#=kendo.toString(date, 'dd.MM.yyyy')#</span>"),
 					allDaySlot: false,
-					selectedDateFormat: "{0:dddd dd.MM.yyyy}"
+					selectedDateFormat: "{0:dddd dd.MM.yy}"
 				}],
 			dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd/M')#</u> - (#=percentage(date)#%)"),
+			messages: {
+				deleteWindowTitle: "@localizer.GetValue("ButtonDelete")",
+				cancel: "Нет",
+				destroy: "Да",
+			},
 			editable: {
+				confirmation: "@localizer.GetValue("DeleteWarningMessage")",
 				template: $("#schedulerEditor").html(),
 				window: {
-					title: "Оказанная услуга",
+					title: "@localizer.GetValue("SchedulerFormHeader")",
 					width: "650px",
 					height: "400px",
 					scrollable: false
 				}
+			},
+			destroy: {
+				template: $("#schedulerEditor").html(),
 			},
 			edit: function (e) {
 				$("#schedulerForm").kendoForm({
@@ -292,7 +339,7 @@
 					buttonsTemplate: "",
 					items: [
 						{
-							field: "DateOfCreate", label: "Начало", validation: { required: true },
+							field: "DateOfCreate", label: "@localizer.GetValue("LabelDateOfBegin")", validation: { required: true },
 							editor: function (container, options) {
 								let input = $('<input id="schedulerDateOfCreate" type="datetime" name="DateOfCreate" required="required" />');
 								input.appendTo(container);
@@ -302,13 +349,13 @@
 							}
 						},
 						{
-							field: "ServiceId", label: "Услуга", validation: { required: true },
+							field: "ServiceId", label: "@localizer.GetValue("LabelService")", validation: { required: true },
 							editor: function (container, options) {
 								let input = $('<input id="schedulerService" name="SchedulerServiceId" required="required" />');
 								input.appendTo(container);
 								input.kendoComboBox({
 									dataSource: services,
-									placeholder: "Название услуги",
+									placeholder: "@localizer.GetValue("PlaceholderService")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -316,13 +363,13 @@
 							}
 						},
 						{
-							field: "CompanyId", label: "Компания", validation: { required: true },
+							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")", validation: { required: true },
 							editor: function (container, options) {
 								let input = $('<input id="schedulerCompany" name="SchedulerCompanyId" required="required" />');
 								input.appendTo(container);
 								input.kendoComboBox({
 									dataSource: companies,
-									placeholder: "Название компании",
+									placeholder: "@localizer.GetValue("PlaceholderCompany")",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
@@ -330,12 +377,12 @@
 							}
 						},
 						{
-							field: "EmployeeId", label: "Сотрудник", validation: { required: true },
+							field: "EmployeeId", label: "@localizer.GetValue("LabelEmployee")", validation: { required: true },
 							editor: function (container, options) {
 								let input = $('<input id="schedulerEmployee" name="SchedulerEmployeeId" required="required" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "Имя сотрудника",
+									placeholder: "@localizer.GetValue("LabelEmployee")",
 									dataTextField: "FullName",
 									dataValueField: "Id",
 									filter: "contains",
@@ -360,8 +407,10 @@
 				let buttonsContainer = e.container.find(".k-edit-buttons");
 				let cancelButton = buttonsContainer.find(".k-scheduler-cancel");
 				let saveButton = buttonsContainer.find(".k-scheduler-update");
-				cancelButton.text("Отмена");
-				saveButton.text("Применить");
+				let deleteButton = buttonsContainer.find(".k-scheduler-delete");
+				cancelButton.text("@localizer.GetValue("ButtonCancellation")");
+				saveButton.text("@localizer.GetValue("ButtonSave")");
+				deleteButton.text("@localizer.GetValue("ButtonDelete")");
 				saveButton.click(function () {
 					if (e.event.Id > 0) {
 						let sheduler = $("#scheduler").data("kendoScheduler");
@@ -371,6 +420,7 @@
 			}
 		});
 
+		$('.k-nav-today').text("@localizer.GetValue("ButtonToday")");
 		$(".k-nav-today").on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
@@ -384,6 +434,9 @@
 		$(".k-nav-next").on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
+		});
+		$(".k-event-delete").on("click", function () {
+			console.log("1321212");
 		});
 	});
 </script>

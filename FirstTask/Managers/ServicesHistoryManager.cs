@@ -49,7 +49,7 @@ namespace FirstTask.Managers
 				model.Employee = mapper.Map<EmployeeModel>(employeeEntity);
 				model.DateOfCreate = el.DateOfCreate;
 				model.DateOfFinish = el.DateOfCreate.AddMinutes(15.00);
-				// TODO: Change on JS Hedler
+
 				model.Title = $"Наименование услуги: {model.Service.Name} \n Стоимость: {model.Service.Price} \n Выполнил сотрудник компании: {model.Company.Name} \n Имя: {model.Employee.FullName}";
 
 				models.Add(model);
@@ -136,11 +136,11 @@ namespace FirstTask.Managers
 			string hasFilter = "Задана";
 			string companyName = filterEmpty, serviceName = filterEmpty, employeeName = filterEmpty;
 
-			if (query.ServiceId != null)
+			if (query.ServiceId != null && query.ServiceId > 0)
 				serviceName = hasFilter;
-			if (query.EmployeeId != null)
+			if (query.EmployeeId != null && query.EmployeeId > 0)
 				employeeName = hasFilter;
-			if (query.CompanyId != null)
+			if (query.CompanyId != null && query.CompanyId > 0)
 				companyName = hasFilter;
 
 			var report = new StiReport();
