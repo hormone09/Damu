@@ -29,6 +29,7 @@ body {
 	text-align: center;
 	margin: 40px 0px;
 	font-family: 'Franklin Gothic';
+	font-size: 20px;
 }
 button {
 	text-decoration: none;
@@ -213,6 +214,15 @@ h1{
 
 .k-nav-today {
 	height: 25px;
+	background-image: none;
+}
+.k-nav-prev {
+	height: 25px;
+	background-image: none;
+}
+.k-nav-next {
+	height: 25px;
+	background-image: none;
 }
 .k-calendar {
 	font-size: 12px;
@@ -221,19 +231,60 @@ h1{
 	font-size: 14px;
 }
 .k-form {
-	margin: 0px;
+	justify-content: space-between;
+	width: 90%;
+	margin: 0% 5%;
 	font-size: 12px;
 }
-.k-scheduler-refresh{
+.k-form .k-form-legend{
+	text-align: center;
+	font-size: 18px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin: 15px 0px;
+}
+	.k-form .k-form-fieldset {
+		margin: 20px 0px;
+		width: 100%;
+		display: block;
+	}
+		.k-form .k-form-fieldset .k-form-field {
+			font-size: 15px;
+			width: 100%;
+			margin: 30px 0px;
+			align-items: flex-end;
+			text-align: unset;
+		}
+			.k-form .k-form-fieldset .k-form-field .k-form-label {
+				font-family: 'Times New Roman';
+				width: 55%;
+				align-items: flex-start;
+				border-bottom: 1px solid darkgray;
+			}
+			.k-form .k-form-fieldset .k-form-field .k-form-field-wrap{
+				margin: 0px 30px;
+			}
+			.k-form .form-buttons
+			{
+				padding: 0px;
+				margin: 0px 15%;
+				width: 70%;
+				display: flex;
+				justify-content: space-between;
+			}
+.k-scheduler-refresh {
 	visibility: hidden;
 }
 .validateContainer {
-	height: 50px;
-	width: 110%;
+	margin: 0px;
+	height: 15px;
+	width: 140%;
 }
 .validationFormMessage {
-	color: red;
-	margin: 20px 0px;
+	font-size: 15px;
+	font-weight: normal;
+	color: darkred;
+	font-style: italic;
 }
 
 @keyframes rigth-block {
@@ -262,3 +313,18 @@ h1{
 			opacity: 100%;
 		}
 	}
+
+/* For Tablets */
+@media screen and (max-width: 1280px) {
+	.nav a {
+		font-size: 12px;
+	}
+	.k-grid {
+		max-width: 1000px;
+		min-width: 1000px;
+	}
+	.container{
+		max-width: 80%;
+		margin: 0% 10%;
+	}
+}

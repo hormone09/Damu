@@ -69,8 +69,8 @@
 
 		$("#employeeInsertForm").kendoForm({
 			visible: false,
-			formData: {
-			},
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -148,7 +148,7 @@
 					]
 				},
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
 		});
 		$("#employeeInsertForm").validate({
 			rules: {
@@ -201,9 +201,6 @@
 					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
 				}
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function (e) {
 				var comboBoxesIsValid = ComboBoxsValidation(["empInsertCompanyId"]);
 				if (comboBoxesIsValid) {
@@ -237,6 +234,12 @@
 				else {
 					notification.error("@localizer.GetValue("ValidationComboBox")");
 				}
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 
@@ -255,10 +258,12 @@
 
 		$("#editEmployeeForm").kendoForm({
 			visible: true,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
-					label: "@localizer.GetValue("EmployeeEditForm")",
+					label: "@localizer.GetValue("EmployeeEditFormHeader")",
 					items: [
 						{
 							field: "Id", label: "", editor: function (container, options) {
@@ -339,7 +344,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
 		});
 
 		$("#editEmployeeForm").validate({
@@ -393,9 +398,6 @@
 					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
 				}
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function (e) {
 				var comboBoxesIsValid = ComboBoxsValidation(["empEditCompanyId"]);
 				if (comboBoxesIsValid) {
@@ -432,6 +434,12 @@
 				else {
 					notification.error("@localizer.GetValue("ValidationComboBox")");
 				}
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 

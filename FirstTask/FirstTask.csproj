@@ -324,10 +324,6 @@
     <Content Include="Content\Images\3.jpg" />
     <Content Include="Content\Images\doctor1.jpg" />
     <Content Include="Content\Images\logo.png" />
-    <Content Include="Content\js\scheduler.js" />
-    <Content Include="Content\js\emloyee.js" />
-    <Content Include="Content\js\company.js" />
-    <Content Include="Content\js\serviceProvided.js" />
     <Content Include="Content\js\styles.js" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1-t.png" />
     <Content Include="Content\kendoui.for.jquery.2021.3.914.trial\apptemplates\dashboard\content\employees\1.png" />
@@ -4624,7 +4620,6 @@
     <None Include="Content\kendoui.for.jquery.2021.3.914.trial\vsdoc\kendo.web-vsdoc.js" />
     <None Include="Content\kendoui.for.jquery.2021.3.914.trial\vsdoc\kendo.web.min.intellisense.js" />
     <Content Include="Content\js\main.js" />
-    <Content Include="Content\js\service.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

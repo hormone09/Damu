@@ -72,8 +72,8 @@
 
 		$("#sProvidedInsertForm").kendoForm({
 			visible: false,
-			formData: {
-			},
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -137,7 +137,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseInsertWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseInsertWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button></div>"
 		});
 
 		$("#sProvidedInsertForm").validate({
@@ -155,9 +155,6 @@
 					pastDate: "@localizator.GetValue("ValidationMessageDateNonCorrect")"
 				},
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function (e) {
 				var comboBoxesIsValid = ComboBoxsValidation(["sProvidedInsertServiceId", "sProvidedInsertCompanyId"]);
 				if (comboBoxesIsValid) {
@@ -189,6 +186,12 @@
 				else {
 					notification.error("@localizator.GetValue("ValidationComboBox")");
 				}
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 
@@ -204,6 +207,8 @@
 
 		$("#editSProvidedForm").kendoForm({
 			visible: true,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -264,10 +269,17 @@
 								});
 							}
 						},
+						{
+							field: "Validator", label: "",
+							editor: function (container, options) {
+								var block = $('<div class="validateContainer"/>');
+								block.appendTo(container);
+							}
+						}
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseEditWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizator.GetValue("ButtonSave")</button> <button class='btn-danger' id='sProvidedCloseEditWindow' type='button'>@localizator.GetValue("ButtonCancellation")</button></div>"
 		});
 
 		$("#editSProvidedForm").validate({
@@ -285,9 +297,6 @@
 					pastDate: "@localizator.GetValue("ValidationMessageDateNonCorrect")"
 				},
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function (e) {
 				var comboBoxesIsValid = ComboBoxsValidation(["sProvidedEditCompanyId", "sProvidedEditServiceId"]);
 				if (comboBoxesIsValid) {
@@ -320,6 +329,12 @@
 				else {
 					notification.error("@localizator.GetValue("ValidationComboBox")");
 				}
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 

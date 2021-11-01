@@ -71,6 +71,8 @@
 
 		var formInsert = $("#servicesInsertForm").kendoForm({
 			visible: false,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -127,7 +129,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button></div>"
 		});
 
 		$("#servicesInsertForm").validate({
@@ -153,6 +155,7 @@
 			messages: {
 				Name: {
 					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
 				},
 				Price: {
 					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
@@ -167,9 +170,6 @@
 					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
 				}
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function () {
 				var data = formInsert.serializeArray();
 
@@ -189,6 +189,12 @@
 							return notification.error(json.Error);
 					}
 				});
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 
@@ -203,6 +209,8 @@
 
 		var formEdit = $("#editServiceForm").kendoForm({
 			visible: true,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -265,7 +273,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseEditWindow' type='button'>Отмена</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseEditWindow' type='button'>Отмена</button></div>"
 		});
 
 		// Edit Validation and Submit
@@ -292,6 +300,7 @@
 			messages: {
 				Name: {
 					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
+					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
 				},
 				Price: {
 					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
@@ -306,9 +315,6 @@
 					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
 				}
 			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorLabelContainer: ".validateContainer",
 			submitHandler: function () {
 				var data = formEdit.serializeArray();
 
@@ -328,6 +334,12 @@
 						}
 					}
 				});
+			},
+			focusInvalid: true,
+			errorClass: "validationFormMessage",
+			errorPlacement: function (error, element) {
+				$(".validateContainer").empty();
+				error.appendTo('.validateContainer');
 			}
 		});
 

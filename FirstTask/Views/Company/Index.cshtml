@@ -24,6 +24,7 @@
 
 	<div id="companiesInsertWindow">
 		<form id="companiesInsertForm"></form>
+
 	</div>
 
 	<div id="companyEditWindow">
@@ -50,15 +51,18 @@
 
 		$("body").on("click", "#companiesCloseInsertWindow", function () {
 			$("#companiesInsertWindow").data("kendoDialog").close();
+			$("#companiesInsertForm").trigger('reset');
+			$(".validateContainer").empty();
 		});
 
 		$("body").on("click", "#companiesCloseEditWindow", function () {
 			$("#companyEditWindow").data("kendoDialog").close();
+			$("#companyEditForm").trigger('reset');
+			$(".validateContainer").empty();
 		});
 
 		$("#companiesInsertWindow").kendoDialog({
 			modal: true,
-			width: "700px",
 			closable: false,
 			visible: false,
 			title: false,
@@ -71,6 +75,8 @@
 
 		var formInsert = $("#companiesInsertForm").kendoForm({
 			visible: false,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
 					type: "group",
@@ -82,6 +88,7 @@
 								var input = $('<input id="insertCompaniesName" name="Name"/>');
 								input.appendTo(container);
 								input.kendoTextBox();
+								console.log(container)
 							}
 						},
 						{
@@ -208,8 +215,15 @@
 
 		var formEdit = $("#companyEditForm").kendoForm({
 			visible: true,
+			orientation: "horizontal",
+			width: "100%",
 			items: [
 				{
+					type: "group",
+					label: "@localizer.GetValue("CompanyEditFormHeader")",
+					items: [
+
+						{
 					field: "Name", label: "@localizer.GetValue("LabelName")", placeholder: "@localizer.GetValue("PlaceholderName")",
 					editor: function (container, options) {
 						var input = $('<input id="editCompaniesName" name="Name"/>');
@@ -256,8 +270,10 @@
 						block.appendTo(container);
 					}
 				}
+					]
+				}
 			],
-			buttonsTemplate: "<button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
 		});
 
 
@@ -319,7 +335,7 @@
 			messages: {
 				Name: {
 					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 6",
+					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
 				},
 				BIN: {
 					required: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageInputRequired")",
