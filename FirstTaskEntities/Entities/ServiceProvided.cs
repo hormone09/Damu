@@ -1,10 +1,5 @@
-﻿using FirstTaskEntities.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Models
 {
@@ -41,7 +36,7 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Статус активности услуги
 		/// </summary>
-		public Statuses Status { get; set; }
+		public int Status { get; set; }
 
 		[NotMapped]
 		public int TotalRows { get; set; }

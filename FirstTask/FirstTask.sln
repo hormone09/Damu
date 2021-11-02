@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperTest", "..\DapperTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstTaskEntities", "..\FirstTaskEntities\FirstTaskEntities.csproj", "{61126C1F-ADB1-46CA-B1DE-011B4CF27095}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseEditor", "..\DatabaseEditor\DatabaseEditor.csproj", "{D6D28E2C-424B-4C4D-9667-D4E37146959B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{61126C1F-ADB1-46CA-B1DE-011B4CF27095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61126C1F-ADB1-46CA-B1DE-011B4CF27095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61126C1F-ADB1-46CA-B1DE-011B4CF27095}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6D28E2C-424B-4C4D-9667-D4E37146959B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6D28E2C-424B-4C4D-9667-D4E37146959B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6D28E2C-424B-4C4D-9667-D4E37146959B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6D28E2C-424B-4C4D-9667-D4E37146959B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

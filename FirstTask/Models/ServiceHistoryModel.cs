@@ -1,13 +1,9 @@
 ﻿using FirstTaskEntities.Enums;
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FirstTask.Models
 {
-	public class ServicesHistoryModel
+	public class ServiceHistoryModel
 	{
 		public int Id { get; set; }
 		public ServiceModel Service { get; set; }

@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
+using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
 using FirstTaskEntities.Repository;
+
 using System;
 using System.Collections.Generic;
-using FirstTask.Handlers;
-using System.Text.RegularExpressions;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace FirstTask.Managers
 {
@@ -28,6 +30,12 @@ namespace FirstTask.Managers
 
 		public List<CompanyModel> List(CompanyViewQuery queryView)
 		{
+			if(queryView.Page == null)
+			{
+				queryView.Page = 1;
+				queryView.PageSize = 20;
+			}
+
 			var query = mapper.Map<CompanyQueryList>(queryView);
 			var entities = companyRep.List(query);
 			var models = mapper.Map<List<CompanyModel>>(entities);
@@ -83,18 +91,36 @@ namespace FirstTask.Managers
 
 		public MessageHandler Delete(int id)
 		{
-			try
-			{
-				companyRep.Remove(id);
-				var serviceProvidedEntities = serviceProvidedRepository.List(new ServiceProvidedQueryList { CompanyId = id, Status = Statuses.Active, Skip = 0, Limit = 100000000});
-				foreach (var el in serviceProvidedEntities)
-					serviceProvidedRepository.Remove(el.Id);
+			string connectionString = ConfigurationManager.AppSettings["connection"];
 
-				return new MessageHandler(true, strings.DeleteSuccess);
-			}
-			catch (Exception exception)
+			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				throw exception;
+				connection.Open();
+
+				SqlTransaction transaction = connection.BeginTransaction();
+
+				SqlCommand command = connection.CreateCommand();
+				command.Transaction = transaction;
+
+				try
+				{
+					command.CommandText = "UPDATE ServiceProvided SET Status = @Status WHERE CompanyId = @CompanyId";
+					command.Parameters.Add(new SqlParameter { Value = id, ParameterName = "CompanyId" });
+					command.Parameters.Add(new SqlParameter { Value = Statuses.Disabled, ParameterName = "Status" });
+					command.ExecuteNonQuery();
+
+					command.CommandText = "UPDATE Companies SET Status = @Status WHERE Id = @CompanyId";
+					command.ExecuteNonQuery();
+
+					transaction.Commit(); 
+					
+					return new MessageHandler(true, strings.DeleteSuccess);
+				}
+				catch(Exception ex)
+				{
+					transaction.Rollback();
+					throw ex;
+				}
 			}
 		}
 
@@ -102,7 +128,13 @@ namespace FirstTask.Managers
 		{
 			try
 			{
-				companyRep.Activate(id);
+				var entity = companyRep.Find(id);
+
+				entity.DateOfBegin = DateTime.Now;
+				entity.DateOfFinish = null;
+				entity.Status = (int)Statuses.Active;
+
+				companyRep.Update(entity);
 
 				return new MessageHandler(true, strings.ActivateSuccess);
 			}

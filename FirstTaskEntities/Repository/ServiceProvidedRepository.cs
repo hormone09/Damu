@@ -1,16 +1,12 @@
 ﻿using Dapper;
 using FirstTaskEntities.Enums;
-using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
@@ -74,13 +70,16 @@ namespace FirstTaskEntities.Repository
 			}
 		}
 
-		public void Activate(int id)
+		public ServiceProvided Find(int id)
 		{
+			var result = new ServiceProvided();
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE ServiceProvided SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
-				connection.Query<ServiceProvided>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
+				var query = "SELECT * FROM ServiceProvided WHERE Id = @Id";
+				result = connection.Query<ServiceProvided>(query, new { Id = id }).FirstOrDefault();
 			}
+
+			return result;
 		}
 	}
 }

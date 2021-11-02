@@ -9,7 +9,6 @@ using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace FirstTask.Managers
 {
@@ -27,6 +26,12 @@ namespace FirstTask.Managers
 		}
 		public List<EmployeeModel> List(EmployeeViewQuery queryView)
 		{
+			if (queryView.Page == null)
+			{
+				queryView.Page = 1;
+				queryView.PageSize = 20;
+			}
+
 			var query = mapper.Map<EmployeeQueryList>(queryView);
 			var entities = emloyeeRep.List(query);
 			var models = mapper.Map<List<EmployeeModel>>(entities);
@@ -118,7 +123,13 @@ namespace FirstTask.Managers
 		{
 			try
 			{
-				emloyeeRep.Activate(id);
+				var entity = emloyeeRep.Find(id);
+
+				entity.Status = (int)Statuses.Active;
+				entity.DateOfBegin = DateTime.Now;
+				entity.DateOfFinish = null;
+
+				emloyeeRep.Update(entity);
 
 				return new MessageHandler(true, strings.ActivateSuccess);
 			}

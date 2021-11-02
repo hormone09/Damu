@@ -11,7 +11,7 @@ using FirstTaskEntities.Interfaces;
 
 namespace FirstTaskEntities.Repository
 {
-	public class ServicesRepository : IRepository<Service>
+	public class ServiceRepository : IRepository<Service>
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
@@ -77,16 +77,8 @@ namespace FirstTaskEntities.Repository
 				var query = "SELECT * FROM Services WHERE Id = @Id";
 				result = connection.Query<Service>(query, new { Id = id }).FirstOrDefault();
 			}
-			return result;
-		}
 
-		public void Activate(int id)
-		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				string query = "UPDATE Services SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
-				connection.Query<Service>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
-			}
+			return result;
 		}
 	}
 }

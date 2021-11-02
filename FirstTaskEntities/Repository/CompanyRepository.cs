@@ -1,17 +1,13 @@
 ﻿using Dapper;
-
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 
 namespace FirstTaskEntities.Repository
 {
@@ -66,16 +62,8 @@ namespace FirstTaskEntities.Repository
 
 		public void Remove(int id)
 		{
-			// TODO: Перенести в менеджер
 			using (var connection = new SqlConnection(connectionString))
 			{
-				// Перенести в менеджер работу с 
-				/*string query = "DELETE FROM ServicesProvided WHERE CompanyId = @Id";
-				connection.Query(query, new { Id = id });
-
-				query = "DELETE FROM Employee WHERE CompanyId = @Id";
-				connection.Query(query, new { Id = id });*/
-
 				var query = "UPDATE Companies SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
 				connection.Query<Company>(query, new { Id = id, Status = Statuses.Disabled, DateOfFinish = DateTime.Now });
 			}
@@ -90,15 +78,6 @@ namespace FirstTaskEntities.Repository
 				result = connection.Query<Company>(query, new { Id = id }).FirstOrDefault();
 			}
 			return result;
-		}
-
-		public void Activate(int id)
-		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				string query = "UPDATE Companies SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
-				connection.Query<Company>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
-			}
 		}
 	}
 }

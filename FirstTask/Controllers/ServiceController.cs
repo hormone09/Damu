@@ -1,9 +1,7 @@
-﻿using FirstTaskEntities.Models;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FirstTask.Managers;
 using FirstTask.ViewQueris;
 using FirstTask.Models;
-using System.Collections.Generic;
 using FirstTask.Handlers;
 using System.Linq;
 

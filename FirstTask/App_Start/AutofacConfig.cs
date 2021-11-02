@@ -29,7 +29,7 @@ namespace FirstTask.App_Start
 			builder.RegisterType<CompanyManager>().AsSelf();
 			builder.RegisterType<EmployeeManager>().AsSelf();
 			builder.RegisterType<ServiceProvidedManager>().AsSelf();
-			builder.RegisterType<ServicesHistoryManager>().AsSelf();
+			builder.RegisterType<ServiceHistoryManager>().AsSelf();
 			builder.RegisterModule<AutoFacModule>();
 
 			// создаем новый контейнер с теми зависимостями, которые определены выше

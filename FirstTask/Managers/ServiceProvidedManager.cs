@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-
 using FirstTask.Handlers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
-
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
@@ -11,7 +9,6 @@ using FirstTaskEntities.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace FirstTask.Managers
 {
@@ -21,7 +18,7 @@ namespace FirstTask.Managers
 
 		private ServiceProvidedRepository providedRepository = new ServiceProvidedRepository();
 		private CompanyRepository companyRepository = new CompanyRepository();
-		private ServicesRepository servicesRepository = new ServicesRepository();
+		private ServiceRepository servicesRepository = new ServiceRepository();
 		private IMapper mapper;
 
 		public ServiceProvidedManager(IMapper mapper)
@@ -29,9 +26,15 @@ namespace FirstTask.Managers
 			this.mapper = mapper;
 		}
 		
-		public List<ServiceProvidedModel> List(ServiceProvidedViewQuery viewQuery)
+		public List<ServiceProvidedModel> List(ServiceProvidedViewQuery queryView)
 		{
-			var query = mapper.Map<ServiceProvidedQueryList>(viewQuery);
+			if (queryView.Page == null)
+			{
+				queryView.Page = 1;
+				queryView.PageSize = 20;
+			}
+
+			var query = mapper.Map<ServiceProvidedQueryList>(queryView);
 			var entities = providedRepository.List(query);
 			var models = mapper.Map<List<ServiceProvidedModel>>(entities);
 
@@ -113,7 +116,13 @@ namespace FirstTask.Managers
 		{
 			try
 			{
-				providedRepository.Activate(id);
+				var entity = providedRepository.Find(id);
+
+				entity.Status = (int)Statuses.Active;
+				entity.DateOfBegin = DateTime.Now;
+				entity.DateOfFinish = null;
+
+				providedRepository.Update(entity);
 
 				return new MessageHandler(true, strings.ActivateSuccess);
 			}

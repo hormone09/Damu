@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using FirstTask.Enums;
+﻿using System.Web.Mvc;
 using FirstTask.Managers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
@@ -15,9 +7,9 @@ namespace FirstTask.Controllers
 {
 	public class ServicesHistoryController : Controller
 	{
-		private ServicesHistoryManager manager;
+		private ServiceHistoryManager manager;
 
-		public ServicesHistoryController(ServicesHistoryManager manager)
+		public ServicesHistoryController(ServiceHistoryManager manager)
 		{
 			this.manager = manager;
 		}
@@ -36,7 +28,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Create(ServicesHistoryModel model)
+		public JsonResult Create(ServiceHistoryModel model)
 		{
 			var message = manager.Add(model);
 
@@ -44,7 +36,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Update(ServicesHistoryModel model)
+		public JsonResult Update(ServiceHistoryModel model)
 		{
 			var message = manager.Update(model);
 

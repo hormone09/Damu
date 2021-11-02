@@ -1,6 +1,4 @@
-﻿using FirstTaskEntities.Enums;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,7 +37,7 @@ namespace FirstTaskEntities.Models
 		/// </summary>
 		public DateTime? DateOfFinish { get; set; }
 
-		public Statuses Status { get; set; }
+		public int Status { get; set; }
 
 		[NotMapped]
 		public int TotalRows { get; set; }

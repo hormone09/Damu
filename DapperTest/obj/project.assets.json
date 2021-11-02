@@ -11,19 +11,9 @@
           "lib/net461/Dapper.dll": {}
         }
       },
-      "DatabaseEditor/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        }
-      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
-          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -57,19 +47,9 @@
           "lib/net461/Dapper.dll": {}
         }
       },
-      "DatabaseEditor/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        }
-      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
-          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -103,19 +83,9 @@
           "lib/net461/Dapper.dll": {}
         }
       },
-      "DatabaseEditor/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        }
-      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
-          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -149,19 +119,9 @@
           "lib/net461/Dapper.dll": {}
         }
       },
-      "DatabaseEditor/1.0.0": {
-        "type": "project",
-        "compile": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DatabaseEditor.dll": {}
-        }
-      },
       "FirstTask/1.0.0": {
         "type": "project",
         "dependencies": {
-          "DatabaseEditor": "1.0.0",
           "FirstTaskEntities": "1.0.0"
         },
         "compile": {
@@ -205,11 +165,6 @@
         "lib/netstandard2.0/Dapper.xml"
       ]
     },
-    "DatabaseEditor/1.0.0": {
-      "type": "project",
-      "path": "../DatabaseEditor/DatabaseEditor.csproj",
-      "msbuildProject": "../DatabaseEditor/DatabaseEditor.csproj"
-    },
     "FirstTask/1.0.0": {
       "type": "project",
       "path": "../FirstTask/FirstTask.csproj",
@@ -234,11 +189,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+      "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj",
       "projectName": "DapperTest",
-      "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+      "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj",
       "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\obj\\",
+      "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
@@ -254,11 +209,11 @@
       "frameworks": {
         "net472": {
           "projectReferences": {
-            "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
-              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj"
+            "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj"
             },
-            "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj": {
-              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj"
+            "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj": {
+              "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj"
             }
           }
         }

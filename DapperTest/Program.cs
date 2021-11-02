@@ -18,11 +18,11 @@ namespace DapperTest
 	{
 		static string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		static ServicesRepository serviceRep = new ServicesRepository();
+		static ServiceRepository serviceRep = new ServiceRepository();
 		static CompanyRepository companyRep = new CompanyRepository();
 		static EmployeeRepository employeeRep = new EmployeeRepository();
 		static ServiceProvidedRepository serviceProvidedRep = new ServiceProvidedRepository();
-		static ServicesHistoryRepository serviceHistoryRep = new ServicesHistoryRepository();
+		static ServiceHistoryRepository serviceHistoryRep = new ServiceHistoryRepository();
 
 
 		static void Main(string[] args)
@@ -136,7 +136,7 @@ namespace DapperTest
 				var companyId = companiesMas[random.Next(0, companiesMas.Length - 1)];
 				var serviceId = servicesMas[random.Next(0, servicesMas.Length - 1)];
 				var employeeId = employeeMas[random.Next(0, employeeMas.Length - 1)];
-				var obj = new ServicesHistory
+				var obj = new ServiceHistory
 				{
 					EmployeeId = employeeId,
 					CompanyId = companyId,

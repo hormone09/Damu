@@ -3,14 +3,11 @@ using FirstTaskEntities.Enums;
 using FirstTaskEntities.Interfaces;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
-
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FirstTaskEntities.Repository
 {
@@ -87,15 +84,6 @@ namespace FirstTaskEntities.Repository
 			}
 
 			return result;
-		}
-
-		public void Activate(int id)
-		{
-			using (var connection = new SqlConnection(connectionString))
-			{
-				string query = "UPDATE Employee SET Status = @Status, DateOfBegin = @DateOfBegin, DateOfFinish = null WHERE Id = @Id";
-				connection.Query<Employee>(query, new { Id = id, Status = Statuses.Active, DateOfBegin = DateTime.Now });
-			}
 		}
 	}
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {}
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj",
+        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj",
         "projectName": "FirstTaskEntities",
-        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj",
+        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj",
         "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\obj\\",
+        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [

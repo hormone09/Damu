@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj": {}
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj": {
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj",
         "projectName": "DapperTest",
-        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\DapperTest.csproj",
+        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\DapperTest.csproj",
         "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\DapperTest\\obj\\",
+        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DapperTest\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
@@ -27,11 +27,11 @@
         "frameworks": {
           "net472": {
             "projectReferences": {
-              "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
-                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj"
+              "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj"
               },
-              "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj": {
-                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj"
+              "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj": {
+                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj"
               }
             }
           }
@@ -59,29 +59,14 @@
         }
       }
     },
-    "C:\\Users\\Domu\\Desktop\\Code\\DatabaseEditor\\DatabaseEditor.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\DatabaseEditor\\DatabaseEditor.csproj",
-        "projectName": "DatabaseEditor",
-        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DatabaseEditor\\DatabaseEditor.csproj",
-        "frameworks": {
-          "net472": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net472": {}
-      }
-    },
-    "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj",
+        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj",
         "projectName": "FirstTaskEntities",
-        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj",
+        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj",
         "packagesPath": "C:\\Users\\Domu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\obj\\",
+        "outputPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "configFilePaths": [
@@ -122,19 +107,16 @@
         }
       }
     },
-    "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj": {
+    "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj",
+        "projectUniqueName": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj",
         "projectName": "FirstTask",
-        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTask\\FirstTask.csproj",
+        "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTask\\FirstTask.csproj",
         "frameworks": {
           "net472": {
             "projectReferences": {
-              "C:\\Users\\Domu\\Desktop\\Code\\DatabaseEditor\\DatabaseEditor.csproj": {
-                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\DatabaseEditor\\DatabaseEditor.csproj"
-              },
-              "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj": {
-                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\FirstTaskEntities\\FirstTaskEntities.csproj"
+              "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj": {
+                "projectPath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\FirstTaskEntities\\FirstTaskEntities.csproj"
               }
             }
           }

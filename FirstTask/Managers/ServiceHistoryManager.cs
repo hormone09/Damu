@@ -1,40 +1,47 @@
 ﻿using AutoMapper;
-using FirstTask.Models;
-using FirstTask.ViewQueris;
-using FirstTaskEntities.Query;
-using FirstTaskEntities.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Stimulsoft.Report;
-using Stimulsoft.Report.Mvc;
 using FirstTask.Enums;
 using FirstTask.Handlers;
-using FirstTaskEntities.Models;
+using FirstTask.Models;
+using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
+using FirstTaskEntities.Models;
+using FirstTaskEntities.Query;
+using FirstTaskEntities.Repository;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace FirstTask.Managers
 {
-	public class ServicesHistoryManager
+	public class ServiceHistoryManager
 	{
-		private ServicesHistoryRepository historyRep = new ServicesHistoryRepository();
+		private ServiceHistoryRepository historyRep = new ServiceHistoryRepository();
 		private CompanyRepository companyRep = new CompanyRepository();
 		private EmployeeRepository emloyeeRep = new EmployeeRepository();
-		private ServicesRepository servicesRep = new ServicesRepository();
+		private ServiceRepository servicesRep = new ServiceRepository();
 		private MessagesStrings strings = new MessagesStrings();
 		private IMapper mapper;
 
-		public ServicesHistoryManager(IMapper mapper)
+		public ServiceHistoryManager(IMapper mapper)
 		{
 			this.mapper = mapper;
 		}
 
-		public List<ServicesHistoryModel> List(ServicesHistoryViewQuery queryView)
+		public List<ServiceHistoryModel> List(ServicesHistoryViewQuery queryView)
 		{
-			queryView.Status = FirstTaskEntities.Enums.Statuses.Active;
+			if (queryView.Page == null)
+			{
+				queryView.Page = 1;
+				queryView.PageSize = 20;
+			}
+
+			queryView.Status = Statuses.Active;
+			queryView.DateBegin = queryView.DateBegin.Date;
+			queryView.DateEnd = queryView.DateEnd.Date;
 			var query = mapper.Map<ServiceHistoryQueryList>(queryView);
-			var entities = historyRep.List(query);
-			var models = new List<ServicesHistoryModel>();
+			var entities = historyRep.List(query); 
+			var models = new List<ServiceHistoryModel>();
 
 			foreach (var el in entities)
 			{
@@ -42,7 +49,7 @@ namespace FirstTask.Managers
 				var employeeEntity = emloyeeRep.Find(el.EmployeeId);
 				var serviceEntity = servicesRep.Find(el.ServiceId);
 
-				var model = new ServicesHistoryModel();
+				var model = new ServiceHistoryModel();
 				model.Id = el.Id;
 				model.Company = mapper.Map<CompanyModel>(companyEntity);
 				model.Service = mapper.Map<ServiceModel>(serviceEntity);
@@ -58,18 +65,18 @@ namespace FirstTask.Managers
 			return models;
 		}
 
-		public MessageHandler Add(ServicesHistoryModel model)
+		public MessageHandler Add(ServiceHistoryModel model)
 		{
 			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
 				return new MessageHandler(false, strings.FormError);
 
-			var entity = new ServicesHistory
+			var entity = new ServiceHistory
 			{
 				DateOfCreate = (DateTime)model.DateOfCreate,
 				CompanyId = model.Company.Id,
 				EmployeeId = model.Employee.Id,
 				ServiceId = model.Service.Id,
-				Status = Statuses.Active
+				Status = (int)Statuses.Active
 			};
 
 			try
@@ -84,19 +91,19 @@ namespace FirstTask.Managers
 			}
 		}
 
-		public MessageHandler Update(ServicesHistoryModel model)
+		public MessageHandler Update(ServiceHistoryModel model)
 		{
 			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
 				return new MessageHandler(false, strings.FormError);
 
-			var entity = new ServicesHistory
+			var entity = new ServiceHistory
 			{
 				Id = model.Id,
 				DateOfCreate = (DateTime)model.DateOfCreate,
 				CompanyId = model.Company.Id,
 				EmployeeId = model.Employee.Id,
 				ServiceId = model.Service.Id,
-				Status = Statuses.Active
+				Status = (int)Statuses.Active
 			};
 
 			try
@@ -159,15 +166,15 @@ namespace FirstTask.Managers
 
 			switch (query.Type)
 			{
-				case ReportTypes.EXEL:
+				case ReportTypesEnum.EXEL:
 					return StiMvcReportResponse.ResponseAsExcel2007(report);
-				case ReportTypes.WORD:
+				case ReportTypesEnum.WORD:
 					return StiMvcReportResponse.ResponseAsWord2007(report);
-				case ReportTypes.PDF:
+				case ReportTypesEnum.PDF:
 					return StiMvcReportResponse.ResponseAsPdf(report);
-				case ReportTypes.XML:
+				case ReportTypesEnum.XML:
 					return StiMvcReportResponse.ResponseAsXml(report);
-				case ReportTypes.PNG:
+				case ReportTypesEnum.PNG:
 					return StiMvcReportResponse.ResponseAsPng(report);
 				default:
 					return StiMvcReportResponse.ResponseAsPdf(report);

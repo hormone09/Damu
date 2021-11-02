@@ -2,9 +2,6 @@ using FirstTask.App_Start;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using AutoMapper;
-using DatabaseEditor;
-using System.Threading;
 
 namespace FirstTask
 {
@@ -17,10 +14,6 @@ namespace FirstTask
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
-			
-			// Database Editor
-			Thread thread = new Thread(StatusEditor.Start);
-			thread.Start();
 		}
 	}
 }

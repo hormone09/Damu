@@ -1,15 +1,8 @@
-﻿using FirstTaskEntities.Enums;
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace FirstTaskEntities.Models
 {
-	public class ServicesHistory
+	public class ServiceHistory
 	{
 		public int Id { get; set; }
 
@@ -40,6 +33,6 @@ namespace FirstTaskEntities.Models
 		/// <summary>
 		/// Статус записи в БД
 		/// </summary>
-		public Statuses Status { get; set; }
+		public int Status { get; set; }
 	}
 }
