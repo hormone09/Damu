@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FirstTask.Handlers;
 using FirstTask.Models;
+using FirstTask.Resources;
 using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
@@ -14,8 +15,6 @@ namespace FirstTask.Managers
 {
 	public class ServiceProvidedManager
 	{
-		private MessagesStrings strings = new MessagesStrings();
-
 		private ServiceProvidedRepository providedRepository = new ServiceProvidedRepository();
 		private CompanyRepository companyRepository = new CompanyRepository();
 		private ServiceRepository servicesRepository = new ServiceRepository();
@@ -55,7 +54,7 @@ namespace FirstTask.Managers
 		public MessageHandler Edit(ServiceProvidedModel model)
 		{
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -68,7 +67,7 @@ namespace FirstTask.Managers
 			{
 				providedRepository.Update(entity);
 
-				return new MessageHandler(true, strings.EditSuccess);
+				return new MessageHandler(true, Resource.EditSuccess);
 			}
 			catch (Exception ex)
 			{
@@ -79,7 +78,7 @@ namespace FirstTask.Managers
 		public MessageHandler Add(ServiceProvidedModel model)
 		{
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -90,7 +89,7 @@ namespace FirstTask.Managers
 			{
 				providedRepository.Add(entity);
 
-				return new MessageHandler(true, strings.AddSuccess);
+				return new MessageHandler(true, Resource.AddSuccess);
 			}
 			catch (Exception ex)
 			{
@@ -104,11 +103,11 @@ namespace FirstTask.Managers
 			{
 				providedRepository.Remove(id);
 
-				return new MessageHandler(true, strings.DeleteSuccess);
+				return new MessageHandler(true, Resource.DeleteSuccess);
 			}
 			catch (Exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -124,7 +123,7 @@ namespace FirstTask.Managers
 
 				providedRepository.Update(entity);
 
-				return new MessageHandler(true, strings.ActivateSuccess);
+				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
 			catch (Exception ex)
 			{

@@ -11,7 +11,7 @@ namespace FirstTask.Handlers
 		private readonly CultureInfo culture;
 		public LocalizHandler()
 		{
-			rm = new ResourceManager("FirstTask.Resources.View", Assembly.GetExecutingAssembly());
+			rm = new ResourceManager("FirstTask.Resources.Resource", Assembly.GetExecutingAssembly());
 			culture = Thread.CurrentThread.CurrentCulture;
 		}
 

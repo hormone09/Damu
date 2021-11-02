@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FirstTask.Handlers;
 using FirstTask.Models;
+using FirstTask.Resources;
 using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
@@ -16,8 +17,6 @@ namespace FirstTask.Managers
 {
 	public class CompanyManager
 	{
-		private MessagesStrings strings = new MessagesStrings();
-
 		private CompanyRepository companyRep = new CompanyRepository();
 		private ServiceProvidedRepository serviceProvidedRepository = new ServiceProvidedRepository();
 
@@ -45,7 +44,7 @@ namespace FirstTask.Managers
 		public MessageHandler Edit(CompanyModel model)
 		{
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -57,7 +56,7 @@ namespace FirstTask.Managers
 			{
 				companyRep.Update(entity);
 
-				return new MessageHandler(true, strings.EditSuccess);
+				return new MessageHandler(true, Resource.EditSuccess);
 			}
 			catch (Exception exception)
 			{
@@ -69,7 +68,7 @@ namespace FirstTask.Managers
 		{
 
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -81,7 +80,7 @@ namespace FirstTask.Managers
 			{
 				companyRep.Add(entity);
 
-				return new MessageHandler(true, strings.AddSuccess);
+				return new MessageHandler(true, Resource.AddSuccess);
 			}
 			catch (Exception exception)
 			{
@@ -114,7 +113,7 @@ namespace FirstTask.Managers
 
 					transaction.Commit(); 
 					
-					return new MessageHandler(true, strings.DeleteSuccess);
+					return new MessageHandler(true, Resource.DeleteSuccess);
 				}
 				catch(Exception ex)
 				{
@@ -136,7 +135,7 @@ namespace FirstTask.Managers
 
 				companyRep.Update(entity);
 
-				return new MessageHandler(true, strings.ActivateSuccess);
+				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
 			catch (Exception ex)
 			{

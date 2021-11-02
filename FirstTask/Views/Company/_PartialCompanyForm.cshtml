@@ -1,0 +1,47 @@
+﻿@using FirstTask.Resources;
+
+<form id="companiesForm">
+	<h2 id="formTitle"></h2>
+	<div class="row">
+		<div class="col-4">
+			<label for="name">@Resource.LabelName</label>
+		</div>
+		<div class="col-6">
+			<input type="text" name="name"  id="companyInputName"/>
+		</div>
+		<div class="col-4">
+			<label for="phone">@Resource.LabelPhone</label>
+		</div>
+		<div class="col-6">
+			<input type="text" name="phone"  id="companyInputPhone"/>
+		</div>
+		<div class="col-4">
+			<label for="date">@Resource.LabelDateOfBegin</label>
+		</div>
+		<div class="col-6">
+			<input type="text" name="date" id="companyInputDateOfBegin"/>
+		</div>
+		<div class="col-6">
+			<button id="companiesFormSend" type="submit">@Resource.ButtonSave</button>
+		</div>
+		<div class="col-5">
+			<button id="companiesFormCancel">@Resource.ButtonCancellation</button>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#companiesForm").kendoForm({
+			visible: true,
+			width: "400px",
+			buttonsTemplate: "",
+			title: $("#formTitle")
+		});
+
+		$("body").on("click", "#companiesFormCancel", function (e) {
+			e.preventDefault();
+			controlls.FormDialog.close();
+		});
+	});
+</script>

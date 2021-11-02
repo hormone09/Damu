@@ -319,9 +319,6 @@ C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resour
 C:\Users\Владимир\Desktop\Code\Work\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources
 C:\Users\Domu\Desktop\Code\FirstTask\obj\Debug\FirstTask.Resources.View.resources
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.csproj.AssemblyReference.cache
-C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.Resources.ValidationMessages.resources
-C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.Resources.View.resources
-C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.Resources.ManagerMessages.ru-RU.resources
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.csproj.GenerateResource.cache
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.csproj.CoreCompileInputs.cache
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.dll
@@ -329,7 +326,6 @@ C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.pdb
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\FirstTask.dll.config
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\FirstTask.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\FirstTask.pdb
-C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru-RU\FirstTask.resources.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\roslyn\csc.exe
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\roslyn\csc.exe.config
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\roslyn\csc.rsp
@@ -474,4 +470,4 @@ C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.Razor.resource
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.resources.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.Razor.resources.dll
-C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\ru-RU\FirstTask.resources.dll
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.Resources.Resource.resources

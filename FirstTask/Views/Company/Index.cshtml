@@ -1,24 +1,23 @@
 ﻿@using FirstTask.Handlers;
-
+@using FirstTask.Resources;
 @{
-	var localizer = new LocalizHandler();
-	ViewBag.Title = localizer.GetValue("HeadingCompanies");
+	ViewBag.Title = @Resource.HeadingCompanies;
 }
 
-<h2>@localizer.GetValue("HeadingCompanies")</h2>
+<h2>@Resource.HeadingCompanies</h2>
 
 <span id="companyNotifications"></span>
 
 <div class="container">
 	<div id="companiesGrid">
 		<div id="companiesToolbar">
-			<p>@localizer.GetValue("FilterStatus")</p>
+			<p>@Resource.FilterStatus</p>
 			<div id="statusesListCompanies"></div>
-			<p>@localizer.GetValue("FilterSorting")</p>
+			<p>@Resource.FilterSorting</p>
 			<div id="companiesSortingTypes"></div>
-			<p>@localizer.GetValue("FilterName")</p>
+			<p>@Resource.FilterName</p>
 			<input type="text" name="Name" id="nameFilter" />
-			<button type="button" id="btnCompanySearch">@localizer.GetValue("ButtonSearch")</button>
+			<button type="button" id="btnCompanySearch">@Resource.ButtonSearch</button>
 		</div>
 	</div>
 
@@ -33,7 +32,7 @@
 
 	<div>
 		<div id="companiesDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
+			<h3 style="margin: 20px 0px;">@Resource.DeleteWarningMessage</h3>
 		</div>
 	</div>
 </div>
@@ -80,10 +79,10 @@
 			items: [
 				{
 					type: "group",
-					label: "@localizer.GetValue("CompanyInsertFormHeader")",
+					label: "@Resource.CompanyInsertFormHeader",
 					items: [
 						{
-							field: "Name", label: "@localizer.GetValue("LabelName")", placeholder: "@localizer.GetValue("PlaceholderName")",
+							field: "Name", label: "@Resource.LabelName", placeholder: "@Resource.PlaceholderName",
 							editor: function (container, options) {
 								var input = $('<input id="insertCompaniesName" name="Name"/>');
 								input.appendTo(container);
@@ -92,33 +91,33 @@
 							}
 						},
 						{
-							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
+							field: "DateOfBegin", label: "@Resource.LabelDateOfBegin",
 							editor: function (container, options) {
 								var input = $('<input id="insertDate" name="DateOfBegin" />');
 								input.appendTo(container);
 								input.kendoDatePicker({
-									placeholder: "@localizer.GetValue("PlaceholderDateOfBegin")",
+									placeholder: "@Resource.PlaceholderDateOfBegin",
 									format: 'dd/MM/yyyy'
 								});
 							}
 						},
 						{
-							field: "BIN", label: "@localizer.GetValue("LabelBIN")",
+							field: "BIN", label: "@Resource.LabelBIN",
 							editor: function (container, options) {
 								var input = $('<input name="BIN" />');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderBIN")",
+									placeholder: "@Resource.PlaceholderBIN",
 									mask: "000-000-000-000"
 								});
 							}
 						},
 						{
-							field: "Phone", label: "Телефон", editor: function (container, options) {
+							field: "Phone", label: "@Resource.LabelPhone", editor: function (container, options) {
 								var input = $('<input name="Phone"/>');
 								input.appendTo(container);
 								input.kendoMaskedTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderPhone")",
+									placeholder: "@Resource.PlaceholderPhone",
 									mask: "0-(000)-000-00-00"
 								});
 							}
@@ -133,8 +132,9 @@
 					]
 				}
 			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button></div>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@Resource.ButtonSave</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>@Resource.ButtonCancellation</button></div>"
 		});
+
 		// Insert Validator and Submit
 		$("#companiesInsertForm").validate({
 			rules: {
@@ -158,21 +158,21 @@
 			},
 			messages: {
 				Name: {
-					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 6",
+					required: "@Resource.LabelName: @Resource.ValidationMessageInputRequired",
+					minlength: "@Resource.ValidationMessageMinLenght 6",
 				},
 				BIN: {
-					required: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageFormatError") 'XXX-XXX-XXX-XXX'"
+					required: "@Resource.LabelBIN: @Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.LabelBIN: @Resource.ValidationMessageFormatError 'XXX-XXX-XXX-XXX'"
 				},
 				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
+					required: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageInputRequired",
+					dateFilter: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageFormatError 'ДД.ММ.ГГГГ'",
+					pastDate: "@Resource.ValidationMessageDateNonCorrect"
 				},
 				Phone: {
-					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError") 'X-(XXX)-XXX-XX-XX'"
+					required: "@Resource.LabelPhone: @Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.LabelPhone: @Resource.ValidationMessageFormatError 'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			focusInvalid: true,
@@ -220,11 +220,11 @@
 			items: [
 				{
 					type: "group",
-					label: "@localizer.GetValue("CompanyEditFormHeader")",
+					label: "@Resource.CompanyEditFormHeader",
 					items: [
 
 						{
-					field: "Name", label: "@localizer.GetValue("LabelName")", placeholder: "@localizer.GetValue("PlaceholderName")",
+					field: "Name", label: "@Resource.LabelName", placeholder: "@Resource.PlaceholderName",
 					editor: function (container, options) {
 						var input = $('<input id="editCompaniesName" name="Name"/>');
 						input.appendTo(container);
@@ -232,33 +232,33 @@
 					}
 				},
 				{
-					field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
+					field: "DateOfBegin", label: "@Resource.LabelDateOfBegin",
 					editor: function (container, options) {
 						var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin" />');
 						input.appendTo(container);
 						input.kendoDatePicker({
-							placeholder: "@localizer.GetValue("PlaceholderDateOfBegin")",
+							placeholder: "@Resource.PlaceholderDateOfBegin",
 							format: 'dd/MM/yyyy'
 						});
 					}
 				},
 				{
-					field: "BIN", label: "@localizer.GetValue("LabelBIN")",
+					field: "BIN", label: "@Resource.LabelBIN",
 					editor: function (container, options) {
 						var input = $('<input id="editCompaniesBin" name="BIN" />');
 						input.appendTo(container);
 						input.kendoMaskedTextBox({
-							placeholder: "@localizer.GetValue("PlaceholderBIN")",
+							placeholder: "@Resource.PlaceholderBIN",
 							mask: "000-000-000-000"
 						});
 					}
 				},
 				{
-					field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
+					field: "Phone", label: "@Resource.LabelPhone", editor: function (container, options) {
 						var input = $('<input id="editCompaniesPhone" name="Phone"/>');
 						input.appendTo(container);
 						input.kendoMaskedTextBox({
-							placeholder: "@localizer.GetValue("PlaceholderPhone")",
+							placeholder: "@Resource.PlaceholderPhone",
 							mask: "0-(000)-000-00-00"
 						});
 					}
@@ -273,7 +273,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
+			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@Resource.ButtonSave</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@Resource.ButtonCancellation</button></div>"
 		});
 
 
@@ -334,21 +334,21 @@
 			},
 			messages: {
 				Name: {
-					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
+					required: "@Resource.LabelName: @Resource.ValidationMessageInputRequired",
+					minlength: "@Resource.LabelName: @Resource.ValidationMessageMinLenght 6",
 				},
 				BIN: {
-					required: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelBIN"): @localizer.GetValue("ValidationMessageFormatError") 'XXX-XXX-XXX-XXX'"
+					required: "@Resource.LabelBIN: @Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.LabelBIN: @Resource.ValidationMessageFormatError 'XXX-XXX-XXX-XXX'"
 				},
 				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
+					required: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageInputRequired",
+					dateFilter: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageFormatError 'ДД.ММ.ГГГГ'",
+					pastDate: "@Resource.ValidationMessageDateNonCorrect"
 				},
 				Phone: {
-					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError")'X-(XXX)-XXX-XX-XX'"
+					required: "@Resource.LabelPhone: @Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.LabelPhone: @Resource.ValidationMessageFormatError'X-(XXX)-XXX-XX-XX'"
 				}
 			},
 			submitHandler: function () {
@@ -395,8 +395,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
+				{ text: "@Resource.StatusActive", value: 1 },
+				{ text: "@Resource.StatusDisable", value: 2 },
 			]
 		});
 
@@ -404,8 +404,8 @@
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "@localizer.GetValue("SortingByName")", value: "Name" },
-				{ text: "@localizer.GetValue("SortingByDateOfBegin")", value: "DateOfBegin" }
+				{ text: "@Resource.SortingByName", value: "Name" },
+				{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" }
 			]
 		});
 
@@ -487,14 +487,14 @@
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Name", title: "@localizer.GetValue("LabelCompany")", width: "30%" },
-				{ field: "Phone", title: "@localizer.GetValue("LabelPhone")", width: "10%" },
-				{ field: "BIN", title: "@localizer.GetValue("LabelBIN")", width: "10%" },
-				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Name", title: "@Resource.LabelCompany", width: "30%" },
+				{ field: "Phone", title: "@Resource.LabelPhone", width: "10%" },
+				{ field: "BIN", title: "@Resource.LabelBIN", width: "10%" },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
 				{
-					field: "Status", title: "@localizer.GetValue("LabelStatus")", width: "5%", values: [
-						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-						{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
+					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
+						{ text: "@Resource.StatusActive", value: 1 },
+						{ text: "@Resource.StatusDisable", value: 2 },
 					]
 				},
 
@@ -503,17 +503,18 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "@localizer.GetValue("ButtonDelete")",
+							text: "@Resource.ButtonDelete",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
 								DeleteCompany(dataItem.Id);
 							},
 						},
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "@localizer.GetValue("ButtonActivate")",
+							text: "@Resource.ButtonActivate",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
@@ -523,7 +524,7 @@
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "@localizer.GetValue("ButtonEdit")",
+							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 								EditCompany(dataItem);
@@ -536,7 +537,7 @@
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="btnCompanyInsert">@localizer.GetValue("ButtonAdd")</button>'
+					display: '<button type="button" id="btnCompanyInsert">@Resource.ButtonAdd</button>'
 				}
 			},
 			scrollable: true,

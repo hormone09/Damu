@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FirstTask.Handlers;
 using FirstTask.Models;
+using FirstTask.Resources;
 using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
@@ -14,8 +15,6 @@ namespace FirstTask.Managers
 {
 	public class EmployeeManager
 	{
-		private MessagesStrings strings = new MessagesStrings();
-
 		private CompanyRepository companyRep = new CompanyRepository();
 		private EmployeeRepository emloyeeRep = new EmployeeRepository();
 		private IMapper mapper;
@@ -52,10 +51,10 @@ namespace FirstTask.Managers
 			int minEmployeeAge = 18;
 
 			if ((DateTime.Now - (DateTime)model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
-				return new MessageHandler(false, strings.AgeError);
+				return new MessageHandler(false, Resource.AgeError);
 
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -68,7 +67,7 @@ namespace FirstTask.Managers
 			{
 				emloyeeRep.Update(entity);
 
-				return new MessageHandler(true, strings.EditSuccess);
+				return new MessageHandler(true, Resource.EditSuccess);
 			}
 			catch (Exception ex)
 			{
@@ -81,10 +80,10 @@ namespace FirstTask.Managers
 			int minEmployeeAge = 18;
 
 			if ((DateTime.Now - (DateTime)model.BirthdayDate).TotalHours < (minEmployeeAge * 365 * 24))
-				return new MessageHandler(false, strings.AgeError);
+				return new MessageHandler(false, Resource.AgeError);
 
 			if (model.DateOfBegin > DateTime.Now)
-				return new MessageHandler(false, strings.DateOfBeginNonCorrect);
+				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
@@ -97,7 +96,7 @@ namespace FirstTask.Managers
 			{
 				emloyeeRep.Add(entity);
 
-				return new MessageHandler(true, strings.AddSuccess);
+				return new MessageHandler(true, Resource.AddSuccess);
 			}
 			catch (Exception ex)
 			{
@@ -111,11 +110,11 @@ namespace FirstTask.Managers
 			{
 				emloyeeRep.Remove(id);
 
-				return new MessageHandler(true, strings.DeleteSuccess);
+				return new MessageHandler(true, Resource.DeleteSuccess);
 			}
 			catch (Exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -131,7 +130,7 @@ namespace FirstTask.Managers
 
 				emloyeeRep.Update(entity);
 
-				return new MessageHandler(true, strings.ActivateSuccess);
+				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
 			catch (Exception ex)
 			{

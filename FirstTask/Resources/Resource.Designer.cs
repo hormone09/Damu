@@ -22,24 +22,24 @@ namespace FirstTask.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class View {
+    public class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal View() {
+        internal Resource() {
         }
         
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FirstTask.Resources.View", typeof(View).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FirstTask.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace FirstTask.Resources {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,45 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Запись не была востановленна!.
+        /// </summary>
+        public static string ActivateFailed {
+            get {
+                return ResourceManager.GetString("ActivateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Запись была успешно востановленна!.
+        /// </summary>
+        public static string ActivateSuccess {
+            get {
+                return ResourceManager.GetString("ActivateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавление прошло успешно!.
+        /// </summary>
+        public static string AddSuccess {
+            get {
+                return ResourceManager.GetString("AddSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Возраст сотрудника должен быть больше 18 лет!.
+        /// </summary>
+        public static string AgeError {
+            get {
+                return ResourceManager.GetString("AgeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Востановить.
         /// </summary>
-        internal static string ButtonActivate {
+        public static string ButtonActivate {
             get {
                 return ResourceManager.GetString("ButtonActivate", resourceCulture);
             }
@@ -72,7 +108,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Добавление.
         /// </summary>
-        internal static string ButtonAdd {
+        public static string ButtonAdd {
             get {
                 return ResourceManager.GetString("ButtonAdd", resourceCulture);
             }
@@ -81,7 +117,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Отмена.
         /// </summary>
-        internal static string ButtonCancellation {
+        public static string ButtonCancellation {
             get {
                 return ResourceManager.GetString("ButtonCancellation", resourceCulture);
             }
@@ -90,7 +126,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Удаление.
         /// </summary>
-        internal static string ButtonDelete {
+        public static string ButtonDelete {
             get {
                 return ResourceManager.GetString("ButtonDelete", resourceCulture);
             }
@@ -99,7 +135,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Редактирование.
         /// </summary>
-        internal static string ButtonEdit {
+        public static string ButtonEdit {
             get {
                 return ResourceManager.GetString("ButtonEdit", resourceCulture);
             }
@@ -108,7 +144,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Печать.
         /// </summary>
-        internal static string ButtonPrint {
+        public static string ButtonPrint {
             get {
                 return ResourceManager.GetString("ButtonPrint", resourceCulture);
             }
@@ -117,7 +153,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сохранить.
         /// </summary>
-        internal static string ButtonSave {
+        public static string ButtonSave {
             get {
                 return ResourceManager.GetString("ButtonSave", resourceCulture);
             }
@@ -126,7 +162,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Поиск.
         /// </summary>
-        internal static string ButtonSearch {
+        public static string ButtonSearch {
             get {
                 return ResourceManager.GetString("ButtonSearch", resourceCulture);
             }
@@ -135,7 +171,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сегодня.
         /// </summary>
-        internal static string ButtonToday {
+        public static string ButtonToday {
             get {
                 return ResourceManager.GetString("ButtonToday", resourceCulture);
             }
@@ -144,7 +180,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Редактирование данных организации.
         /// </summary>
-        internal static string CompanyEditFormHeader {
+        public static string CompanyEditFormHeader {
             get {
                 return ResourceManager.GetString("CompanyEditFormHeader", resourceCulture);
             }
@@ -153,25 +189,70 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Добавление новой организации.
         /// </summary>
-        internal static string CompanyInsertFormHeader {
+        public static string CompanyInsertFormHeader {
             get {
                 return ResourceManager.GetString("CompanyInsertFormHeader", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Название компании должно состоять из более чем 6 символов!.
+        /// </summary>
+        public static string CompnayNameLength {
+            get {
+                return ResourceManager.GetString("CompnayNameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка внесения изменений в базу данных!.
+        /// </summary>
+        public static string DatabaseError {
+            get {
+                return ResourceManager.GetString("DatabaseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Дата начала не может быть больше сегодняшней!.
+        /// </summary>
+        public static string DateOfBeginNonCorrect {
+            get {
+                return ResourceManager.GetString("DateOfBeginNonCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Удаление прошло успешно!.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Вы действительно хотите удалить запись?.
         /// </summary>
-        internal static string DeleteWarningMessage {
+        public static string DeleteWarningMessage {
             get {
                 return ResourceManager.GetString("DeleteWarningMessage", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Обновление данных прошло успешно!.
+        /// </summary>
+        public static string EditSuccess {
+            get {
+                return ResourceManager.GetString("EditSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Редактирование данных сотрудника.
         /// </summary>
-        internal static string EmployeeEditFormHeader {
+        public static string EmployeeEditFormHeader {
             get {
                 return ResourceManager.GetString("EmployeeEditFormHeader", resourceCulture);
             }
@@ -180,16 +261,25 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Добавление сотрудника организации.
         /// </summary>
-        internal static string EmployeeFormHeader {
+        public static string EmployeeFormHeader {
             get {
                 return ResourceManager.GetString("EmployeeFormHeader", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя сотрудника должно содержать более 10 символов!.
+        /// </summary>
+        public static string EmployeeNameLength {
+            get {
+                return ResourceManager.GetString("EmployeeNameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Организация:.
         /// </summary>
-        internal static string FilterCompany {
+        public static string FilterCompany {
             get {
                 return ResourceManager.GetString("FilterCompany", resourceCulture);
             }
@@ -198,7 +288,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Имя:.
         /// </summary>
-        internal static string FilterFullName {
+        public static string FilterFullName {
             get {
                 return ResourceManager.GetString("FilterFullName", resourceCulture);
             }
@@ -207,7 +297,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Название:.
         /// </summary>
-        internal static string FilterName {
+        public static string FilterName {
             get {
                 return ResourceManager.GetString("FilterName", resourceCulture);
             }
@@ -216,7 +306,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Услуга:.
         /// </summary>
-        internal static string FilterService {
+        public static string FilterService {
             get {
                 return ResourceManager.GetString("FilterService", resourceCulture);
             }
@@ -225,7 +315,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сортировать по:.
         /// </summary>
-        internal static string FilterSorting {
+        public static string FilterSorting {
             get {
                 return ResourceManager.GetString("FilterSorting", resourceCulture);
             }
@@ -234,16 +324,70 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Статус:.
         /// </summary>
-        internal static string FilterStatus {
+        public static string FilterStatus {
             get {
                 return ResourceManager.GetString("FilterStatus", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Неправильный формат БИН!.
+        /// </summary>
+        public static string FormatBIN {
+            get {
+                return ResourceManager.GetString("FormatBIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Неправельный формат некоторых данных! (Телефон/ИИН/БИН/Код).
+        /// </summary>
+        public static string FormatError {
+            get {
+                return ResourceManager.GetString("FormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Неправильный формат ИИН!.
+        /// </summary>
+        public static string FormatIIN {
+            get {
+                return ResourceManager.GetString("FormatIIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Неправильный формат номера телефона!.
+        /// </summary>
+        public static string FormatPhone {
+            get {
+                return ResourceManager.GetString("FormatPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Формат кода услуги должен быть: &quot;x11.111.111&quot;.
+        /// </summary>
+        public static string FormatServiceCode {
+            get {
+                return ResourceManager.GetString("FormatServiceCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Заполните корректно все поля!.
+        /// </summary>
+        public static string FormError {
+            get {
+                return ResourceManager.GetString("FormError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Реестр организаций.
         /// </summary>
-        internal static string HeadingCompanies {
+        public static string HeadingCompanies {
             get {
                 return ResourceManager.GetString("HeadingCompanies", resourceCulture);
             }
@@ -252,7 +396,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Регистрация и ведение сотрудников организации.
         /// </summary>
-        internal static string HeadingEmployee {
+        public static string HeadingEmployee {
             get {
                 return ResourceManager.GetString("HeadingEmployee", resourceCulture);
             }
@@ -261,7 +405,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Реестр услуг.
         /// </summary>
-        internal static string HeadingServices {
+        public static string HeadingServices {
             get {
                 return ResourceManager.GetString("HeadingServices", resourceCulture);
             }
@@ -270,7 +414,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Оказанные услуги.
         /// </summary>
-        internal static string HeadingServicesHistory {
+        public static string HeadingServicesHistory {
             get {
                 return ResourceManager.GetString("HeadingServicesHistory", resourceCulture);
             }
@@ -279,16 +423,25 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Реестр услуг оказываемых организацией.
         /// </summary>
-        internal static string HeadingServicesProvided {
+        public static string HeadingServicesProvided {
             get {
                 return ResourceManager.GetString("HeadingServicesProvided", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Все поля формы являются обязательными!.
+        /// </summary>
+        public static string IsRequired {
+            get {
+                return ResourceManager.GetString("IsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на БИН.
         /// </summary>
-        internal static string LabelBIN {
+        public static string LabelBIN {
             get {
                 return ResourceManager.GetString("LabelBIN", resourceCulture);
             }
@@ -297,7 +450,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Дата рождения.
         /// </summary>
-        internal static string LabelBirthdayDate {
+        public static string LabelBirthdayDate {
             get {
                 return ResourceManager.GetString("LabelBirthdayDate", resourceCulture);
             }
@@ -306,7 +459,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Код услуги.
         /// </summary>
-        internal static string LabelCode {
+        public static string LabelCode {
             get {
                 return ResourceManager.GetString("LabelCode", resourceCulture);
             }
@@ -315,7 +468,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Организация.
         /// </summary>
-        internal static string LabelCompany {
+        public static string LabelCompany {
             get {
                 return ResourceManager.GetString("LabelCompany", resourceCulture);
             }
@@ -324,7 +477,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Дата начала работы.
         /// </summary>
-        internal static string LabelDateOfBegin {
+        public static string LabelDateOfBegin {
             get {
                 return ResourceManager.GetString("LabelDateOfBegin", resourceCulture);
             }
@@ -333,7 +486,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Сотрудник.
         /// </summary>
-        internal static string LabelEmployee {
+        public static string LabelEmployee {
             get {
                 return ResourceManager.GetString("LabelEmployee", resourceCulture);
             }
@@ -342,7 +495,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Полное имя.
         /// </summary>
-        internal static string LabelFullName {
+        public static string LabelFullName {
             get {
                 return ResourceManager.GetString("LabelFullName", resourceCulture);
             }
@@ -351,7 +504,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Название.
         /// </summary>
-        internal static string LabelName {
+        public static string LabelName {
             get {
                 return ResourceManager.GetString("LabelName", resourceCulture);
             }
@@ -360,7 +513,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на ИИН.
         /// </summary>
-        internal static string LabelPersonalNumber {
+        public static string LabelPersonalNumber {
             get {
                 return ResourceManager.GetString("LabelPersonalNumber", resourceCulture);
             }
@@ -369,7 +522,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Телефон.
         /// </summary>
-        internal static string LabelPhone {
+        public static string LabelPhone {
             get {
                 return ResourceManager.GetString("LabelPhone", resourceCulture);
             }
@@ -378,7 +531,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Стоимость.
         /// </summary>
-        internal static string LabelPrice {
+        public static string LabelPrice {
             get {
                 return ResourceManager.GetString("LabelPrice", resourceCulture);
             }
@@ -387,7 +540,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Период отчетности с .
         /// </summary>
-        internal static string LabelReportPeriod {
+        public static string LabelReportPeriod {
             get {
                 return ResourceManager.GetString("LabelReportPeriod", resourceCulture);
             }
@@ -396,7 +549,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Услуга.
         /// </summary>
-        internal static string LabelService {
+        public static string LabelService {
             get {
                 return ResourceManager.GetString("LabelService", resourceCulture);
             }
@@ -405,7 +558,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Статус.
         /// </summary>
-        internal static string LabelStatus {
+        public static string LabelStatus {
             get {
                 return ResourceManager.GetString("LabelStatus", resourceCulture);
             }
@@ -414,7 +567,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Формат отчета.
         /// </summary>
-        internal static string LabelType {
+        public static string LabelType {
             get {
                 return ResourceManager.GetString("LabelType", resourceCulture);
             }
@@ -423,7 +576,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите БИН.
         /// </summary>
-        internal static string PlaceholderBIN {
+        public static string PlaceholderBIN {
             get {
                 return ResourceManager.GetString("PlaceholderBIN", resourceCulture);
             }
@@ -432,7 +585,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите дату рождения.
         /// </summary>
-        internal static string PlaceholderBirthdayDate {
+        public static string PlaceholderBirthdayDate {
             get {
                 return ResourceManager.GetString("PlaceholderBirthdayDate", resourceCulture);
             }
@@ -441,7 +594,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите компанию.
         /// </summary>
-        internal static string PlaceholderCompany {
+        public static string PlaceholderCompany {
             get {
                 return ResourceManager.GetString("PlaceholderCompany", resourceCulture);
             }
@@ -450,7 +603,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите дату начала работы.
         /// </summary>
-        internal static string PlaceholderDateOfBegin {
+        public static string PlaceholderDateOfBegin {
             get {
                 return ResourceManager.GetString("PlaceholderDateOfBegin", resourceCulture);
             }
@@ -459,7 +612,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите сотрудника организации.
         /// </summary>
-        internal static string PlaceholderEmployee {
+        public static string PlaceholderEmployee {
             get {
                 return ResourceManager.GetString("PlaceholderEmployee", resourceCulture);
             }
@@ -468,7 +621,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Введите имя.
         /// </summary>
-        internal static string PlaceholderFullName {
+        public static string PlaceholderFullName {
             get {
                 return ResourceManager.GetString("PlaceholderFullName", resourceCulture);
             }
@@ -477,7 +630,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Введите название.
         /// </summary>
-        internal static string PlaceholderName {
+        public static string PlaceholderName {
             get {
                 return ResourceManager.GetString("PlaceholderName", resourceCulture);
             }
@@ -486,7 +639,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите полное имя.
         /// </summary>
-        internal static string PlaceholderPersonalNumber {
+        public static string PlaceholderPersonalNumber {
             get {
                 return ResourceManager.GetString("PlaceholderPersonalNumber", resourceCulture);
             }
@@ -495,7 +648,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите номер телефона.
         /// </summary>
-        internal static string PlaceholderPhone {
+        public static string PlaceholderPhone {
             get {
                 return ResourceManager.GetString("PlaceholderPhone", resourceCulture);
             }
@@ -504,7 +657,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите услугу.
         /// </summary>
-        internal static string PlaceholderService {
+        public static string PlaceholderService {
             get {
                 return ResourceManager.GetString("PlaceholderService", resourceCulture);
             }
@@ -513,7 +666,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Получение отчета.
         /// </summary>
-        internal static string ReportFormHeader {
+        public static string ReportFormHeader {
             get {
                 return ResourceManager.GetString("ReportFormHeader", resourceCulture);
             }
@@ -522,7 +675,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Изменение расписания.
         /// </summary>
-        internal static string SchedulerFormHeader {
+        public static string SchedulerFormHeader {
             get {
                 return ResourceManager.GetString("SchedulerFormHeader", resourceCulture);
             }
@@ -531,7 +684,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Редактирование данных услуги.
         /// </summary>
-        internal static string ServiceEditFormHeader {
+        public static string ServiceEditFormHeader {
             get {
                 return ResourceManager.GetString("ServiceEditFormHeader", resourceCulture);
             }
@@ -540,16 +693,25 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Добавление новой услуги.
         /// </summary>
-        internal static string ServiceInsertFormHeader {
+        public static string ServiceInsertFormHeader {
             get {
                 return ResourceManager.GetString("ServiceInsertFormHeader", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Название услуги должно содержать более 6 символов!.
+        /// </summary>
+        public static string ServiceNameLength {
+            get {
+                return ResourceManager.GetString("ServiceNameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Редактирование данных оказываемой услуги.
         /// </summary>
-        internal static string ServiceProvidedEditFormHeader {
+        public static string ServiceProvidedEditFormHeader {
             get {
                 return ResourceManager.GetString("ServiceProvidedEditFormHeader", resourceCulture);
             }
@@ -558,7 +720,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Добавление оказываемой услуги.
         /// </summary>
-        internal static string ServiceProvidedInsertFormHeader {
+        public static string ServiceProvidedInsertFormHeader {
             get {
                 return ResourceManager.GetString("ServiceProvidedInsertFormHeader", resourceCulture);
             }
@@ -567,7 +729,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По дате рождения.
         /// </summary>
-        internal static string SortingByBirthdayDate {
+        public static string SortingByBirthdayDate {
             get {
                 return ResourceManager.GetString("SortingByBirthdayDate", resourceCulture);
             }
@@ -576,7 +738,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По дате начала работы.
         /// </summary>
-        internal static string SortingByDateOfBegin {
+        public static string SortingByDateOfBegin {
             get {
                 return ResourceManager.GetString("SortingByDateOfBegin", resourceCulture);
             }
@@ -585,7 +747,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По имени.
         /// </summary>
-        internal static string SortingByFullName {
+        public static string SortingByFullName {
             get {
                 return ResourceManager.GetString("SortingByFullName", resourceCulture);
             }
@@ -594,7 +756,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По названию.
         /// </summary>
-        internal static string SortingByName {
+        public static string SortingByName {
             get {
                 return ResourceManager.GetString("SortingByName", resourceCulture);
             }
@@ -603,7 +765,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По убиыванию цены.
         /// </summary>
-        internal static string SortingByPriceDown {
+        public static string SortingByPriceDown {
             get {
                 return ResourceManager.GetString("SortingByPriceDown", resourceCulture);
             }
@@ -612,7 +774,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на По возрастанию цены.
         /// </summary>
-        internal static string SortingByPriceUp {
+        public static string SortingByPriceUp {
             get {
                 return ResourceManager.GetString("SortingByPriceUp", resourceCulture);
             }
@@ -621,7 +783,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Активно.
         /// </summary>
-        internal static string StatusActive {
+        public static string StatusActive {
             get {
                 return ResourceManager.GetString("StatusActive", resourceCulture);
             }
@@ -630,7 +792,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Удалено.
         /// </summary>
-        internal static string StatusDisable {
+        public static string StatusDisable {
             get {
                 return ResourceManager.GetString("StatusDisable", resourceCulture);
             }
@@ -639,7 +801,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Услуга/Организация/Сотрудник не выбраны!.
         /// </summary>
-        internal static string ValidationComboBox {
+        public static string ValidationComboBox {
             get {
                 return ResourceManager.GetString("ValidationComboBox", resourceCulture);
             }
@@ -648,7 +810,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Дата не может быть больше действующей!.
         /// </summary>
-        internal static string ValidationMessageDateNonCorrect {
+        public static string ValidationMessageDateNonCorrect {
             get {
                 return ResourceManager.GetString("ValidationMessageDateNonCorrect", resourceCulture);
             }
@@ -657,7 +819,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Укажите данные в формате:.
         /// </summary>
-        internal static string ValidationMessageFormatError {
+        public static string ValidationMessageFormatError {
             get {
                 return ResourceManager.GetString("ValidationMessageFormatError", resourceCulture);
             }
@@ -666,7 +828,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Это поле является обязательным!.
         /// </summary>
-        internal static string ValidationMessageInputRequired {
+        public static string ValidationMessageInputRequired {
             get {
                 return ResourceManager.GetString("ValidationMessageInputRequired", resourceCulture);
             }
@@ -675,7 +837,7 @@ namespace FirstTask.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Поле должно содержать минимальное количество симолов:.
         /// </summary>
-        internal static string ValidationMessageMinLenght {
+        public static string ValidationMessageMinLenght {
             get {
                 return ResourceManager.GetString("ValidationMessageMinLenght", resourceCulture);
             }

@@ -224,7 +224,6 @@
     <Compile Include="Managers\EmployeeManager.cs" />
     <Compile Include="Managers\ServiceManager.cs" />
     <Compile Include="Managers\ServiceProvidedManager.cs" />
-    <Compile Include="Handlers\MessagesStrings.cs" />
     <Compile Include="Managers\ServiceHistoryManager.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
@@ -232,20 +231,10 @@
     <Compile Include="Models\ServiceProvidedModel.cs" />
     <Compile Include="Models\ServiceHistoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\ManagerMessages.ru-RU.Designer.cs">
+    <Compile Include="Resources\Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ManagerMessages.ru-RU.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\ValidationMessages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ValidationMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\View.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>View.resx</DependentUpon>
+      <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewQueris\CompanyViewQuery.cs" />
     <Compile Include="ViewQueris\EmployeeViewQuery.cs" />
@@ -6474,9 +6463,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ServiceProvided\Index.cshtml" />
     <Content Include="Views\ServicesHistory\Index.cshtml" />
+    <Content Include="Views\Company\Test.cshtml" />
+    <Content Include="Views\Company\_PartialCompanyForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -6500,17 +6492,9 @@
     <TypeScriptCompile Include="Content\kendoui.for.jquery.2021.3.914.trial\typescript\kendo.all.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ManagerMessages.ru-RU.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ManagerMessages.ru-RU.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ValidationMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\View.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>View.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Resources\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

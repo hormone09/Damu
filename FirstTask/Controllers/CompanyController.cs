@@ -16,9 +16,14 @@ namespace FirstTask.Controllers
 			this.manager = manager;
 		}
 
+		// TODO: Delete after testing
+		public ActionResult Test()
+		{
+			return View();
+		}
+
 		public ActionResult Index()
         {
-
             return View();
 		}
 

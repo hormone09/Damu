@@ -11,10 +11,10 @@ namespace FirstTask.Models
 		public ServiceModel Service{ get; set; }
 		public CompanyModel Company { get; set; }
 
-		[Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "IsRequired")]
+		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
 		public decimal? ServicePrice { get; set; }
 
-		[Required(ErrorMessageResourceType = typeof(ValidationMessages), ErrorMessageResourceName = "IsRequired")]
+		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
 		public DateTime? DateOfBegin { get; set; }
 		public DateTime? DateOfFinish { get; set; }
 		public Statuses Status { get; set; }

@@ -2,6 +2,7 @@
 using FirstTask.Enums;
 using FirstTask.Handlers;
 using FirstTask.Models;
+using FirstTask.Resources;
 using FirstTask.ViewQueris;
 using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
@@ -20,7 +21,6 @@ namespace FirstTask.Managers
 		private CompanyRepository companyRep = new CompanyRepository();
 		private EmployeeRepository emloyeeRep = new EmployeeRepository();
 		private ServiceRepository servicesRep = new ServiceRepository();
-		private MessagesStrings strings = new MessagesStrings();
 		private IMapper mapper;
 
 		public ServiceHistoryManager(IMapper mapper)
@@ -68,7 +68,7 @@ namespace FirstTask.Managers
 		public MessageHandler Add(ServiceHistoryModel model)
 		{
 			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
-				return new MessageHandler(false, strings.FormError);
+				return new MessageHandler(false, Resource.FormError);
 
 			var entity = new ServiceHistory
 			{
@@ -83,18 +83,18 @@ namespace FirstTask.Managers
 			{
 				historyRep.Add(entity);
 
-				return new MessageHandler(true, strings.AddSuccess);
+				return new MessageHandler(true, Resource.AddSuccess);
 			}
 			catch (Exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
 		public MessageHandler Update(ServiceHistoryModel model)
 		{
 			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
-				return new MessageHandler(false, strings.FormError);
+				return new MessageHandler(false, Resource.FormError);
 
 			var entity = new ServiceHistory
 			{
@@ -110,11 +110,11 @@ namespace FirstTask.Managers
 			{
 				historyRep.Update(entity);
 
-				return new MessageHandler(true, strings.EditSuccess);
+				return new MessageHandler(true, Resource.EditSuccess);
 			}
 			catch (Exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -124,11 +124,11 @@ namespace FirstTask.Managers
 			{
 				historyRep.Remove(id);
 
-				return new MessageHandler(true, strings.DeleteSuccess);
+				return new MessageHandler(true, Resource.DeleteSuccess);
 			}
 			catch(Exception)
 			{
-				return new MessageHandler(false, strings.DatabaseError);
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 

@@ -24,7 +24,7 @@ namespace FirstTaskEntities.Repository
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<ServiceHistory>("SELECT * FROM ServiceHistory WHERE DateOfCreate >= @DateBegin AND DateOfCreate <= @DateEnd AND Status = @Status", new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status }).ToList();
+				return connection.Query<ServiceHistory>("SELECT * FROM ServicesHistory WHERE DateOfCreate >= @DateBegin AND DateOfCreate <= @DateEnd AND Status = @Status", new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status }).ToList();
 			}
 		}
 		public void Update(ServiceHistory entity)
@@ -40,7 +40,7 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO ServiceHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfDelete, @Status)";
+				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfDelete, @Status)";
 				connection.Query(query, new { CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
 			}
 		}
@@ -49,7 +49,7 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE ServiceHistory SET Status = 2, DateOfFinish = @DateOfFinish WHERE Id = @Id";
+				string query = "UPDATE ServicesHistory SET Status = 2, DateOfFinish = @DateOfFinish WHERE Id = @Id";
 				connection.Query<Service>(query, new { Id = id, DateOfFinish = DateTime.Now });
 			}
 		}
