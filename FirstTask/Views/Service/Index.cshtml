@@ -1,142 +1,271 @@
-﻿@using FirstTask.Handlers;
+﻿@using FirstTask.Resources;
 
 @{
-	ViewBag.Title = "Реестр услуг";
-	var localizer = new LocalizHandler();
+	ViewBag.Title = Resource.HeadingServices;
 }
 
+<h2>@Resource.HeadingServices</h2>
 
-<h2>@localizer.GetValue("HeadingServices")</h2>
-<h1></h1>
-<span id="allNotif"></span>
+<span id="serviceNotifications"></span>
 
 <div class="container">
-	<div id="servicesGrid">
-		<div id="toolbar">
-			<p>@localizer.GetValue("FilterStatus")</p>
+	<div id="serviceGrid">
+		<div id="serviceToolBar">
+			<p>@Resource.FilterStatus</p>
 			<div id="serviceStatusesList"></div>
-			<p>@localizer.GetValue("FilterSorting")</p>
-			<div id="orderByTypes"></div>
-			<p>@localizer.GetValue("FilterName")</p>
-			<input type="text" name="Name" id="serviceNameFilter" />
-			<button type="button" id="btn-search">@localizer.GetValue("ButtonSearch")</button>
+			<p>@Resource.FilterSorting</p>
+			<div id="serviceSortingTypes"></div>
+			<p>@Resource.FilterName</p>
+			<input type="text" name="FilterName" id="serviceNameFilter" />
+			<button type="button" id="serviceSearchButton">@Resource.ButtonSearch</button>
 		</div>
 	</div>
 
-	<div id="servicesInsertWindow">
-		<form id="servicesInsertForm"></form>
+	<div id="serviceFormDialog">
+		@Html.Partial("_PartialServiceForm")
 	</div>
 
-	<div id="edit-window">
-		<form id="editServiceForm"></form>
-	</div>
+	<div id="serviceWarningWindow">
+		<h2>@Resource.DeleteWarningMessage</h2>
 
-	<div>
-		<div id="delete-window" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
+		<div class="row" style="text-align: center">
+			<div class="col-6">
+				<button type="submit" id="serviceButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
+			</div>
+			<div class="col-5">
+				<button type="button" id="serviceButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
+			</div>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
+	$(document).ready(function (){
+		var controls = {};
+		controls.CurrentFieldId = {};
 
-	$(document).ready(function () {
+		$("#serviceNotifications").kendoNotification({});
+		controls.Notification = $("#serviceNotifications").data("kendoNotification");
 
-		var notifElement = $("#allNotif");
-		notifElement.kendoNotification({
+		$("#serviceFormDialog").kendoDialog({
+			closable: false, visible: false, title: false, width: "900"
 		});
-		var notification = notifElement.data("kendoNotification");
+		controls.FormDialog = $("#serviceFormDialog").data("kendoDialog");
 
-		// Insert
-		$("body").on("click", "#btn-insert", function () {
-			let window = $("#servicesInsertWindow").data("kendoDialog");
-			window.open();
+		$("#serviceWarningWindow").kendoDialog({
+			closable: false, visible: false, title: false
 		});
+		controls.DeleteDialog = $("#serviceWarningWindow").data("kendoDialog");
 
-		$("body").on("click", "#serviceCloseInsertWindow", function () {
-			$("#servicesInsertWindow").data("kendoDialog").close();
-		});
+			$("#serviceToolBar").kendoToolBar({});
 
-		$("body").on("click", "#serviceCloseEditWindow", function () {
-			$("#edit-window").data("kendoDialog").close();
-		});
+			$("#serviceStatusesList").kendoDropDownList({
+				dataTextField: "text",
+				dataValueField: "value",
+				dataSource: [
+					{ text: "@Resource.StatusActive", value: 1 },
+					{ text: "@Resource.StatusDisable", value: 2 },
+				]
+			});
+			controls.StatusesFilter = $("#serviceStatusesList").data("kendoDropDownList");
 
-		$("#servicesInsertWindow").kendoDialog({
-			modal: true,
-			width: "400px",
-			closable: true,
-			visible: false,
-			title: false,
-		});
+			$("#serviceSortingTypes").kendoDropDownList({
+				dataTextField: "text",
+				dataValueField: "value",
+				dataSource: [
+					{ text: "@Resource.SortingByName", value: "Name" },
+					{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" },
+					{ text: "@Resource.SortingByPriceUp", value: "Price" },
+					{ text: "@Resource.SortingByPriceDown", value: "Price DESC" },
+				]
+			});
+			controls.SortingTypeFilter = $("#serviceSortingTypes").data("kendoDropDownList");
 
-		var formInsert = $("#servicesInsertForm").kendoForm({
-			visible: false,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@localizer.GetValue("ServiceInsertFormHeader")",
-					items: [
-						{
-							field: "Name", label: "@localizer.GetValue("LabelName")",
-							editor: function (container, options) {
-								var input = $('<input id="insertName" name="Name" />');
-								input.appendTo(container);
-								input.kendoTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderName")",
-								});
-							}
-						},
-						{
-							field: "Price", label: "@localizer.GetValue("LabelPrice")", placeholder: "@localizer.GetValue("PlaceholderPrice")",
-							editor: function (container, options) {
-								var input = $('<input id="insertPrice" name="Price" />');
-								input.appendTo(container);
-								input.kendoNumericTextBox({
-									placeholder: "Введите стоимость ",
-									culture: "de-DE"
-								});
-							}
-						},
-						{
-							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
-							editor: function (container, options) {
-								var input = $('<input id="insertDate" name="DateOfBegin" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "Code", label: "@localizer.GetValue("LabelCode")",
-							editor: function (container, options) {
-								var input = $('<input id="editCode" name="Code" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									mask: "L00.000.000"
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/>');
-								block.appendTo(container);
-							}
-						}
-					]
+			$("#serviceNameFilter").kendoTextBox({
+				placeholder: "@Resource.PlaceholderName"
+			});
+			controls.NameFilter = $("#serviceNameFilter").data("kendoTextBox");
+
+			controls.FormHeader = $("#serviceFormTitle");
+
+	let dataSource = new kendo.data.DataSource({
+		pageSize: 20,
+		transport: {
+			read: {
+				url: "/Service/Index",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+			},
+			parameterMap: function (options) {
+				let name = $("#serviceNameFilter").val();
+				var data = {
+					ServiceName: name,
+					Page: options.page,
+					PageSize: options.pageSize,
+					Status: controls.StatusesFilter.value(),
+					SortingType: controls.SortingTypeFilter.value()
 				}
+				return kendo.stringify(data);
+			}
+		},
+		schema: {
+			total: function (response) {
+				if (response.length > 0)
+					return response[0].TotalRows;
+				else
+					return 1;
+			},
+			model: {
+				fields: {
+					DateOfBegin: { type: "date" }
+				}
+			}
+		},
+		page: "Page",
+		serverPaging: true,
+		serverSorting: true,
+	});
+
+		$("#serviceGrid").kendoGrid({
+			dataSource: dataSource,
+			columns: [
+				{ field: "Id", title: "Id", width: "5%", hidden: true },
+				{ field: "Name", title: "@Resource.LabelName", width: "15%" },
+				{ field: "Code", title: "@Resource.LabelCode", width: "10%" },
+				{ field: "Price", title: "@Resource.LabelPrice", width: "10%" },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{
+					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
+						{ text: "@Resource.StatusActive", value: 1 },
+						{ text: "@Resource.StatusDisable", value: 2 },
+					]
+				},
+				{
+					command: [
+						{
+							name: "Delete",
+							className: "btn-destroy",
+							text: "@Resource.ButtonDelete",
+							visible: function (dataItem) { return dataItem.Status == 1 },
+							click: function (e) {
+								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+								controls.CurrentFieldId = dataItem.Id;
+								controls.DeleteDialog.open();
+							},
+						},
+						{
+							name: "Activate",
+							className: "btn-activate",
+							text: "@Resource.ButtonActivate",
+							visible: function (dataItem) { return dataItem.Status == 2 },
+							click: function (e) {
+								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+								$.ajax({
+									url: "/Service/Activate/",
+									type: "POST",
+									data: { id: dataItem.Id },
+									success: function (json) {
+										if (json.IsSuccess == true) {
+											controls.Grid.dataSource.read();
+											controls.Notification.success(json.Message);
+										}
+										else {
+											controls.Notification.error(json.Message);
+										}
+									}
+								})
+							}
+						},
+						{
+							name: "Edit",
+							className: "btn-edit",
+							text: "@Resource.ButtonEdit",
+							click: function (e) {
+								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+								$("#serviceInputId").val(dataItem.Id);
+								$("#serviceInputName").data("kendoTextBox").value(dataItem.Name);
+								$("#serviceInputCode").data("kendoMaskedTextBox").value(dataItem.Code);
+								$("#serviceInputPrice").data("kendoNumericTextBox").value(dataItem.Price);
+								$("#serviceInputDateOfBegin").data("kendoDatePicker").value(dataItem.DateOfBegin);
+
+								controls.FormHeader.text("@Resource.ServiceEditFormHeader");
+								controls.FormDialog.open();
+							},
+						}
+					],
+					width: "13%",
+				},
 			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='serviceCloseInsertWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button></div>"
+			height: 620,
+			pageable: {
+				messages: {
+					display: '<button type="button" id="serviceInsertButton">@Resource.ButtonAdd</button>'
+				}
+			},
+			scrollable: true,
+		});
+		controls.Grid = $("#serviceGrid").data("kendoGrid");
+
+		$("body").on("click", "#serviceInsertButton", function () {
+			$("#serviceInputId").val(0);
+			controls.FormHeader.text("@Resource.ServiceInsertFormHeader");
+			controls.FormDialog.open();
 		});
 
-		$("#servicesInsertForm").validate({
+		$("body").on("click", "#serviceSearchButton", function () {
+			controls.Grid.dataSource.read();
+		});
+
+		$("body").on("click", "#serviceButtonDeleteAgainst", function () {
+			controls.DeleteDialog.close();
+		});
+
+		$("body").on("click", "#serviceButtonDeleteAgree", function () {
+			$.ajax({
+				url: "/Service/Delete",
+				type: "POST",
+				data: { Id: controls.CurrentFieldId },
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						controls.Grid.dataSource.read();
+						controls.DeleteDialog.close();
+						controls.Notification.success(json.Message);
+					}
+					else {
+						controls.Notification.error(json.Error);
+					}
+				}
+			})
+		});
+
+		controls.Form = $("#serviceForm");
+		controls.Form.kendoForm({
+			orientation: "horizontal",
+			visible: true,
+			width: "100%",
+			buttonsTemplate: "",
+		});
+
+		$("#serviceInputName").kendoTextBox({});
+
+		$("#serviceInputCode").kendoMaskedTextBox({
+			mask: "L00.000.000"
+		});
+		$("#serviceInputPrice").kendoNumericTextBox({
+			culture: "de-DE"
+		});
+		$("#serviceInputDateOfBegin").kendoDatePicker({
+			format: 'dd/MM/yyyy',
+		});
+
+
+		controls.FormValidator = $("#serviceForm").validate({
 			rules: {
 				Name: {
 					required: true,
-					minlength: 6,
+					minlength: 10
 				},
 				Price: {
 					required: true,
@@ -154,387 +283,83 @@
 			},
 			messages: {
 				Name: {
-					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
+					required: "@Resource.ValidationMessageInputRequired",
+					minlength: "@Resource.ValidationMessageMinLenght 6",
 				},
 				Price: {
-					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
+					required: "@Resource.ValidationMessageInputRequired",
 				},
 				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageDateNonCorrect")",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
+					required: "@Resource.ValidationMessageInputRequired",
+					dateFilter: "@Resource.ValidationMessageDateNonCorrect",
+					pastDate: "@Resource.ValidationMessageDateNonCorrect"
 				},
 				Code: {
-					required: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
+					required: "@Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.ValidationMessageFormatError 'X00.000.000'"
 				}
 			},
-			submitHandler: function () {
-				var data = formInsert.serializeArray();
+			submitHandler: function (e) {
+				let data = {
+					Id: $("#serviceInputId").val(),
+					Name: $("#serviceInputName").data("kendoTextBox").value(),
+					Price: $("#serviceInputPrice").data("kendoNumericTextBox").value(),
+					Code: $("#serviceInputCode").data("kendoMaskedTextBox").value(),
+					DateOfBegin: $("#serviceInputDateOfBegin").data("kendoDatePicker").value()
+				}
 
-				$.ajax({
-					url: "/Service/AddService/",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						if (json.IsSuccess == true) {
-							var grid = $("#servicesGrid").data("kendoGrid");
-							grid.dataSource.read();
-							notification.success(json.Message);
-							$('#servicesInsertForm')[0].reset();
-							$("#servicesInsertWindow").data("kendoDialog").close();
+				if (data.Id == 0) {
+					$.ajax({
+						url: "/Service/Add",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+						data: JSON.stringify(data),
+						success: function (json) {
+							if (json.IsSuccess) {
+								controls.Form[0].reset();
+								controls.FormDialog.close();
+								controls.Notification.success(json.Message);
+								controls.Grid.dataSource.read();
+							}
+							else {
+								controls.Notification.error(json.Message);
+							}
 						}
-						else
-							return notification.error(json.Error);
-					}
-				});
+					});
+				}
+				else {
+					$.ajax({
+						url: "/Service/Edit",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+						data: JSON.stringify(data),
+						success: function (json) {
+							if (json.IsSuccess) {
+								controls.Form[0].reset();
+								controls.FormDialog.close();
+								controls.Notification.success(json.Message);
+								controls.Grid.dataSource.read();
+							}
+							else {
+								controls.Notification.error(json.Message);
+							}
+						}
+					});
+				}
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",
+			errorElement: 'p',
 			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
+				console.log(error, element)
+				error.insertAfter(element.closest('div'));
 			}
 		});
 
-		// Edit
-		$("#edit-window").kendoDialog({
-			modal: true,
-			width: "500px",
-			closable: true,
-			visible: false,
-			title: false,
-		});
-
-		var formEdit = $("#editServiceForm").kendoForm({
-			visible: true,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@localizer.GetValue("ServiceEditFormHeader")",
-					items: [
-						{
-							field: "Id", label: "", editor: function (container, options) {
-								var input = $('<input id="editServicesId" name="Id" type="hidden"/>');
-								input.appendTo(container);
-							}
-						},
-						{
-							field: "Name", label: "@localizer.GetValue("LabelName")",
-							editor: function (container, options) {
-								var input = $('<input id="editServicesName" name="Name"/>');
-								input.appendTo(container);
-								input.kendoTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderName")",
-								});
-							}
-						},
-						{
-							field: "Price", label: "@localizer.GetValue("LabelPrice")", placeholder: "@localizer.GetValue("PlaceholderPrice")",
-							editor: function (container, options) {
-								var input = $('<input id="editServicesPrice" name="Price" />');
-								input.appendTo(container);
-								input.kendoNumericTextBox({
-									culture: "de-DE"
-								});
-							}
-						},
-						{
-							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
-							editor: function (container, options) {
-								var input = $('<input id="editServicesDateOfBegin" name="DateOfBegin" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "Code", label: "@localizer.GetValue("LabelCode")",
-							editor: function (container, options) {
-								var input = $('<input id="editServicesCode" name="Code" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "Укажите код в формате 'Z00.000.000'",
-									mask: "L00.000.000"
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/>');
-								block.appendTo(container);
-							}
-						}
-					]
-				}
-			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>Сохранить</button> <button class='btn-danger' id='serviceCloseEditWindow' type='button'>Отмена</button></div>"
-		});
-
-		// Edit Validation and Submit
-
-		$("#editServiceForm").validate({
-			rules: {
-				Name: {
-					required: true,
-					minlength: 6,
-				},
-				Price: {
-					required: true
-				},
-				DateOfBegin: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				Code: {
-					required: true,
-					pattern: "^[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$"
-				}
-			},
-			messages: {
-				Name: {
-					required: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("LabelName"): @localizer.GetValue("ValidationMessageMinLenght") 6",
-				},
-				Price: {
-					required: "@localizer.GetValue("LabelPrice"): @localizer.GetValue("ValidationMessageInputRequired")",
-				},
-				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageDateNonCorrect")",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
-				},
-				Code: {
-					required: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageInputRequired")",
-					pattern: "@localizer.GetValue("LabelCode"): @localizer.GetValue("ValidationMessageFormatError") 'X00.000.000'"
-				}
-			},
-			submitHandler: function () {
-				var data = formEdit.serializeArray();
-
-				$.ajax({
-					url: "/Service/EditService/",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						if (json.IsSuccess == true) {
-							var grid = $("#servicesGrid").data("kendoGrid");
-							grid.dataSource.read();
-							notification.success(json.Message);
-							$("#edit-window").data("kendoDialog").close();
-						}
-						else {
-							notification.error(json.Error);
-						}
-					}
-				});
-			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
-			}
-		});
-
-		function EditService(oldService) {
-			$("#editServiceForm #editServicesId").val(oldService.Id);
-			$("#editServiceForm #editServicesName").val(oldService.Name);
-			$("#editServiceForm #editServicesPrice").data("kendoNumericTextBox").value(oldService.Price);
-			$("#editServiceForm #editServicesDateOfBegin").val(new Date().toLocaleDateString());
-			$("#editServiceForm #editServicesCode").val(oldService.Code);
-
-			$("#edit-window").data("kendoDialog").open();
-
-			return false;
-		}
-
-		function ActivateService(id) {
-			$.ajax({
-				url: "/Service/ActivateService/",
-				type: "POST",
-				data: { id: id },
-				success: function (json) {
-					if (json.IsSuccess == true) {
-						var grid = $("#servicesGrid").data("kendoGrid");
-						grid.dataSource.read();
-						notification.success(json.Message);
-					}
-					else {
-						notification.error(json.Message);
-					}
-				}
-			})
-		}
-
-		// Delete
-		function DeleteService(id) {
-			document.getElementById('delete-window').style.display = "block";
-			$("#delete-window").kendoDialog({
-				title: false,
-				modal: true,
-				width: "400px",
-				closable: false,
-				visible: true,
-				actions: [
-					{
-						text: "Да",
-						primary: true,
-						action: function () {
-							$.ajax({
-								url: "/Service/DeleteService/",
-								type: "POST",
-								data: { id: id },
-								success: function (json) {
-									if (json.IsSuccess == true) {
-										var grid = $("#servicesGrid").data("kendoGrid");
-										grid.dataSource.read();
-										notification.success(json.Message);
-									}
-									else {
-										notification.error(json.Message);
-									}
-								}
-							})
-						}
-					},
-					{ text: "Нет" }
-				]
-			});
-		};
-
-		// Filters
-
-		$("body").on("click", "#btn-search", function () {
-			let grid = $("#servicesGrid").data("kendoGrid");
-			grid.dataSource.read();
-		});
-
-		$("#toolbar").kendoToolBar({
-		});
-		$("#serviceNameFilter").kendoTextBox({
-		});
-
-		$("#serviceStatusesList").kendoDropDownList({
-			dataTextField: "text",
-			dataValueField: "value",
-			dataSource: [
-				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
-			]
-		});
-
-		$("#orderByTypes").kendoDropDownList({
-			dataTextField: "text",
-			dataValueField: "value",
-			dataSource: [
-				{ text: "@localizer.GetValue("SortingByName")", value: "Name" },
-				{ text: "@localizer.GetValue("SortingByPriceUp")", value: "Price" },
-				{ text: "@localizer.GetValue("SortingByPriceDown")", value: "Price DESC" }
-			]
-		});
-
-		// GRID
-
-		var dataSource = new kendo.data.DataSource({
-			pageSize: 20,
-			transport: {
-				read: {
-					url: "/Service/Index",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				parameterMap: function (options) {
-					let name = $("#serviceNameFilter").val();
-					var data = {
-						ServiceName: name,
-						Page: options.page,
-						PageSize: options.pageSize,
-						Status: $("#serviceStatusesList").val(),
-						SortingType: $("#orderByTypes").val()
-					}
-					return kendo.stringify(data);
-				}
-			},
-			schema: {
-				total: function (response) {
-					if (response.length > 0)
-						return response[0].TotalRows;
-					else
-						return 1;
-				},
-				model: {
-					fields: {
-						DateOfBegin: { type: "date" },
-					}
-				},
-			},
-
-			serverPaging: true,
-			serverSorting: true,
-		});
-
-		$("#servicesGrid").kendoGrid({
-			dataSource: dataSource,
-			columns: [
-				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Name", title: "@localizer.GetValue("LabelName")", width: "30%" },
-				{ field: "Price", title: "@localizer.GetValue("LabelPrice")", width: "10%" },
-				{ field: "Code", title: "@localizer.GetValue("LabelCode")", width: "10%" },
-				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "10%", format: "{0: dd-MM-yyyy}" },
-				{
-					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-						{ text: "@localizer.GetValue("StatusDisable")", value: 2 }
-					]
-				},
-				{
-					command: [
-						{
-							name: "Delete",
-							className: "btn-destroy",
-							text: "@localizer.GetValue("ButtonDelete")",
-							visible: function (dataItem) { return dataItem.Status == 1 },
-							click: function (e) {
-								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								DeleteService(dataItem.Id);
-							}
-						},
-						{
-							name: "Activate",
-							className: "btn-activate",
-							text: "@localizer.GetValue("ButtonActivate")",
-							visible: function (dataItem) { return dataItem.Status == 2 },
-							click: function (e) {
-								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								ActivateService(dataItem.Id);
-							}
-						},
-						{
-							name: "Edit",
-							className: "btn-edit",
-							text: "@localizer.GetValue("ButtonEdit")",
-							click: function (e) {
-								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								EditService(dataItem);
-							}
-						},
-					],
-				},
-			],
-			height: 620,
-			pageable: {
-				messages: {
-					display: '<button type="button" id="btn-insert">@localizer.GetValue("ButtonAdd")</button>'
-				}
-			},
-			scrollable: true,
+		$("body").on("click", "#serviceFormButtonCancel", function (e) {
+			controls.FormValidator.resetForm();
+			controls.Form[0].reset();
+			$("#serviceFormDialog").data("kendoDialog").close();
 		});
 	});
 </script>

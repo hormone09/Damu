@@ -1,40 +1,42 @@
-﻿@using FirstTask.Handlers;
+﻿@using FirstTask.Resources;
 
 @{
-	var localizer = new LocalizHandler();
-	ViewBag.Title = localizer.GetValue("HeadingEmployee");
+	ViewBag.Title = Resource.HeadingEmployee;
 }
 
-<h2>@localizer.GetValue("HeadingEmployee")</h2>
+<h2>@Resource.HeadingEmployee</h2>
 
-<span id="employeeNotifications"></span>
+<span id="companyNotifications"></span>
 
 <div class="container">
-	<div id="emloyeeGrid" class="grid">
-		<div id="employeeToolbar">
-			<p>@localizer.GetValue("FilterStatus")</p>
-			<div id="statusesList"></div>
-			<p>@localizer.GetValue("FilterFullName")</p>
-			<input type="text" name="FullName" id="fullNameFilter" />
-			<p>@localizer.GetValue("FilterCompany")</p>
-			<div id="companyFilter"></div>
-			<p>@localizer.GetValue("FilterSorting")</p>
+	<div id="employeeGrid">
+		<div id="employeeToolBar">
+			<p>@Resource.FilterStatus</p>
+			<div id="employeeStatusesList"></div>
+			<p>@Resource.FilterSorting</p>
 			<div id="employeeSortingTypes"></div>
-			<button type="button" id="employeeSearchButton">@localizer.GetValue("ButtonSearch")</button>
+			<p>@Resource.FilterCompany</p>
+			<div id="employeeCompanyFilter"></div>
+			<p>@Resource.FilterName</p>
+			<input type="text" name="FilterName" id="employeeNameFilter" />
+			<button type="button" id="employeeSearchButton">@Resource.ButtonSearch</button>
 		</div>
 	</div>
 
-	<div id="employeeInsertWindow">
-		<form id="employeeInsertForm"></form>
+	<div id="employeeFormDialog">
+		@Html.Partial("_PartialEmployeeForm")
 	</div>
 
-	<div id="editEmployeeWindow">
-		<form id="editEmployeeForm"></form>
-	</div>
+	<div id="employeeWarningWindow">
+		<h2>@Resource.DeleteWarningMessage</h2>
 
-	<div>
-		<div id="employeeDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">@localizer.GetValue("DeleteWarningMessage")</h3>
+		<div class="row" style="text-align: center">
+			<div class="col-6">
+				<button type="submit" id="companyButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
+			</div>
+			<div class="col-5">
+				<button type="button" id="companyButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -42,523 +44,77 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		var companies = getCompanyList();
 
-		var notifElement = $("#employeeNotifications");
-		notifElement.kendoNotification();
-		var notification = notifElement.data("kendoNotification");
+		var controls = {};
+		controls.CurrentFieldId = {};
 
+		$("#employeeNotifications").kendoNotification({});
+		controls.Notification = $("#employeeNotifications").data("kendoNotification");
 
-		// Insert
-		$("body").on("click", "#employeeInsertButton", function () {
-			let window = $("#employeeInsertWindow").data("kendoDialog");
-			window.open();
+		$("#employeeFormDialog").kendoDialog({
+			closable: false, visible: false, title: false, width: "900"
 		});
+		controls.FormDialog = $("#employeeFormDialog").data("kendoDialog");
 
-		$("#employeeInsertWindow").kendoDialog({
-			modal: true,
-			width: "400px",
-			closable: false,
-			visible: false,
-			title: false,
+		$("#employeeWarningWindow").kendoDialog({
+			closable: false, visible: false, title: false
 		});
+		controls.DeleteDialog = $("#employeeWarningWindow").data("kendoDialog");
 
-		$("body").on("click", "#employeeCloseInsertWindow", function () {
-			$("#employeeInsertWindow").data("kendoDialog").close();
-		});
+		$("#employeeToolBar").kendoToolBar({});
 
-		$("#employeeInsertForm").kendoForm({
-			visible: false,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@localizer.GetValue("EmployeeFormHeader")",
-					items: [
-						{
-							field: "FullName", label: "@localizer.GetValue("LabelFullName")", placeholder: "@localizer.GetValue("PlaceholderFullName")",
-							editor: function (container, options) {
-								var input = $('<input id="empInsertFullName" name="FullName" />');
-								input.appendTo(container);
-								input.kendoTextBox();
-							}
-						},
-						{
-							field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
-								var input = $('<input id="empInsertPhone" name="Phone" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									mask: "0-(000)-000-00-00"
-								});
-							}
-						},
-						{
-							field: "BirthdayDate", label: "@localizer.GetValue("LabelBirthdayDate")",
-							editor: function (container, options) {
-								var input = $('<input id="empInsertBirthdayDate" name="BirthdayDate" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
-							editor: function (container, options) {
-								var input = $('<input id="empInsertDateOfBegin" name="DateOfBegin" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "PersonalNumber", label: "@localizer.GetValue("LabelPersonalNumber")",
-							editor: function (container, options) {
-								var input = $('<input id="empInsertPesonalNumber" name="PersonalNumber" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderPersonalNumber")",
-									mask: "000-000-000-000"
-								});
-							}
-						},
-						{
-							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
-							editor: function (container, options) {
-								var input = $('<input id="empInsertCompanyId" name="CompanyId" />');
-								input.appendTo(container);
-								input.kendoComboBox({
-									placeholder: "@localizer.GetValue("PlaceholderCompany")",
-									dataTextField: "Name",
-									dataValueField: "Id",
-									filter: "contains",
-									dataSource: companies
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/>');
-								block.appendTo(container);
-							}
-						}
-					]
-				},
-			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseInsertWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
-		});
-		$("#employeeInsertForm").validate({
-			rules: {
-				FullName: {
-					required: true,
-					minlength: 10,
-					lettersonly: true
-				},
-				PersonalNumber: {
-					required: true,
-					pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
-				},
-				BirthdayDate: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				DateOfBegin: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
-				}
-			},
-			messages: {
-				FullName: {
-					required: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 10",
-					lettersonly: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidateLettersOnly")"
-				},
-				PersonalNumber: {
-					required: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageInputRequired"): ",
-					pattern: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageFormatError"):'XXX-XXX-XXX-XXX'"
-				},
-				BirthdayDate: {
-					required: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
-				},
-				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
-				},
-				Phone: {
-					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired"): ",
-					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
-				}
-			},
-			submitHandler: function (e) {
-				var comboBoxesIsValid = ComboBoxsValidation(["empInsertCompanyId"]);
-				if (comboBoxesIsValid) {
-					let data = {
-						DateOfBegin: $("#empInsertDateOfBegin").data("kendoDatePicker").value(),
-						Company: companies.find(x => x.Id == $("#empInsertCompanyId").val()),
-						BirthdayDate: $("#empInsertBirthdayDate").data("kendoDatePicker").value(),
-						FullName: $("#empInsertFullName").val(),
-						PersonalNumber: $("#empInsertPesonalNumber").val(),
-						Phone: $("#empInsertPhone").val()
-					}
-
-					$.ajax({
-						url: "/Employee/AddEmployee/",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess == true) {
-								var grid = $("#emloyeeGrid").data("kendoGrid");
-								grid.dataSource.read();
-								notification.success(json.Message);
-								$('#employeeInsertForm')[0].reset();
-								$("#employeeInsertWindow").data("kendoDialog").close();
-							}
-							else
-								return notification.error(json.Error);
-						}
-					});
-				}
-				else {
-					notification.error("@localizer.GetValue("ValidationComboBox")");
-				}
-			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
-			}
-		});
-
-		// Edit
-		$("body").on("click", "#employeeCloseEditWindow", function () {
-			$("#editEmployeeWindow").data("kendoDialog").close();
-		});
-
-		$("#editEmployeeWindow").kendoDialog({
-			modal: true,
-			width: "500px",
-			closable: false,
-			visible: false,
-			title: false,
-		});
-
-		$("#editEmployeeForm").kendoForm({
-			visible: true,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@localizer.GetValue("EmployeeEditFormHeader")",
-					items: [
-						{
-							field: "Id", label: "", editor: function (container, options) {
-								var input = $('<input id="empEditId" name="Id" type="hidden"/>');
-								input.appendTo(container);
-							}
-						},
-						{
-							field: "FullName", label: "@localizer.GetValue("LabelFullName")", placeholder: "@localizer.GetValue("PlaceholderFullName")",
-							editor: function (container, options) {
-								var input = $('<input id="empEditFullName" name="FullName" />');
-								input.appendTo(container);
-								input.kendoTextBox();
-							}
-						},
-						{
-							field: "Phone", label: "@localizer.GetValue("LabelPhone")", editor: function (container, options) {
-								var input = $('<input id="empEditPhone" name="Phone" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderPhone")",
-									mask: "0-(000)-000-00-00"
-								});
-							}
-						},
-						{
-							field: "PersonalNumber", label: "@localizer.GetValue("LabelPersonalNumber")",
-							editor: function (container, options) {
-								var input = $('<input id="empEditPesonalNumber" name="PersonalNumber" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "@localizer.GetValue("PlaceholderPersonalNumber")",
-									mask: "000-000-000-000"
-								});
-							}
-						},
-						{
-							field: "BirthdayDate", label: "@localizer.GetValue("LabelBirthdayDate")",
-							editor: function (container, options) {
-								var input = $('<input id="empEditBirthdayDate" name="BirthdayDate" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
-							editor: function (container, options) {
-								var input = $('<input id="empEditCompanyId" name="CompanyId" />');
-								input.appendTo(container);
-								input.kendoComboBox({
-									placeholder: "@localizer.GetValue("PlaceholderCompany")",
-									dataTextField: "Name",
-									dataValueField: "Id",
-									filter: "contains",
-									dataSource: companies
-								});
-							}
-						},
-						{
-							field: "DateOfBegin", label: "@localizer.GetValue("LabelDateOfBegin")",
-							editor: function (container, options) {
-								var input = $('<input id="empEditDateOfBegin" name="DateOfBegin" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									format: 'dd/MM/yyyy',
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/>');
-								block.appendTo(container);
-							}
-						}
-					]
-				}
-			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@localizer.GetValue("ButtonSave")</button> <button class='btn-danger' id='employeeCloseEditWindow' type='button' class=''>@localizer.GetValue("ButtonCancellation")</button></div>"
-		});
-
-		$("#editEmployeeForm").validate({
-			rules: {
-				FullName: {
-					required: true,
-					minlength: 10,
-					lettersonly: true
-				},
-				PersonalNumber: {
-					required: true,
-					pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
-				},
-				BirthdayDate: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				DateOfBegin: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
-				}
-			},
-			messages: {
-				FullName: {
-					required: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidationMessageInputRequired")",
-					minlength: "@localizer.GetValue("ValidationMessageMinLenght") 10",
-					lettersonly: "@localizer.GetValue("LabelFullName"): @localizer.GetValue("ValidateLettersOnly")"
-				},
-				PersonalNumber: {
-					required: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageInputRequired"): ",
-					pattern: "@localizer.GetValue("LabelPersonalNumber"): @localizer.GetValue("ValidationMessageFormatError"):'XXX-XXX-XXX-XXX'"
-				},
-				BirthdayDate: {
-					required: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelBirthdayDate"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
-				},
-				DateOfBegin: {
-					required: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageInputRequired")",
-					dateFilter: "@localizer.GetValue("LabelDateOfBegin"): @localizer.GetValue("ValidationMessageFormatError") 'ДД.ММ.ГГГГ'",
-					pastDate: "@localizer.GetValue("ValidationMessageDateNonCorrect")"
-				},
-				Phone: {
-					required: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageInputRequired"): ",
-					pattern: "@localizer.GetValue("LabelPhone"): @localizer.GetValue("ValidationMessageFormatError"):'X-(XXX)-XXX-XX-XX'"
-				}
-			},
-			submitHandler: function (e) {
-				var comboBoxesIsValid = ComboBoxsValidation(["empEditCompanyId"]);
-				if (comboBoxesIsValid) {
-
-					let companyId = $("#empEditCompanyId").val();
-					let data = {
-						Id: $("#empEditId").val(),
-						DateOfBegin: new Date($("#empEditDateOfBegin").data("kendoDatePicker").value()).toLocaleDateString(),
-						Company: companies.find(x => x.Id == companyId),
-						BirthdayDate: new Date($("#empEditBirthdayDate").data("kendoDatePicker").value()).toLocaleDateString(),
-						FullName: $("#empEditFullName").val(),
-						PersonalNumber: $("#empEditPesonalNumber").val(),
-						Phone: $("#empEditPhone").val()
-					}
-
-					$.ajax({
-						url: "/Employee/EditEmployee/",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess == true) {
-								var grid = $("#emloyeeGrid").data("kendoGrid");
-								grid.dataSource.read();
-								notification.success(json.Message);
-								$("#editEmployeeWindow").data("kendoDialog").close();
-							}
-							else {
-								notification.error(json.Error);
-							}
-						}
-					});
-				}
-				else {
-					notification.error("@localizer.GetValue("ValidationComboBox")");
-				}
-			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
-			}
-		});
-
-		function EditEmployee(oldService) {
-			var filteredBirthdayDate = new Date(oldService.BirthdayDate).toLocaleDateString();
-			var filteredDateOfBegin = new Date(oldService.DateOfBegin).toLocaleDateString();
-			var filteredPersonalNumber = EditBIN(oldService.PersonalNumber);
-			var filteredPhone = EditNumber(oldService.Phone);
-
-			$("#editEmployeeForm #empEditId").val(oldService.Id);
-			$("#editEmployeeForm #empEditFullName").val(oldService.FullName);
-			$("#editEmployeeForm #empEditPhone").val(filteredPhone);
-			$("#editEmployeeForm #empEditPesonalNumber").val(filteredPersonalNumber);
-			$("#editEmployeeForm #empEditBirthdayDate").val(filteredBirthdayDate);
-			$("#editEmployeeForm #empEditCompanyId").data("kendoComboBox").value(oldService.Company.Id);
-			$("#editEmployeeForm #empEditDateOfBegin").val(filteredDateOfBegin);
-
-			$("#editEmployeeWindow").data("kendoDialog").open();
-
-			return false;
-		}
-
-		function ActivateEmployee(id) {
-			$.ajax({
-				url: "/Employee/ActivateEmployee/",
-				type: "POST",
-				data: { id: id },
-				success: function (json) {
-					if (json.IsSuccess == true) {
-						var grid = $("#emloyeeGrid").data("kendoGrid");
-						grid.dataSource.read();
-						notification.success(json.Message);
-					}
-					else {
-						notification.error(json.Message);
-					}
-				}
-			})
-		}
-
-
-		// Delete
-		function DeleteEmployee(id) {
-			document.getElementById('employeeDeleteWindow').style.display = "block";
-			$("#employeeDeleteWindow").kendoDialog({
-				title: false,
-				modal: true,
-				width: "400px",
-				closable: false,
-				visible: true,
-				actions: [
-					{
-						text: "Да",
-						primary: true,
-						action: function () {
-							$.ajax({
-								url: "/Employee/DeleteEmployee/",
-								type: "POST",
-								data: { Id: id },
-								success: function (json) {
-									if (json.IsSuccess == true) {
-										var grid = $("#emloyeeGrid").data("kendoGrid");
-										grid.dataSource.read();
-										notification.success(json.Message);
-									}
-									else {
-										notification.error(json.Error);
-									}
-								}
-							})
-						}
-					},
-					{ text: "Нет" }
-				]
-			});
-		};
-
-		// Filters
-
-		$("body").on("click", "#employeeSearchButton", function () {
-			var grid = $("#emloyeeGrid").data("kendoGrid");
-			grid.dataSource.read();
-		});
-		$("#employeeToolbar").kendoToolBar({});
-
-		$("#fullNameFilter").kendoTextBox({
-			placeholder: "@localizer.GetValue("PlaceholderFullName")"
-		});
-
-		$("#statusesList").kendoDropDownList({
+		$("#employeeStatusesList").kendoDropDownList({
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-				{ text: "@localizer.GetValue("StatusDisable")", value: 2 },
+				{ text: "@Resource.StatusActive", value: 1 },
+				{ text: "@Resource.StatusDisable", value: 2 },
 			]
 		});
-
-		$("#companyFilter").kendoComboBox({
-			placeholder: "@localizer.GetValue("FilterCompany")",
-			dataTextField: "Name",
-			dataValueField: "Id",
-			filter: "contains",
-			dataSource: companies,
-		});
+		controls.StatusesFilter = $("#employeeStatusesList").data("kendoDropDownList");
 
 		$("#employeeSortingTypes").kendoDropDownList({
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
-				{ text: "@localizer.GetValue("SortingByFullName")", value: "FullName" },
-				{ text: "@localizer.GetValue("SortingByBirthdayDate")", value: "BirthdayDate" }
-			],
+				{ text: "@Resource.SortingByName", value: "FullName" },
+				{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" },
+				{ text: "@Resource.SortingByBirthdayDate", value: "BirthdayDate" },
+			]
 		});
+		controls.SortingTypeFilter = $("#employeeSortingTypes").data("kendoDropDownList");
 
+		$("#employeeCompanyFilter").kendoComboBox({
+			placeholder: "@Resource.FilterCompany",
+			dataTextField: "Name",
+			dataValueField: "Id",
+			filter: "contains",
+			dataSource: {
+				serverFiltering: true,
+				transport: {
+					read: {
+						url: "/Company/Index/",
+						type: "POST",
+						data: {
+							CompanyName: name,
+							Page: 1,
+							PageSize: 150,
+							Status: 1
+						}
+					},
+				}
+			}
+		});
+		controls.CompanyFilter = $("#employeeCompanyFilter").data("kendoComboBox");
 
+		$("#employeeNameFilter").kendoTextBox({
+			placeholder: "@Resource.PlaceholderName"
+		});
+		controls.NameFilter = $("#employeeNameFilter").data("kendoTextBox");
 
-		// GRID
-		var dataSource = new kendo.data.DataSource({
+		controls.FormHeader = $("#employeeFormTitle");
+
+		let dataSource = new kendo.data.DataSource({
 			pageSize: 20,
 			transport: {
 				read: {
@@ -567,14 +123,14 @@
 					contentType: "application/json; charset=utf-8",
 				},
 				parameterMap: function (options) {
-					let name = $("#fullNameFilter").val();
+					let name = $("#employeeNameFilter").val();
 					var data = {
 						FullName: name,
 						Page: options.page,
 						PageSize: options.pageSize,
-						Status: $("#statusesList").val(),
-						SortingType: $("#employeeSortingTypes").val(),
-						CompanyId: $("#companyFilter").val()
+						Status: controls.StatusesFilter.value(),
+						SortingType: controls.SortingTypeFilter.value(),
+						CompanyId: controls.CompanyFilter.value()
 					}
 					return kendo.stringify(data);
 				}
@@ -588,9 +144,8 @@
 				},
 				model: {
 					fields: {
-						BirthdayDate: { type: "date" },
 						DateOfBegin: { type: "date" },
-						DateOfFinish: { type: "date" }
+						BirthdayDate: { type: "date" }
 					}
 				}
 			},
@@ -599,20 +154,20 @@
 			serverSorting: true,
 		});
 
-		$("#emloyeeGrid").kendoGrid({
+		$("#employeeGrid").kendoGrid({
 			dataSource: dataSource,
 			columns: [
-				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "FullName", title: "@localizer.GetValue("LabelFullName")", width: "10%" },
-				{ field: "PersonalNumber", title: "@localizer.GetValue("LabelPersonalNumber")", width: "10%" },
-				{ field: "Phone", title: "@localizer.GetValue("LabelPhone")", width: "10%" },
-				{ field: "Company.Name", title: "@localizer.GetValue("LabelCompany")", width: "10%" },
-				{ field: "BirthdayDate", title: "@localizer.GetValue("LabelBirthdayDate")", width: "15%", format: "{0: dd-MM-yyyy}" },
-				{ field: "DateOfBegin", title: "@localizer.GetValue("LabelDateOfBegin")", width: "15%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Id", title: "Id", width: "1%", hidden: true },
+				{ field: "Company.Id", title: "Id", width: "1%", hidden: true },
+				{ field: "FullName", title: "@Resource.LabelFullName", width: "15%" },
+				{ field: "PersonalNumber", title: "@Resource.LabelPersonalNumber", width: "10%" },
+				{ field: "Company.Name", title: "@Resource.LabelCompany", width: "10%" },
+				{ field: "BirthdayDate", title: "@Resource.LabelBirthdayDate", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
 				{
-					field: "Status", title: "Статус", width: "5%", values: [
-						{ text: "@localizer.GetValue("StatusActive")", value: 1 },
-						{ text: "@localizer.GetValue("StatusDisable")", value: 2 }
+					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
+						{ text: "@Resource.StatusActive", value: 1 },
+						{ text: "@Resource.StatusDisable", value: 2 },
 					]
 				},
 				{
@@ -620,42 +175,120 @@
 						{
 							name: "Delete",
 							className: "btn-destroy",
-							text: "@localizer.GetValue("ButtonDelete")",
+							text: "@Resource.ButtonDelete",
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								DeleteEmployee(dataItem.Id);
+								controls.CurrentFieldId = dataItem.Id;
+								controls.DeleteDialog.open();
 							},
 						},
 						{
 							name: "Activate",
 							className: "btn-activate",
-							text: "@localizer.GetValue("ButtonActivate")",
+							text: "@Resource.ButtonActivate",
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								ActivateEmployee(dataItem.Id);
+
+								$.ajax({
+									url: "/Employee/Activate/",
+									type: "POST",
+									data: { id: dataItem.Id },
+									success: function (json) {
+										if (json.IsSuccess == true) {
+											controls.Grid.dataSource.read();
+											controls.Notification.success(json.Message);
+										}
+										else {
+											controls.Notification.error(json.Message);
+										}
+									}
+								})
 							}
 						},
 						{
 							name: "Edit",
 							className: "btn-edit",
-							text: "@localizer.GetValue("ButtonEdit")",
+							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								EditEmployee(dataItem);
+
+								$("#employeeInputId").val(dataItem.Id);
+								$("#employeeInputFullName").data("kendoTextBox").value(dataItem.FullName);
+								$("#employeeInputPersonalNumber").data("kendoMaskedTextBox").value(dataItem.PersonalNumber);
+								$("#employeeInputCompanyId").data("kendoComboBox").value(dataItem.Company.Id);
+								$("#employeeInputBirthdayDate").data("kendoDatePicker").value(dataItem.BirthdayDate);
+								$("#employeeInputDateOfBegin").data("kendoDatePicker").value(dataItem.DateOfBegin);
+
+								controls.FormHeader.text("@Resource.EmployeeEditFormHeader");
+								controls.FormDialog.open();
 							},
-						},
-					]
+						}
+					],
+					width: "13%",
 				},
 			],
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="employeeInsertButton">@localizer.GetValue("ButtonAdd")</button>'
+					display: '<button type="button" id="employeeInsertButton">@Resource.ButtonAdd</button>'
 				}
 			},
 			scrollable: true,
+		});
+
+		controls.Grid = $("#employeeGrid").data("kendoGrid"); $("body").on("click", "#employeeInsertButton", function () {
+			$("#employeeInputId").val(0);
+			controls.FormHeader.text("@Resource.CompanyInsertFormHeader");
+			controls.FormDialog.open();
+		});
+
+		$("body").on("click", "#employeeSearchButton", function () {
+			controls.Grid.dataSource.read();
+		});
+
+		$("body").on("click", "#employeeButtonDeleteAgainst", function () {
+			controls.DeleteDialog.close();
+		});
+
+		$("body").on("click", "#employeeButtonDeleteAgree", function () {
+			$.ajax({
+				url: "/Employee/Delete",
+				type: "POST",
+				data: { Id: controls.CurrentFieldId },
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						controls.Grid.dataSource.read();
+						controls.DeleteDialog.close();
+						controls.Notification.success(json.Message);
+					}
+					else {
+						controls.Notification.error(json.Error);
+					}
+				}
+			})
+		});
+
+		controls.Form = $("#employeeForm");
+		controls.Form.kendoForm({
+			orientation: "horizontal",
+			visible: true,
+			width: "100%",
+			buttonsTemplate: "",
+		});
+
+		$("#employeeInputName").kendoTextBox({});
+
+		$("#employeeInputBIN").kendoMaskedTextBox({
+			placeholder: "111",
+			mask: "000-000-000-000"
+		});
+		$("#employeeInputPhone").kendoMaskedTextBox({
+			mask: "0-(000)-000-00-00"
+		});
+		$("#employeeInputDateOfBegin").kendoDatePicker({
+			format: 'dd/MM/yyyy',
 		});
 	});
 </script>

@@ -135,6 +135,12 @@
   <data name="ButtonAdd" xml:space="preserve">
     <value>Добавление</value>
   </data>
+  <data name="ButtonAgainst" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="ButtonAgree" xml:space="preserve">
+    <value>Да</value>
+  </data>
   <data name="ButtonCancellation" xml:space="preserve">
     <value>Отмена</value>
   </data>
@@ -317,8 +323,14 @@
   <data name="PlaceholderPhone" xml:space="preserve">
     <value>Укажите номер телефона</value>
   </data>
+  <data name="PlaceholderPrice" xml:space="preserve">
+    <value>Укажите стоимость </value>
+  </data>
   <data name="PlaceholderService" xml:space="preserve">
     <value>Выберите услугу</value>
+  </data>
+  <data name="PlaceholderServiceCode" xml:space="preserve">
+    <value>Укажите код</value>
   </data>
   <data name="ReportFormHeader" xml:space="preserve">
     <value>Получение отчета</value>

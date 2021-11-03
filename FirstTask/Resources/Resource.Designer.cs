@@ -115,6 +115,24 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет.
+        /// </summary>
+        public static string ButtonAgainst {
+            get {
+                return ResourceManager.GetString("ButtonAgainst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Да.
+        /// </summary>
+        public static string ButtonAgree {
+            get {
+                return ResourceManager.GetString("ButtonAgree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Отмена.
         /// </summary>
         public static string ButtonCancellation {
@@ -655,11 +673,29 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Укажите стоимость .
+        /// </summary>
+        public static string PlaceholderPrice {
+            get {
+                return ResourceManager.GetString("PlaceholderPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите услугу.
         /// </summary>
         public static string PlaceholderService {
             get {
                 return ResourceManager.GetString("PlaceholderService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Укажите код.
+        /// </summary>
+        public static string PlaceholderServiceCode {
+            get {
+                return ResourceManager.GetString("PlaceholderServiceCode", resourceCulture);
             }
         }
         

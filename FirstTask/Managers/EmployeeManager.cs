@@ -58,8 +58,6 @@ namespace FirstTask.Managers
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
-			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
-			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
 			entity.CompanyId = model.Company.Id;
 
@@ -87,8 +85,6 @@ namespace FirstTask.Managers
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
-			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
-			model.PersonalNumber = model.PersonalNumber.Replace("-", "").Replace(" ", "");
 			var entity = mapper.Map<Employee>(model);
 			entity.CompanyId = model.Company.Id;
 

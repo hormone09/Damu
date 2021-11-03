@@ -1,397 +1,29 @@
-﻿@using FirstTask.Handlers;
-@using FirstTask.Resources;
+﻿@using FirstTask.Resources;
 @{
 	ViewBag.Title = @Resource.HeadingCompanies;
 }
 
-<h2>@Resource.HeadingCompanies</h2>
-
-<span id="companyNotifications"></span>
-
-<div class="container">
-	<div id="companiesGrid">
-		<div id="companiesToolbar">
-			<p>@Resource.FilterStatus</p>
-			<div id="statusesListCompanies"></div>
-			<p>@Resource.FilterSorting</p>
-			<div id="companiesSortingTypes"></div>
-			<p>@Resource.FilterName</p>
-			<input type="text" name="Name" id="nameFilter" />
-			<button type="button" id="btnCompanySearch">@Resource.ButtonSearch</button>
-		</div>
-	</div>
-
-	<div id="companiesInsertWindow">
-		<form id="companiesInsertForm"></form>
-
-	</div>
-
-	<div id="companyEditWindow">
-		<form id="companyEditForm"></form>
-	</div>
-
-	<div>
-		<div id="companiesDeleteWindow" style="text-align: center; display: none;">
-			<h3 style="margin: 20px 0px;">@Resource.DeleteWarningMessage</h3>
-		</div>
-	</div>
-</div>
-
 <script type="text/javascript">
 	$(document).ready(function () {
+		var controls = {};
+		controls.CurrentFieldId = {};
 
-		var notifElement = $("#companyNotifications");
-		notifElement.kendoNotification({
+		$("#companyNotifications").kendoNotification({});
+		controls.Notification = $("#companyNotifications").data("kendoNotification");
+
+		$("#companyFormDialog").kendoDialog({
+			closable: false, visible: false, title: false, width: "900"
 		});
+		controls.FormDialog = $("#companyFormDialog").data("kendoDialog");
 
-		var notification = notifElement.data("kendoNotification");
-
-		// Insert
-
-		$("body").on("click", "#companiesCloseInsertWindow", function () {
-			$("#companiesInsertWindow").data("kendoDialog").close();
-			$("#companiesInsertForm").trigger('reset');
-			$(".validateContainer").empty();
+		$("#companyWarningWindow").kendoDialog({
+			closable: false, visible: false, title: false
 		});
+		controls.DeleteDialog = $("#companyWarningWindow").data("kendoDialog");
 
-		$("body").on("click", "#companiesCloseEditWindow", function () {
-			$("#companyEditWindow").data("kendoDialog").close();
-			$("#companyEditForm").trigger('reset');
-			$(".validateContainer").empty();
-		});
+		$("#companyToolBar").kendoToolBar({});
 
-		$("#companiesInsertWindow").kendoDialog({
-			modal: true,
-			closable: false,
-			visible: false,
-			title: false,
-		});
-
-		$("body").on("click", "#btnCompanyInsert", function () {
-			let window = $("#companiesInsertWindow").data("kendoDialog")
-			window.open();
-		});
-
-		var formInsert = $("#companiesInsertForm").kendoForm({
-			visible: false,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@Resource.CompanyInsertFormHeader",
-					items: [
-						{
-							field: "Name", label: "@Resource.LabelName", placeholder: "@Resource.PlaceholderName",
-							editor: function (container, options) {
-								var input = $('<input id="insertCompaniesName" name="Name"/>');
-								input.appendTo(container);
-								input.kendoTextBox();
-								console.log(container)
-							}
-						},
-						{
-							field: "DateOfBegin", label: "@Resource.LabelDateOfBegin",
-							editor: function (container, options) {
-								var input = $('<input id="insertDate" name="DateOfBegin" />');
-								input.appendTo(container);
-								input.kendoDatePicker({
-									placeholder: "@Resource.PlaceholderDateOfBegin",
-									format: 'dd/MM/yyyy'
-								});
-							}
-						},
-						{
-							field: "BIN", label: "@Resource.LabelBIN",
-							editor: function (container, options) {
-								var input = $('<input name="BIN" />');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "@Resource.PlaceholderBIN",
-									mask: "000-000-000-000"
-								});
-							}
-						},
-						{
-							field: "Phone", label: "@Resource.LabelPhone", editor: function (container, options) {
-								var input = $('<input name="Phone"/>');
-								input.appendTo(container);
-								input.kendoMaskedTextBox({
-									placeholder: "@Resource.PlaceholderPhone",
-									mask: "0-(000)-000-00-00"
-								});
-							}
-						},
-						{
-							field: "Validator", label: "",
-							editor: function (container, options) {
-								var block = $('<div class="validateContainer"/>');
-								block.appendTo(container);
-							}
-						}
-					]
-				}
-			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@Resource.ButtonSave</button> <button class='btn-danger' id='companiesCloseInsertWindow' type='button'>@Resource.ButtonCancellation</button></div>"
-		});
-
-		// Insert Validator and Submit
-		$("#companiesInsertForm").validate({
-			rules: {
-				Name: {
-					required: true,
-					minlength: 6,
-				},
-				BIN: {
-					required: true,
-					pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
-				},
-				DateOfBegin: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
-				}
-			},
-			messages: {
-				Name: {
-					required: "@Resource.LabelName: @Resource.ValidationMessageInputRequired",
-					minlength: "@Resource.ValidationMessageMinLenght 6",
-				},
-				BIN: {
-					required: "@Resource.LabelBIN: @Resource.ValidationMessageInputRequired",
-					pattern: "@Resource.LabelBIN: @Resource.ValidationMessageFormatError 'XXX-XXX-XXX-XXX'"
-				},
-				DateOfBegin: {
-					required: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageInputRequired",
-					dateFilter: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageFormatError 'ДД.ММ.ГГГГ'",
-					pastDate: "@Resource.ValidationMessageDateNonCorrect"
-				},
-				Phone: {
-					required: "@Resource.LabelPhone: @Resource.ValidationMessageInputRequired",
-					pattern: "@Resource.LabelPhone: @Resource.ValidationMessageFormatError 'X-(XXX)-XXX-XX-XX'"
-				}
-			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
-			},
-			submitHandler: function () {
-				var data = formInsert.serializeArray();
-				$.ajax({
-					url: "/Company/AddCompany/",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						if (json.IsSuccess == true) {
-							var grid = $("#companiesGrid").data("kendoGrid");
-							grid.dataSource.read();
-							notification.success(json.Message);
-							$('#companiesInsertForm')[0].reset();
-							$("#companiesInsertWindow").data("kendoDialog").close();
-						}
-						else {
-							notification.error(json.Error);
-						}
-					}
-				});
-			}
-		});
-
-		// Edit
-
-		$("#companyEditWindow").kendoDialog({
-			modal: true,
-			width: "500px",
-			closable: false,
-			visible: false,
-			title: false,
-		});
-
-		var formEdit = $("#companyEditForm").kendoForm({
-			visible: true,
-			orientation: "horizontal",
-			width: "100%",
-			items: [
-				{
-					type: "group",
-					label: "@Resource.CompanyEditFormHeader",
-					items: [
-
-						{
-					field: "Name", label: "@Resource.LabelName", placeholder: "@Resource.PlaceholderName",
-					editor: function (container, options) {
-						var input = $('<input id="editCompaniesName" name="Name"/>');
-						input.appendTo(container);
-						input.kendoTextBox();
-					}
-				},
-				{
-					field: "DateOfBegin", label: "@Resource.LabelDateOfBegin",
-					editor: function (container, options) {
-						var input = $('<input id="editCompaniesDateOfBegin" name="DateOfBegin" />');
-						input.appendTo(container);
-						input.kendoDatePicker({
-							placeholder: "@Resource.PlaceholderDateOfBegin",
-							format: 'dd/MM/yyyy'
-						});
-					}
-				},
-				{
-					field: "BIN", label: "@Resource.LabelBIN",
-					editor: function (container, options) {
-						var input = $('<input id="editCompaniesBin" name="BIN" />');
-						input.appendTo(container);
-						input.kendoMaskedTextBox({
-							placeholder: "@Resource.PlaceholderBIN",
-							mask: "000-000-000-000"
-						});
-					}
-				},
-				{
-					field: "Phone", label: "@Resource.LabelPhone", editor: function (container, options) {
-						var input = $('<input id="editCompaniesPhone" name="Phone"/>');
-						input.appendTo(container);
-						input.kendoMaskedTextBox({
-							placeholder: "@Resource.PlaceholderPhone",
-							mask: "0-(000)-000-00-00"
-						});
-					}
-				},
-				{
-					field: "Validator", label: "",
-					editor: function (container, options) {
-						var block = $('<div class="validateContainer"/>');
-						block.appendTo(container);
-					}
-				}
-					]
-				}
-			],
-			buttonsTemplate: "<div class='form-buttons'><button class='btn-success' type='submit'>@Resource.ButtonSave</button> <button class='btn-danger' id='companiesCloseEditWindow' type='button' class=''>@Resource.ButtonCancellation</button></div>"
-		});
-
-
-		function EditCompany(oldService) {
-			var filteredBIN = EditBIN(oldService.BIN);
-			var filteredDate = new Date(oldService.DateOfBegin).toLocaleDateString();
-			var filteredPhone = EditNumber(oldService.Phone);
-
-			$("#companyEditForm #editCompaniesId").val(oldService.Id);
-			$("#companyEditForm #editCompaniesName").val(oldService.Name);
-			$("#companyEditForm #editCompaniesBin").val(filteredBIN);
-			$("#companyEditForm #editCompaniesDateOfBegin").val(filteredDate);
-			$("#companyEditForm #editCompaniesPhone").val(filteredPhone);
-
-			$("#companyEditWindow").data("kendoDialog").open();
-
-			return false;
-		}
-
-		function ActivateCompany(id) {
-			$.ajax({
-				url: "/Company/ActivateCompany/",
-				type: "POST",
-				data: { id: id },
-				success: function (json) {
-					if (json.IsSuccess == true) {
-						var grid = $("#companiesGrid").data("kendoGrid");
-						grid.dataSource.read();
-						notification.success(json.Message);
-					}
-					else {
-						notification.error(json.Message);
-					}
-				}
-			})
-		}
-
-		// Edit Validator and Submit
-		$("#companyEditForm").validate({
-			rules: {
-				Name: {
-					required: true,
-					minlength: 6,
-				},
-				BIN: {
-					required: true,
-					pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
-				},
-				DateOfBegin: {
-					required: true,
-					dateFilter: true,
-					pastDate: true
-				},
-				Phone: {
-					required: true,
-					pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
-				}
-			},
-			messages: {
-				Name: {
-					required: "@Resource.LabelName: @Resource.ValidationMessageInputRequired",
-					minlength: "@Resource.LabelName: @Resource.ValidationMessageMinLenght 6",
-				},
-				BIN: {
-					required: "@Resource.LabelBIN: @Resource.ValidationMessageInputRequired",
-					pattern: "@Resource.LabelBIN: @Resource.ValidationMessageFormatError 'XXX-XXX-XXX-XXX'"
-				},
-				DateOfBegin: {
-					required: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageInputRequired",
-					dateFilter: "@Resource.LabelDateOfBegin: @Resource.ValidationMessageFormatError 'ДД.ММ.ГГГГ'",
-					pastDate: "@Resource.ValidationMessageDateNonCorrect"
-				},
-				Phone: {
-					required: "@Resource.LabelPhone: @Resource.ValidationMessageInputRequired",
-					pattern: "@Resource.LabelPhone: @Resource.ValidationMessageFormatError'X-(XXX)-XXX-XX-XX'"
-				}
-			},
-			submitHandler: function () {
-				var data = formEdit.serializeArray();
-
-				$.ajax({
-					url: "/Company/EditCompany/",
-					type: "POST",
-					data: data,
-					success: function (json) {
-						if (json.IsSuccess == true) {
-							var grid = $("#companiesGrid").data("kendoGrid");
-							grid.dataSource.read();
-							notification.success(json.Message);
-							$("#companyEditWindow").data("kendoDialog").close();
-						}
-						else {
-							notification.error(json.Error);
-						}
-					}
-				});
-			},
-			focusInvalid: true,
-			errorClass: "validationFormMessage",
-			errorPlacement: function (error, element) {
-				$(".validateContainer").empty();
-				error.appendTo('.validateContainer');
-			}
-		});
-
-		// Filters
-
-		$("body").on("click", "#btnCompanySearch", function () {
-			var grid = $("#companiesGrid").data("kendoGrid");
-			grid.dataSource.read();
-		});
-
-		$("#companiesToolbar").kendoToolBar({
-		});
-
-		$("#nameFilter").kendoTextBox({});
-
-		$("#statusesListCompanies").kendoDropDownList({
+		$("#companyStatusesList").kendoDropDownList({
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
@@ -399,54 +31,26 @@
 				{ text: "@Resource.StatusDisable", value: 2 },
 			]
 		});
+		controls.StatusesFilter = $("#companyStatusesList").data("kendoDropDownList");
 
-		$("#companiesSortingTypes").kendoDropDownList({
+		$("#companySortingTypes").kendoDropDownList({
 			dataTextField: "text",
 			dataValueField: "value",
 			dataSource: [
 				{ text: "@Resource.SortingByName", value: "Name" },
-				{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" }
+				{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" },
 			]
 		});
+		controls.SortingTypeFilter = $("#companySortingTypes").data("kendoDropDownList");
 
-		// Delete
-		function DeleteCompany(id) {
-			document.getElementById('companiesDeleteWindow').style.display = "block";
-			$("#companiesDeleteWindow").kendoDialog({
-				title: false,
-				modal: true,
-				width: "400px",
-				closable: false,
-				visible: true,
-				actions: [
-					{
-						text: "Да",
-						primary: true,
-						action: function () {
-							$.ajax({
-								url: "/Company/DeleteCompany/",
-								type: "POST",
-								data: { id: id },
-								success: function (json) {
-									if (json.IsSuccess == true) {
-										var grid = $("#companiesGrid").data("kendoGrid");
-										grid.dataSource.read();
-										notification.success(json.Message);
-									}
-									else {
-										notification.error(json.Error);
-									}
-								}
-							})
-						}
-					},
-					{ text: "Нет" }
-				]
-			});
-		};
-		// Grid
+		$("#companyNameFilter").kendoTextBox({
+			placeholder: "@Resource.PlaceholderName"
+		});
+		controls.NameFilter = $("#companyNameFilter").data("kendoTextBox");
 
-		var dataSource = new kendo.data.DataSource({
+		controls.FormHeader = $("#companyFormTitle");
+
+		let dataSource = new kendo.data.DataSource({
 			pageSize: 20,
 			transport: {
 				read: {
@@ -455,13 +59,13 @@
 					contentType: "application/json; charset=utf-8",
 				},
 				parameterMap: function (options) {
-					let name = $("#nameFilter").val();
+					let name = $("#companyNameFilter").val();
 					var data = {
 						CompanyName: name,
 						Page: options.page,
 						PageSize: options.pageSize,
-						Status: $("#statusesListCompanies").val(),
-						SortingType: $("#companiesSortingTypes").val()
+						Status: controls.StatusesFilter,
+						SortingType: controls.SortingTypeFilter.val()
 					}
 					return kendo.stringify(data);
 				}
@@ -479,15 +83,16 @@
 					}
 				}
 			},
+			page: "Page",
 			serverPaging: true,
 			serverSorting: true,
 		});
 
-		$("#companiesGrid").kendoGrid({
+		$("#companyGrid").kendoGrid({
 			dataSource: dataSource,
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
-				{ field: "Name", title: "@Resource.LabelCompany", width: "30%" },
+				{ field: "Name", title: "@Resource.LabelCompany", width: "15%" },
 				{ field: "Phone", title: "@Resource.LabelPhone", width: "10%" },
 				{ field: "BIN", title: "@Resource.LabelBIN", width: "10%" },
 				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
@@ -507,8 +112,8 @@
 							visible: function (dataItem) { return dataItem.Status == 1 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-								DeleteCompany(dataItem.Id);
+								controls.CurrentFieldId = dataItem.Id;
+								controls.DeleteDialog.open();
 							},
 						},
 						{
@@ -518,7 +123,21 @@
 							visible: function (dataItem) { return dataItem.Status == 2 },
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								ActivateCompany(dataItem.Id);
+
+								$.ajax({
+									url: "/Company/Activate/",
+									type: "POST",
+									data: { id: dataItem.Id },
+									success: function (json) {
+										if (json.IsSuccess == true) {
+											controls.Grid.dataSource.read();
+											controls.Notification.success(json.Message);
+										}
+										else {
+											controls.Notification.error(json.Message);
+										}
+									}
+								})
 							}
 						},
 						{
@@ -527,20 +146,223 @@
 							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								EditCompany(dataItem);
+
+								$("#companyInputId").val(dataItem.Id);
+								$("#companyInputName").data("kendoTextBox").value(dataItem.Name);
+								$("#companyInputBIN").data("kendoMaskedTextBox").value(dataItem.BIN);
+								$("#companyInputPhone").data("kendoMaskedTextBox").value(dataItem.Phone);
+								$("#companyInputDateOfBegin").data("kendoDatePicker").value(dataItem.DateOfBegin);
+
+								controls.FormHeader.text("@Resource.CompanyEditFormHeader");
+								controls.FormDialog.open();
 							},
 						}
 					],
-					width: "30%",
+					width: "13%",
 				},
 			],
 			height: 620,
 			pageable: {
 				messages: {
-					display: '<button type="button" id="btnCompanyInsert">@Resource.ButtonAdd</button>'
+					display: '<button type="button" id="companyInsertButton">@Resource.ButtonAdd</button>'
 				}
 			},
 			scrollable: true,
 		});
+		controls.Grid = $("#companyGrid").data("kendoGrid");
+
+		// Click
+
+		$("body").on("click", "#companyInsertButton", function () {
+			$("#companyInputId").val(0);
+			controls.FormHeader.text("@Resource.CompanyInsertFormHeader");
+			controls.FormDialog.open();
+		});
+
+		$("body").on("click", "#companySearchButton", function () {
+			controls.Grid.dataSource.read();
+		});
+
+		$("body").on("click", "#companyButtonDeleteAgainst", function () {
+			controls.DeleteDialog.close();
+		});
+
+		$("body").on("click", "#companyButtonDeleteAgree", function () {
+			$.ajax({
+				url: "/Company/Delete",
+				type: "POST",
+				data: { Id: controls.CurrentFieldId },
+				success: function (json) {
+					if (json.IsSuccess == true) {
+						controls.Grid.dataSource.read();
+						controls.DeleteDialog.close();
+						controls.Notification.success(json.Message);
+					}
+					else {
+						controls.Notification.error(json.Error);
+					}
+				}
+			})
+		});
+
+		controls.Form = $("#companiesForm");
+		controls.Form.kendoForm({
+			orientation: "horizontal",
+			visible: true,
+			width: "100%",
+			buttonsTemplate: "",
+		});
+
+		$("#companyInputName").kendoTextBox({});
+
+		$("#companyInputBIN").kendoMaskedTextBox({
+			placeholder: "111",
+			mask: "000-000-000-000"
+		});
+		$("#companyInputPhone").kendoMaskedTextBox({
+			mask: "0-(000)-000-00-00"
+		});
+		$("#companyInputDateOfBegin").kendoDatePicker({
+			format: 'dd/MM/yyyy',
+		});
+
+		controls.FormValidator = $("#companiesForm").validate({
+		rules: {
+			Name: {
+				required: true,
+				minlength: 10
+			},
+			Phone: {
+				required: true,
+				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+			},
+			BIN: {
+				required: true,
+				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+			},
+			DateOfBegin: {
+				required: true,
+				dateFilter: true,
+				pastDate: true
+			},
+		},
+		messages: {
+			Name: {
+				required: "@Resource.ValidationMessageInputRequired",
+				minlength: "@Resource.ValidationMessageMinLenght: 10"
+			},
+			BIN: {
+				required: "@Resource.ValidationMessageInputRequired",
+				pattern: "@Resource.ValidationMessageFormatError:'XXX-XXX-XXX-XXX'"
+				},
+			DateOfBegin: {
+					required: "@Resource.ValidationMessageInputRequired",
+					dateFilter: "@Resource.ValidationMessageFormatError 'ДД.ММ.ГГГГ'",
+					pastDate: "@Resource.ValidationMessageDateNonCorrect"
+				},
+			Phone: {
+					required: "@Resource.ValidationMessageInputRequired",
+					pattern: "@Resource.ValidationMessageFormatError:'X-(XXX)-XXX-XX-XX'"
+				}
+		},
+		submitHandler: function (e) {
+			let data = {
+				Id: $("#companyInputId").val(),
+				Name: $("#companyInputName").data("kendoTextBox").value(),
+				BIN: $("#companyInputBIN").data("kendoMaskedTextBox").value().replace(/[^0-9]/g, ''),
+				Phone: $("#companyInputPhone").data("kendoMaskedTextBox").value().replace(/[^0-9]/g, ''),
+				DateOfBegin: $("#companyInputDateOfBegin").data("kendoDatePicker").value()
+			}
+
+			if (data.Id == 0) {
+				$.ajax({
+					url: "/Company/Add",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess) {
+							controls.Form[0].reset();
+							controls.FormDialog.close();
+							controls.Notification.success(json.Message);
+							controls.Grid.dataSource.read();
+						}
+						else {
+							controls.Notification.error(json.Message);
+						}
+					}
+				});
+			}
+			else {
+				$.ajax({
+					url: "/Company/Edit",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess) {
+							controls.Form[0].reset();
+							controls.FormDialog.close();
+							controls.Notification.success(json.Message);
+							controls.Grid.dataSource.read();
+						}
+						else {
+							controls.Notification.error(json.Message);
+						}
+					}
+				});
+			}
+		},
+		focusInvalid: true,
+		errorClass: "validationFormMessage",
+		errorElement: 'p',
+		errorPlacement: function (error, element) {
+			console.log(error, element)
+			error.insertAfter(element.closest('div'));
+		}
+	});
+
+		$("body").on("click", "#companyFormButtonCancel", function (e) {
+			controls.FormValidator.resetForm();
+			controls.Form[0].reset();
+		$("#companyFormDialog").data("kendoDialog").close();
+	});
 	});
 </script>
+
+<h2>@Resource.HeadingCompanies</h2>
+
+<span id="companyNotifications"></span>
+
+<div class="container">
+	<div id="companyGrid">
+		<div id="companyToolBar">
+			<p>@Resource.FilterStatus</p>
+			<div id="companyStatusesList"></div>
+			<p>@Resource.FilterSorting</p>
+			<div id="companySortingTypes"></div>
+			<p>@Resource.FilterName</p>
+			<input type="text" name="FilterName" id="companyNameFilter" />
+			<button type="button" id="companySearchButton">@Resource.ButtonSearch</button>
+		</div>
+	</div>
+
+	<div id="companyFormDialog">
+		@Html.Partial("_PartialCompanyForm")
+	</div>
+
+	<div id="companyWarningWindow">
+		<h2>@Resource.DeleteWarningMessage</h2>
+
+		<div class="row" style="text-align: center">
+			<div class="col-6">
+				<button type="submit" id="companyButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
+			</div>
+			<div class="col-5">
+				<button type="button" id="companyButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+

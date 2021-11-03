@@ -16,12 +16,6 @@ namespace FirstTask.Controllers
 			this.manager = manager;
 		}
 
-		// TODO: Delete after testing
-		public ActionResult Test()
-		{
-			return View();
-		}
-
 		public ActionResult Index()
         {
             return View();
@@ -36,7 +30,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult AddCompany(CompanyModel model)
+		public JsonResult Add(CompanyModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -49,7 +43,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult EditCompany(CompanyModel model)
+		public JsonResult Edit(CompanyModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -62,7 +56,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult DeleteCompany(int id)
+		public JsonResult Delete(int id)
 		{
 			var result = manager.Delete(id);
 
@@ -70,7 +64,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult ActivateCompany(int id)
+		public JsonResult Activate(int id)
 		{
 			var result = manager.Activate(id);
 

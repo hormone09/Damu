@@ -6463,8 +6463,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\ServiceProvided\Index.cshtml" />
     <Content Include="Views\ServicesHistory\Index.cshtml" />
-    <Content Include="Views\Company\Test.cshtml" />
     <Content Include="Views\Company\_PartialCompanyForm.cshtml" />
+    <Content Include="Views\Service\_PartialServiceForm.cshtml" />
+    <Content Include="Views\Employee\_PartialEmployeeForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

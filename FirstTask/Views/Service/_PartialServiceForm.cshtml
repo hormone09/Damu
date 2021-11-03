@@ -1,0 +1,49 @@
+﻿@using FirstTask.Resources;
+
+<form id="serviceForm">
+	<h2 id="serviceFormTitle"></h2>
+	<input type="hidden" name="Id" id="serviceInputId" />
+	<div class="row">
+		<div class="col align-self-start">
+			<label for="name">@Resource.LabelName</label>
+		</div>
+		<div class="col align-self-center">
+			<input type="text" name="Name" id="serviceInputName" placeholder="@Resource.PlaceholderName" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-start">
+			<label for="Code">@Resource.LabelCode</label>
+		</div>
+		<div class="col align-self-center">
+			<input type="text" name="Code" id="serviceInputCode" placeholder="@Resource.PlaceholderServiceCode" />
+			<span></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-start">
+			<label for="Price">@Resource.LabelPrice</label>
+		</div>
+		<div class="col align-self-center">
+			<input type="text" name="Price" id="serviceInputPrice" placeholder="@Resource.PlaceholderPrice" />
+			<span></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-start">
+			<label for="name">@Resource.LabelDateOfBegin</label>
+		</div>
+		<div class="col align-self-center">
+			<input type="text" name="DateOfBegin" id="serviceInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
+			<span></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col align-self-start">
+			<button type="submit" id="serviceFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
+		</div>
+		<div class="col align-self-end">
+			<button id="serviceFormButtonCancel" type="button" class="btn-danger">@Resource.ButtonCancellation</button>
+		</div>
+	</div>
+</form>

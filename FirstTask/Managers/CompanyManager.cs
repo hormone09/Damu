@@ -48,8 +48,6 @@ namespace FirstTask.Managers
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
-			model.BIN = model.BIN.Replace("-", "");
-			model.Phone = model.Phone.Replace("(", "").Replace(")", "").Replace("-", "");
 			var entity = mapper.Map<Company>(model);
 			
 			try
@@ -72,8 +70,6 @@ namespace FirstTask.Managers
 
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
-			model.BIN = model.BIN.Replace("-", "");
-			model.Phone = model.Phone.Replace("-", "").Replace("(", "").Replace(")", "");
 			var entity = mapper.Map<Company>(model);
 
 			try

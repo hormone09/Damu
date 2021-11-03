@@ -10,7 +10,7 @@ namespace FirstTask.Models
 		public int Id { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
-		[RegularExpression(@"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatIIN")]
+		[StringLength(12, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatBIN")]
 		public string PersonalNumber { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
@@ -28,7 +28,6 @@ namespace FirstTask.Models
 		public CompanyModel Company { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
-		[RegularExpression(@"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatPhone")]
 		public string Phone { get; set; }
 		public Statuses Status { get; set; }
 		public int TotalRows { get; set; }

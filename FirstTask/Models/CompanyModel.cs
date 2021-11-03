@@ -14,11 +14,10 @@ namespace FirstTask.Models
 		public string Name { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
-		[RegularExpression(@"[0-9]{3}-[0-9]{3}-[0-9]{3}-\d{3}$", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatBIN")]
+		[StringLength(12, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatBIN")]
 		public string BIN { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
-		[RegularExpression(@"[0-9]{1}-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatPhone")]
 		public string Phone { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
