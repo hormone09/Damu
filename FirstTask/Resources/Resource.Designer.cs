@@ -878,5 +878,14 @@ namespace FirstTask.Resources {
                 return ResourceManager.GetString("ValidationMessageMinLenght", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Поле должно содержать только символы русского алфавита!.
+        /// </summary>
+        public static string ValidationMessageOnlyCyrillic {
+            get {
+                return ResourceManager.GetString("ValidationMessageOnlyCyrillic", resourceCulture);
+            }
+        }
     }
 }

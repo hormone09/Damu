@@ -392,4 +392,7 @@
   <data name="ValidationMessageMinLenght" xml:space="preserve">
     <value>Поле должно содержать минимальное количество симолов:</value>
   </data>
+  <data name="ValidationMessageOnlyCyrillic" xml:space="preserve">
+    <value>Поле должно содержать только символы русского алфавита!</value>
+  </data>
 </root>

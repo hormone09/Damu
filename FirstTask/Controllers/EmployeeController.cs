@@ -31,7 +31,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult AddEmployee(EmployeeModel model)
+		public JsonResult Add(EmployeeModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -44,7 +44,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult EditEmployee(EmployeeModel model)
+		public JsonResult Edit(EmployeeModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -57,7 +57,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult DeleteEmployee(int id)
+		public JsonResult Delete(int id)
 		{
 			var result = manager.Delete(id);
 
@@ -65,7 +65,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult ActivateEmployee(int id)
+		public JsonResult Activate(int id)
 		{
 			var result = manager.Activate(id);
 

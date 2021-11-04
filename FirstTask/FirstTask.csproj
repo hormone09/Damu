@@ -6466,10 +6466,10 @@
     <Content Include="Views\Company\_PartialCompanyForm.cshtml" />
     <Content Include="Views\Service\_PartialServiceForm.cshtml" />
     <Content Include="Views\Employee\_PartialEmployeeForm.cshtml" />
+    <Content Include="Views\ServiceProvided\_PartialServiceProvidedForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

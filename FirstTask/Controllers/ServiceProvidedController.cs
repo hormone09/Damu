@@ -31,7 +31,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult AddProvidedService(ServiceProvidedModel model)
+		public JsonResult Add(ServiceProvidedModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -44,7 +44,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult EditProvidedService(ServiceProvidedModel model)
+		public JsonResult Edit(ServiceProvidedModel model)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -57,7 +57,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult DeleteProvidedService(int id)
+		public JsonResult Delete(int id)
 		{
 			var result = manager.Delete(id);
 
@@ -65,7 +65,7 @@ namespace FirstTask.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult ActivateServiceProvided(int id)
+		public JsonResult Activate(int id)
 		{
 			var result = manager.Activate(id);
 

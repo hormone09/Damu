@@ -64,8 +64,8 @@
 						CompanyName: name,
 						Page: options.page,
 						PageSize: options.pageSize,
-						Status: controls.StatusesFilter,
-						SortingType: controls.SortingTypeFilter.val()
+						Status: controls.StatusesFilter.value(),
+						SortingType: controls.SortingTypeFilter.value()
 					}
 					return kendo.stringify(data);
 				}
@@ -347,7 +347,7 @@
 		</div>
 	</div>
 
-	<div id="companyFormDialog">
+	<div id="companyFormDialog" class="submit-form-dialog">
 		@Html.Partial("_PartialCompanyForm")
 	</div>
 

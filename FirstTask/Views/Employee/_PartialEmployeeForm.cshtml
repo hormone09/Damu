@@ -1,49 +1,65 @@
 ﻿@using FirstTask.Resources;
 
-<form id="employeeForm">
+<form id="employeeForm" class="submit-form">
 	<h2 id="employeeFormTitle"></h2>
 	<input type="hidden" name="Id" id="employeeInputId" />
-	<div class="row">
-		<div class="col align-self-start">
-			<label for="name">@Resource.LabelName</label>
+	<div class="container">
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="FullName">@Resource.LabelFullName</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="FullName" id="employeeInputFullName" placeholder="@Resource.PlaceholderFullName" />
+			</div>
 		</div>
-		<div class="col align-self-center">
-			<input type="text" name="Name" id="companyInputName" placeholder="@Resource.PlaceholderName" />
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="PersonalNumber">@Resource.LabelPersonalNumber</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="PersonalNumber" id="employeeInputPersonalNumber" placeholder="@Resource.PlaceholderPersonalNumber" />
+				<span></span>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col align-self-start">
-			<label for="BIN">@Resource.LabelBIN</label>
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="Phone">@Resource.LabelPhone</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="Phone" id="employeeInputPhone" placeholder="@Resource.PlaceholderPhone" />
+				<span></span>
+			</div>
 		</div>
-		<div class="col align-self-center">
-			<input type="text" name="BIN" id="companyInputBIN" placeholder="@Resource.PlaceholderBIN" />
-			<span></span>
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="Phone">@Resource.LabelCompany</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="Company" id="employeeCmbCompany" placeholder="@Resource.PlaceholderCompany" />
+				<span></span>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col align-self-start">
-			<label for="Phone">@Resource.LabelPhone</label>
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="BirthdayDate">@Resource.LabelBirthdayDate</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="BirthdayDate" id="employeeInputBirthdayDate" placeholder="@Resource.PlaceholderBirthdayDate" />
+				<span></span>
+			</div>
 		</div>
-		<div class="col align-self-center">
-			<input type="text" name="Phone" id="companyInputPhone" placeholder="@Resource.PlaceholderPhone" />
-			<span></span>
+		<div class="row">
+			<div class="col align-self-start">
+				<label for="DateOfBegin">@Resource.LabelDateOfBegin</label>
+			</div>
+			<div class="col align-self-center">
+				<input type="text" name="DateOfBegin" id="employeeInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
+				<span></span>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col align-self-start">
-			<label for="DateOfBegin">@Resource.LabelDateOfBegin</label>
-		</div>
-		<div class="col align-self-center">
-			<input type="text" name="DateOfBegin" id="companyInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
-			<span></span>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col align-self-start">
-			<button type="submit" id="companyFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
-		</div>
-		<div class="col align-self-end">
-			<button id="companyFormButtonCancel" type="button" class="btn-danger">@Resource.ButtonCancellation</button>
+		<div class="button-block">
+			<button type="submit" id="employeeFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
+			<button id="employeeFormButtonCancel" type="button" class="btn-default">@Resource.ButtonCancellation</button>
 		</div>
 	</div>
 </form>

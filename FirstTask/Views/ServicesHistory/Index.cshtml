@@ -1,11 +1,10 @@
-﻿@using FirstTask.Handlers;
+﻿@using FirstTask.Resources;
 
 @{
-	var localizer = new LocalizHandler();
-	ViewBag.Title = localizer.GetValue("HeadingServicesHistory");
+	ViewBag.Title = Resource.HeadingServicesHistory;
 }
 <div class="container">
-	<h2>@localizer.GetValue("HeadingServicesHistory")</h2>
+	<h2>@Resource.HeadingServicesHistory</h2>
 
 	<div id="scheduler"></div>
 
@@ -16,7 +15,7 @@
 	<div id="schedulerNotifications"></div>
 
 	<div>
-		<button id="reportWindowButton">@localizer.GetValue("ButtonPrint")</button>
+		<button id="reportWindowButton">@Resource.ButtonPrint</button>
 	</div>
 </div>
 
@@ -30,46 +29,6 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-
-		
-		var employee = getEmployeeList();
-		var services = getServiceList();
-		var companies = getCompanyList();
-
-		// Добавление возможности выбора всех записей при создании отчета
-		function EmployeeForReport() {
-			var newEmployee = Array.from(employee);
-			let newLenght = newEmployee.push({ Id: -1, FullName: "<-- Выбрать все -->" });
-
-			let buffer = newEmployee[0];
-			newEmployee[0] = newEmployee[newLenght-1];
-			newEmployee[newLenght] = buffer;
-
-			return newEmployee;
-		}
-
-		function ServicesForReport() {
-			var newServices = Array.from(services);
-			let newLenght = newServices.push({ Id: -1, Name: "<-- Выбрать все -->" });
-
-			let buffer = newServices[0];
-			newServices[0] = newServices[newLenght - 1];
-			newServices[newLenght - 1] = buffer;
-
-			return newServices;
-		}
-
-		function CompaniesForReport() {
-			var newCompanies = Array.from(companies);
-			let newLenght = newCompanies.push({ Id: -1, Name: "<-- Выбрать все -->" });
-
-			let buffer = newCompanies[0];
-			newCompanies[0] = newCompanies[newLenght - 1];
-			newCompanies[newLenght - 1] = buffer;
-
-			return newCompanies;
-		}
-
 		var notifElement = $("#schedulerNotifications");
 		notifElement.kendoNotification();
 		var notification = notifElement.data("kendoNotification")
@@ -99,24 +58,38 @@
 			items: [
 				{
 					type: "group",
-					label: "@localizer.GetValue("ReportFormHeader")",
+					label: "@Resource.ReportFormHeader",
 					items: [
 						{
-							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")",
+							field: "CompanyId", label: "@Resource.LabelCompany",
 							editor: function (container, options) {
 								var input = $('<input id="reportCompanyId" name="CompanyId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "@localizer.GetValue("PlaceholderCompany")",
+									placeholder: "@Resource.PlaceholderCompany",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: CompaniesForReport()
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Company/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											}
+										}
+									}
 								});
 							}
 						},
 						{
-							field: "ServiceId", label: "@localizer.GetValue("LabelService")",
+							field: "ServiceId", label: "@Resource.LabelService",
 							editor: function (container, options) {
 								var input = $('<input id="reportServiceId" name="ServiceId"/>');
 								input.appendTo(container);
@@ -125,26 +98,59 @@
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: ServicesForReport()
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Service/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											},
+										}
+									}
 								});
 							}
 						},
 						{
-							field: "EmployeeId", label: "@localizer.GetValue("LabelEmployee")",
+							field: "EmployeeId", label: "@Resource.LabelEmployee",
 							editor: function (container, options) {
 								var input = $('<input id="reportEmployeeId" name="EmployeeId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "@localizer.GetValue("PlaceholderEmployee")",
+									placeholder: "@Resource.PlaceholderEmployee",
 									dataTextField: "FullName",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: EmployeeForReport()
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Employee/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											},
+										},
+										requestEnd: function (e) {
+											$("#reportCompanyId").data("kendoComboBox").dataSource.add({ Name: "<- Выбрать все ->", Id: -1 })
+											$("#reportServiceId").data("kendoComboBox").dataSource.add({ Name: "<- Выбрать все ->", Id: -1 })
+											$("#reportEmployeeId").data("kendoComboBox").dataSource.add({ FullName: "<- Выбрать все ->", Id: -1 })
+										}
+									}
 								});
 							}
 						},
 						{
-							field: "Date", label: "@localizer.GetValue("LabelReportPeriod")",
+							field: "Date", label: "@Resource.LabelReportPeriod",
 							editor: function (container, options) {
 								var flexContainer = $('<div style="display: flex; font-weight: bold; justify-content: space-around; margin: 10px 0px;"/></div>');
 								var input1 = $('<input id="reportDateBegin" name="DateBegin"/>');
@@ -164,7 +170,7 @@
 							}
 						},
 						{
-							field: "Type", label: "@localizer.GetValue("LabelType")",
+							field: "Type", label: "@Resource.LabelType",
 							editor: function (container, options) {
 								var input = $('<input id="reportReportType" name="Type"/>');
 								input.appendTo(container);
@@ -184,7 +190,7 @@
 					]
 				}
 			],
-			buttonsTemplate: "<button class='btn-primary' type='submit'>@localizer.GetValue("ButtonPrint")</button> <button class='btn-default' id='reportCloseWindow' type='button'>@localizer.GetValue("ButtonCancellation")</button>"
+			buttonsTemplate: "<button class='btn-primary' type='submit'>@Resource.ButtonPrint</button> <button class='btn-default' id='reportCloseWindow' type='button'>@Resource.ButtonCancellation</button>"
 		});
 
 		formReport.bind("submit", function (e) {
@@ -273,13 +279,7 @@
 				}
 
 				if (e.type == "update" || e.type == "create" || e.type == "destroy") {
-					let result = e.response;
-					if (result.IsSuccess) {
-						notification.success(result.Message);
-					}
-					else {
-						notification.error(result.Error);
-					}
+					notification.success(e.response.Message);
 				}
 			},
 			batch: false,
@@ -312,19 +312,19 @@
 					slotHeight: 10,
 					dateHeaderTemplate: kendo.template("<span class='days-name'>#=kendo.toString(date, 'dd.MM.yyyy')#</span>"),
 					allDaySlot: false,
-					selectedDateFormat: "{0:dddd dd.MM.yy}"
+					selectedDateFormat: "{0: dd.MM.yy}"
 				}],
 			dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd/M')#</u> - (#=percentage(date)#%)"),
 			messages: {
-				deleteWindowTitle: "@localizer.GetValue("ButtonDelete")",
+				deleteWindowTitle: "@Resource.ButtonDelete",
 				cancel: "Нет",
 				destroy: "Да",
 			},
 			editable: {
-				confirmation: "@localizer.GetValue("DeleteWarningMessage")",
+				confirmation: "@Resource.DeleteWarningMessage",
 				template: $("#schedulerEditor").html(),
 				window: {
-					title: "@localizer.GetValue("SchedulerFormHeader")",
+					title: "@Resource.SchedulerFormHeader",
 					width: "650px",
 					height: "400px",
 					scrollable: false
@@ -339,60 +339,145 @@
 					buttonsTemplate: "",
 					items: [
 						{
-							field: "DateOfCreate", label: "@localizer.GetValue("LabelDateOfBegin")", validation: { required: true },
+							field: "DateOfCreate", label: "@Resource.LabelDateOfBegin",
 							editor: function (container, options) {
-								let input = $('<input id="schedulerDateOfCreate" type="datetime" name="DateOfCreate" required="required" />');
+								let input = $('<input id="schedulerDateOfCreate" type="datetime" name="DateOfCreate" />');
 								input.appendTo(container);
 								input.kendoDateTimePicker({
-									format: "MM/dd/yy hh:mm tt"
+									format: "MM/dd/yy HH:mm"
 								});
 							}
 						},
 						{
-							field: "ServiceId", label: "@localizer.GetValue("LabelService")", validation: { required: true },
+							field: "ServiceId", label: "@Resource.LabelService",
 							editor: function (container, options) {
-								let input = $('<input id="schedulerService" name="SchedulerServiceId" required="required" />');
+								let input = $('<input id="schedulerService" name="SchedulerServiceId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									dataSource: services,
-									placeholder: "@localizer.GetValue("PlaceholderService")",
+									placeholder: "@Resource.PlaceholderService",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
+									optionLabel: "None",
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Service/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											},
+										}
+									}
 								});
 							}
 						},
 						{
-							field: "CompanyId", label: "@localizer.GetValue("LabelCompany")", validation: { required: true },
+							field: "CompanyId", label: "@Resource.LabelCompany",
 							editor: function (container, options) {
-								let input = $('<input id="schedulerCompany" name="SchedulerCompanyId" required="required" />');
+								let input = $('<input id="schedulerCompany" name="SchedulerCompanyId"/>');
 								input.appendTo(container);
 								input.kendoComboBox({
-									dataSource: companies,
-									placeholder: "@localizer.GetValue("PlaceholderCompany")",
+									placeholder: "@Resource.PlaceholderCompany",
 									dataTextField: "Name",
 									dataValueField: "Id",
 									filter: "contains",
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Company/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											},
+										}
+									}
 								});
 							}
 						},
 						{
-							field: "EmployeeId", label: "@localizer.GetValue("LabelEmployee")", validation: { required: true },
+							field: "EmployeeId", label: "@Resource.LabelEmployee",
 							editor: function (container, options) {
-								let input = $('<input id="schedulerEmployee" name="SchedulerEmployeeId" required="required" />');
+								let input = $('<input id="schedulerEmployee" name="SchedulerEmployeeId" />');
 								input.appendTo(container);
 								input.kendoComboBox({
-									placeholder: "@localizer.GetValue("LabelEmployee")",
+									placeholder: "@Resource.LabelEmployee",
 									dataTextField: "FullName",
 									dataValueField: "Id",
 									filter: "contains",
-									dataSource: employee,
-									value: "4"
+									dataSource: {
+										serverFiltering: true,
+										transport: {
+											read: {
+												url: "/Employee/Index/",
+												type: "POST",
+												data: {
+													CompanyName: null,
+													Page: 1,
+													PageSize: -1,
+													Status: 1
+												}
+											},
+										}
+									}
 								});
 							}
 						},
 					]
-				})
+				});
+
+				// Validation
+				$("#schedulerForm").validate({
+					ignore: [],
+					rules: {
+						DateOfCreate: {
+							required: true,
+							dateFilter: true
+						},
+						SchedulerEmployeeId: {
+							cmbIsRequired: true
+						},
+						SchedulerCompanyId: {
+							cmbIsRequired: true
+						},
+						SchedulerServiceId: {
+							cmbIsRequired: true
+						}
+					},
+					messages: {
+						DateOfCreate: {
+							required: "@Resource.ValidationMessageInputRequired",
+							dateFilter: "@Resource.ValidationMessageDateNonCorrect"
+						},
+						SchedulerEmployeeId: {
+							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
+						},
+						SchedulerCompanyId: {
+							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
+						},
+						SchedulerServiceId: {
+							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
+						}
+					},
+					focusInvalid: true,
+					errorClass: "validationFormMessage",
+					errorElement: 'p',
+					errorPlacement: function (error, element) {
+
+						error.insertAfter(element.closest('div'));
+					}
+				});
+
 				// Fill form fields
 				if (e.event.Id > 0) {
 					$("#schedulerDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
@@ -408,9 +493,9 @@
 				let cancelButton = buttonsContainer.find(".k-scheduler-cancel");
 				let saveButton = buttonsContainer.find(".k-scheduler-update");
 				let deleteButton = buttonsContainer.find(".k-scheduler-delete");
-				cancelButton.text("@localizer.GetValue("ButtonCancellation")");
-				saveButton.text("@localizer.GetValue("ButtonSave")");
-				deleteButton.text("@localizer.GetValue("ButtonDelete")");
+				cancelButton.text("@Resource.ButtonCancellation");
+				saveButton.text("@Resource.ButtonSave");
+				deleteButton.text("@Resource.ButtonDelete");
 				saveButton.click(function () {
 					if (e.event.Id > 0) {
 						let sheduler = $("#scheduler").data("kendoScheduler");
@@ -420,7 +505,7 @@
 			}
 		});
 
-		$('.k-nav-today').text("@localizer.GetValue("ButtonToday")");
+		$('.k-nav-today').text("@Resource.ButtonToday");
 		$(".k-nav-today").on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
@@ -436,7 +521,7 @@
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 		});
 		$(".k-event-delete").on("click", function () {
-			console.log("1321212");
+			alert("delete");
 		});
 	});
 </script>

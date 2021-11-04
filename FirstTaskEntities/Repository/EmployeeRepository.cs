@@ -25,6 +25,7 @@ namespace FirstTaskEntities.Repository
 				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
 
 			string where = "WHERE Status = @Status";
+			string limit = string.Empty;
 			string orderType;
 
 			if (string.IsNullOrEmpty(query.SortingType))
@@ -38,9 +39,12 @@ namespace FirstTaskEntities.Repository
 			if (query.CompanyId != null)
 				where += " AND CompanyId = @CompanyId";
 
+			if (query.Limit > 0)
+				limit = " FETCH NEXT @Limit ROWS ONLY";
+
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Employee>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Employee {where} ORDER BY {orderType} OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", query).ToList();
+				return connection.Query<Employee>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Employee {where} ORDER BY {orderType} OFFSET @Skip ROWS{limit}", query).ToList();
 			}
 		}
 
