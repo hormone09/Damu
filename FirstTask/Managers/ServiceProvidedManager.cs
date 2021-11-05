@@ -60,8 +60,8 @@ namespace FirstTask.Managers
 			model.DateOfFinish = null;
 
 			var entity = mapper.Map<ServiceProvided>(model);
-			entity.CompanyId = model.Company.Id;
-			entity.ServiceId = model.Service.Id;
+			entity.CompanyId = (int)model.Company.Id;
+			entity.ServiceId = (int)model.Service.Id;
 
 			try
 			{

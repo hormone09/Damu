@@ -7,7 +7,7 @@ namespace FirstTask.Models
 {
 	public class EmployeeModel
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
 		[StringLength(12, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "FormatBIN")]

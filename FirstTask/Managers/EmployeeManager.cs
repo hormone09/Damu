@@ -59,7 +59,7 @@ namespace FirstTask.Managers
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
 			var entity = mapper.Map<Employee>(model);
-			entity.CompanyId = model.Company.Id;
+			entity.CompanyId = (int)model.Company.Id;
 
 			try
 			{
@@ -86,7 +86,7 @@ namespace FirstTask.Managers
 			model.Status = Statuses.Active;
 			model.DateOfFinish = null;
 			var entity = mapper.Map<Employee>(model);
-			entity.CompanyId = model.Company.Id;
+			entity.CompanyId = (int)model.Company.Id;
 
 			try
 			{

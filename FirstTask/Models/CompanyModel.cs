@@ -7,7 +7,7 @@ namespace FirstTask.Models
 {
 	public class CompanyModel
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		[Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "IsRequired")]
 		[StringLength(300, MinimumLength = 6, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "CompnayNameLength")]

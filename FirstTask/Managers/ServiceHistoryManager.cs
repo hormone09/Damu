@@ -67,15 +67,15 @@ namespace FirstTask.Managers
 
 		public MessageHandler Add(ServiceHistoryModel model)
 		{
-			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
+			if (model.Company.Id == null || model.Service.Id == null || model.Employee.Id == null || model.DateOfCreate == null)
 				return new MessageHandler(false, Resource.FormError);
 
 			var entity = new ServiceHistory
 			{
 				DateOfCreate = (DateTime)model.DateOfCreate,
-				CompanyId = model.Company.Id,
-				EmployeeId = model.Employee.Id,
-				ServiceId = model.Service.Id,
+				CompanyId = (int)model.Company.Id,
+				EmployeeId = (int)model.Employee.Id,
+				ServiceId = (int)model.Service.Id,
 				Status = (int)Statuses.Active
 			};
 
@@ -93,16 +93,16 @@ namespace FirstTask.Managers
 
 		public MessageHandler Update(ServiceHistoryModel model)
 		{
-			if (model.Company == null || model.Service == null || model.Employee == null || model.DateOfCreate == null)
+			if (model.Company.Id == null || model.Service.Id == null || model.Employee.Id == null || model.DateOfCreate == null)
 				return new MessageHandler(false, Resource.FormError);
 
 			var entity = new ServiceHistory
 			{
 				Id = model.Id,
 				DateOfCreate = (DateTime)model.DateOfCreate,
-				CompanyId = model.Company.Id,
-				EmployeeId = model.Employee.Id,
-				ServiceId = model.Service.Id,
+				CompanyId = (int)model.Company.Id,
+				EmployeeId = (int)model.Employee.Id,
+				ServiceId = (int)model.Service.Id,
 				Status = (int)Statuses.Active
 			};
 

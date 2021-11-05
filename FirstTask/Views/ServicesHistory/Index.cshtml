@@ -84,6 +84,15 @@
 												}
 											}
 										}
+									},
+									open: function (e) {
+										let items = this.dataSource.view();
+										let IsFirst = items.find(x => x.Id === -1) == undefined;
+
+										if (IsFirst) {
+											this.dataSource.add({ Name: "<- Выбрать все ->", Id: -1 });
+											this.value(-1);
+										}
 									}
 								});
 							}
@@ -112,6 +121,15 @@
 												}
 											},
 										}
+									},
+									open: function (e) {
+										let items = this.dataSource.view();
+										let IsFirst = items.find(x => x.Id === -1) == undefined;
+
+										if (IsFirst) {
+											this.dataSource.add({ Name: "<- Выбрать все ->", Id: -1 });
+											this.value(-1);
+										}
 									}
 								});
 							}
@@ -125,7 +143,7 @@
 									placeholder: "@Resource.PlaceholderEmployee",
 									dataTextField: "FullName",
 									dataValueField: "Id",
-									filter: "contains",
+									filter: "startswith",
 									dataSource: {
 										serverFiltering: true,
 										transport: {
@@ -139,11 +157,15 @@
 													Status: 1
 												}
 											},
-										},
-										requestEnd: function (e) {
-											$("#reportCompanyId").data("kendoComboBox").dataSource.add({ Name: "<- Выбрать все ->", Id: -1 })
-											$("#reportServiceId").data("kendoComboBox").dataSource.add({ Name: "<- Выбрать все ->", Id: -1 })
-											$("#reportEmployeeId").data("kendoComboBox").dataSource.add({ FullName: "<- Выбрать все ->", Id: -1 })
+										}
+									},
+									open: function (e) {
+										let items = this.dataSource.view();
+										let IsFirst = items.find(x => x.Id === -1) == undefined;
+
+										if (IsFirst) {
+											this.dataSource.add({ FullName: "<- Выбрать все ->", Id: -1 });
+											this.value(-1);
 										}
 									}
 								});
@@ -153,15 +175,12 @@
 							field: "Date", label: "@Resource.LabelReportPeriod",
 							editor: function (container, options) {
 								var flexContainer = $('<div style="display: flex; font-weight: bold; justify-content: space-around; margin: 10px 0px;"/></div>');
-								var input1 = $('<input id="reportDateBegin" name="DateBegin"/>');
-								var input2 = $('<input id="reportDateEnd" name="DateEnd"/>');
-								var p1 = $('<p>с </p>');
-								var p2 = $('<p>по </p>');
+								var input1 = $('<input id="reportDateBegin" name="DateBegin" placeholder="Начало" style="text-align: center"/>');
+								var input2 = $('<input id="reportDateEnd" name="DateEnd"  placeholder="Конец" style="text-align: center"/>');
 								input1.appendTo(flexContainer);
 								input1.kendoDatePicker({
 									format: 'MM/dd/yyyy',
 								});
-								p2.appendTo(flexContainer);
 								input2.appendTo(flexContainer);
 								input2.kendoDatePicker({
 									format: 'MM/dd/yyyy',
@@ -277,9 +296,13 @@
 				if (e.type == "update" || e.type == "create") {
 					$("#scheduler").data("kendoScheduler").dataSource.read();
 				}
-
 				if (e.type == "update" || e.type == "create" || e.type == "destroy") {
-					notification.success(e.response.Message);
+					if (e.response.IsSuccess == true) {
+						notification.success(e.response.Message);
+					}
+					else {
+						notification.error(e.response.Message);
+					}
 				}
 			},
 			batch: false,

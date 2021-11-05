@@ -177,6 +177,9 @@ h1{
 .k-button:hover{
 	background-color: white;
 }
+.confirmation-block h2{
+	padding: 15px 0px;
+}
 .submit-form .button-block {
 	padding: 10px 0px;
 	display: flex;
