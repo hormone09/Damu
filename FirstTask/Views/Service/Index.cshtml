@@ -132,8 +132,8 @@
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
 				{ field: "Name", title: "@Resource.LabelName", width: "15%" },
 				{ field: "Code", title: "@Resource.LabelCode", width: "10%" },
-				{ field: "Price", title: "@Resource.LabelPrice", width: "10%" },
-				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "Price", title: "@Resource.LabelPrice", width: "10%", format: "{0:n}"  },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd.MM.yyyy}" },
 				{
 					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
 						{ text: "@Resource.StatusActive", value: 1 },
@@ -254,14 +254,15 @@
 			mask: "L00.000.000"
 		});
 		$("#serviceInputPrice").kendoNumericTextBox({
-			culture: "de-DE"
+			culture: "en-US"
 		});
 		$("#serviceInputDateOfBegin").kendoDatePicker({
-			format: 'dd/MM/yyyy',
+			format: 'dd.MM.yyyy',
 		});
 
 
 		controls.FormValidator = $("#serviceForm").validate({
+			ignore: [],
 			rules: {
 				Name: {
 					required: true,
@@ -288,6 +289,7 @@
 				},
 				Price: {
 					required: "@Resource.ValidationMessageInputRequired",
+					//maxlength: "@Resource.ValidationMessageMaxLenght",
 				},
 				DateOfBegin: {
 					required: "@Resource.ValidationMessageInputRequired",

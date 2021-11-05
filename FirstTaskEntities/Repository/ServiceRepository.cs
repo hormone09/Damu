@@ -24,9 +24,16 @@ namespace FirstTaskEntities.Repository
 			else
 				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
 
-			string where = "WHERE Status = @Status";
+			string where = string.Empty;
 			string limit = string.Empty;
 			string orderType;
+
+			if (query.Status == Statuses.Active || query.Status == Statuses.Disabled)
+				where = "WHERE Status = @Status";
+			else if (query.Status != Statuses.Active && query.Status != Statuses.Disabled && query.Status == 0)
+				where = "WHERE Status = 1 OR Status = 2";
+			else
+				throw new Exception("Некорректный номер статуса записи!");
 
 			if (string.IsNullOrEmpty(query.SortingType))
 				orderType = "Id";
@@ -34,7 +41,7 @@ namespace FirstTaskEntities.Repository
 				orderType = query.SortingType;
 
 			if (!string.IsNullOrEmpty(query.ServiceName))
-				where += " AND Name LIKE '" + query.ServiceName + "%'";
+				where += " AND Name LIKE '%" + query.ServiceName + "%'";
 
 			if (query.Limit > 0)
 				limit = " FETCH NEXT @Limit ROWS ONLY";
@@ -58,8 +65,8 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, DateOfFinish = @DateOfFinish, Price = @Price, Status = @Status WHERE Id = @Id";
-				connection.Query<Service>(query, new { Id = service.Id, Status = service.Status, Name = service.Name, Code = service.Code, 
+				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, DateOfFinish = @DateOfFinish, Price = @Price WHERE Id = @Id";
+				connection.Query<Service>(query, new { Id = service.Id, Name = service.Name, Code = service.Code, 
 					Date = service.DateOfBegin, DateOfFinish = service.DateOfFinish, Price = service.Price });
 			}
 		}

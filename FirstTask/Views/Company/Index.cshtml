@@ -95,7 +95,7 @@
 				{ field: "Name", title: "@Resource.LabelCompany", width: "15%" },
 				{ field: "Phone", title: "@Resource.LabelPhone", width: "10%" },
 				{ field: "BIN", title: "@Resource.LabelBIN", width: "10%" },
-				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd.MM.yyyy}" },
 				{
 					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
 						{ text: "@Resource.StatusActive", value: 1 },
@@ -223,7 +223,7 @@
 			mask: "0-(000)-000-00-00"
 		});
 		$("#companyInputDateOfBegin").kendoDatePicker({
-			format: 'dd/MM/yyyy',
+			format: 'dd.MM.yyyy',
 		});
 
 		controls.FormValidator = $("#companiesForm").validate({

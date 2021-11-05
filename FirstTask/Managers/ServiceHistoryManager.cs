@@ -57,8 +57,6 @@ namespace FirstTask.Managers
 				model.DateOfCreate = el.DateOfCreate;
 				model.DateOfFinish = el.DateOfCreate.AddMinutes(15.00);
 
-				model.Title = $"Наименование услуги: {model.Service.Name} \n Стоимость: {model.Service.Price} \n Выполнил сотрудник компании: {model.Company.Name} \n Имя: {model.Employee.FullName}";
-
 				models.Add(model);
 			}
 

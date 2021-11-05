@@ -46,8 +46,6 @@ namespace FirstTask.Managers
 			if (model.DateOfBegin > DateTime.Now)
 				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
-			model.Status = Statuses.Active;
-			model.DateOfFinish = null;
 			var entity = mapper.Map<Service>(model);
 
 			try

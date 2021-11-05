@@ -24,9 +24,17 @@ namespace FirstTaskEntities.Repository
 			else
 				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
 
-			string where = "WHERE Status = @Status";
+			string where = string.Empty;
 			string limit = string.Empty;
 			string orderType;
+
+
+			if (query.Status == Statuses.Active || query.Status == Statuses.Disabled)
+				where = "WHERE Status = @Status";
+			else if (query.Status != Statuses.Active && query.Status != Statuses.Disabled && query.Status == 0)
+				where = "WHERE Status = 1 OR Status = 2";
+			else
+				throw new Exception("Некорректный номер статуса записи!");
 
 			if (string.IsNullOrEmpty(query.SortingType))
 				orderType = "Id";
@@ -34,7 +42,7 @@ namespace FirstTaskEntities.Repository
 				orderType = query.SortingType;
 
 			if (!string.IsNullOrEmpty(query.FullName))
-				where += " AND FullName LIKE '" + query.FullName + "%'";
+				where += " AND FullName LIKE '%" + query.FullName + "%'";
 
 			if (query.CompanyId != null)
 				where += " AND CompanyId = @CompanyId";
@@ -63,9 +71,9 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE Employee SET DateOfFinish = @DateOfFinish, DateOfBegin = @DateOfBegin, PersonalNumber = @PersonalNumber, FullName = @FullName, " +
-					"BirthdayDate = @BirthdayDate, Phone = @Phone, CompanyId = @CompanyId, Status = @Status WHERE Id = @Id";
+					"BirthdayDate = @BirthdayDate, Phone = @Phone, CompanyId = @CompanyId WHERE Id = @Id";
 				connection.Query<Employee>(query, new { Id = employee.Id, Phone = employee.Phone, PersonalNumber = employee.PersonalNumber, CompanyId = employee.CompanyId,
-					FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, Status = employee.Status, DateOfBegin = employee.DateOfBegin, DateOfFinish = employee.DateOfFinish});
+					FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, DateOfBegin = employee.DateOfBegin, DateOfFinish = employee.DateOfFinish});
 			}
 		}
 

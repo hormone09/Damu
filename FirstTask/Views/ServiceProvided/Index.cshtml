@@ -80,8 +80,8 @@
 			dataValueField: "value",
 			dataSource: [
 				{ text: "@Resource.SortingByDateOfBegin", value: "DateOfBegin" },
-				{ text: "@Resource.SortingByPriceUp", value: "Price" },
-				{ text: "@Resource.SortingByPriceDown", value: "Price DESC" },
+				{ text: "@Resource.SortingByPriceUp", value: "ServicePrice" },
+				{ text: "@Resource.SortingByPriceDown", value: "ServicePrice DESC" },
 			]
 		});
 		controls.SortingTypeFilter = $("#serviceProvidedSortingTypes").data("kendoDropDownList");
@@ -101,7 +101,7 @@
 							CompanyName: name,
 							Page: 1,
 							PageSize: -1,
-							Status: 1
+							Status: 0
 						}
 					},
 				}
@@ -124,7 +124,7 @@
 							CompanyName: name,
 							Page: 1,
 							PageSize: -1,
-							Status: 1
+							Status: 0
 						}
 					},
 				}
@@ -180,8 +180,8 @@
 				{ field: "Service.Id", title: "Id", width: "1%", hidden: true },
 				{ field: "Company.Name", title: "@Resource.LabelCompany", width: "10%" },
 				{ field: "Service.Name", title: "@Resource.LabelService", width: "10%" },
-				{ field: "ServicePrice", title: "@Resource.LabelPrice", width: "10%" },
-				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd-MM-yyyy}" },
+				{ field: "ServicePrice", title: "@Resource.LabelPrice", width: "10%", format: "{0:n}" },
+				{ field: "DateOfBegin", title: "@Resource.LabelDateOfBegin", width: "10%", format: "{0: dd.MM.yyyy}" },
 				{
 					field: "Status", title: "@Resource.LabelStatus", width: "5%", values: [
 						{ text: "@Resource.StatusActive", value: 1 },
@@ -312,7 +312,7 @@
 							CompanyName: null,
 							Page: 1,
 							PageSize: -1,
-							Status: 1
+							Status: 0
 						}
 					},
 				}
@@ -334,7 +334,7 @@
 							CompanyName: null,
 							Page: 1,
 							PageSize: -1,
-							Status: 1
+							Status: 0
 						}
 					},
 				}
@@ -346,7 +346,7 @@
 		});
 
 		$("#serviceProvidedInputDateOfBegin").kendoDatePicker({
-			format: 'dd/MM/yyyy',
+			format: 'dd.MM.yyyy',
 		});
 
 
@@ -372,6 +372,7 @@
 			messages: {
 				Price: {
 					required: "@Resource.ValidationMessageInputRequired",
+					maxlength: "@Resource.ValidationMessageMaxLenght",
 				},
 				Company: {
 					cmbIsRequired: "@Resource.ValidationMessageInputRequired"

@@ -8,6 +8,19 @@
 
 	<div id="scheduler"></div>
 
+	<div id="schedulerSubmitFormWarningWindow" class="confirmation-block">
+		<h2>@Resource.DeleteWarningMessage</h2>
+
+		<div class="row" style="text-align: center">
+			<div class="col-6">
+				<button type="submit" id="schedulerSubmitFormButtonDeleteAgree" class="btn-success">@Resource.ButtonAgree</button>
+			</div>
+			<div class="col-5">
+				<button type="button" id="schedulerSubmitFormButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
+			</div>
+		</div>
+	</div>
+
 	<div id="reportWindow">
 		<form id="reportForm"></form>
 	</div>
@@ -18,10 +31,40 @@
 		<button id="reportWindowButton">@Resource.ButtonPrint</button>
 	</div>
 </div>
+<script id="event-template" type="text/x-kendo-template">
+	<div class="scheduler-box">
+		<p><span>Услуга:</span> #:Service.Name#</p>
+		<p><span>Компания:</span> #:Company.Name#</p>
+		<p><span>Сотрудник:</span> #:Employee.FullName#</p>
+	</div>
+</script>
 
 <script id="schedulerEditor" type="text/x-kendo-template">
 	<div class="container">
-		<form id="schedulerForm">
+		<form id="schedulerForm" class="scheduler-submit-form">
+			<div>
+				<input type="hidden" id="shedulerSubmitFormInputId"/>
+			</div>
+			<div>
+				<label for="DateOfCreate">@Resource.LabelDateOfBegin</label>
+				<input type="text" name="DateOfCreate" id="shedulerSubmitFormInputDateOfCreate" name="DateOfCreate"/>
+			</div>
+			<div>
+				<label for="Service">@Resource.LabelService</label>
+				<input type="text" name="Service" id="shedulerSubmitFormInputCompany" name="Service"/>
+			</div>
+			<div>
+				<label for="Company">@Resource.LabelCompany</label>
+				<input type="text" name="Company" id="shedulerSubmitFormInputService" name="Company"/>
+			</div>
+			<div>
+				<label for="Employee">@Resource.LabelEmployee</label>
+				<input type="text" name="Employee" id="shedulerSubmitFormInputEmployee" name="Employee"/>
+			</div>
+			<div class="button-block">
+					<button type="submit" class="btn-primary">@Resource.ButtonSave</button>
+					<button type="button" id="schedulerFormSubmitButtonCancel" class="btn-default">@Resource.ButtonCancellation</button>
+			</div>
 		</form>
 	</div>
 </script>
@@ -34,6 +77,13 @@
 		var notification = notifElement.data("kendoNotification")
 
 		//REPORT
+		$("#schedulerSubmitFormWarningWindow").kendoDialog({
+			width: 300,
+			closable: false,
+			visible: false,
+		});
+		var deleteDialog = $("#schedulerSubmitFormWarningWindow").data("kendoDialog");
+
 
 		$("#reportWindow").kendoDialog({
 			modal: true,
@@ -80,7 +130,7 @@
 													CompanyName: null,
 													Page: 1,
 													PageSize: -1,
-													Status: 1
+													Status: 0
 												}
 											}
 										}
@@ -117,7 +167,7 @@
 													CompanyName: null,
 													Page: 1,
 													PageSize: -1,
-													Status: 1
+													Status: 0
 												}
 											},
 										}
@@ -154,7 +204,7 @@
 													CompanyName: null,
 													Page: 1,
 													PageSize: -1,
-													Status: 1
+													Status: 0
 												}
 											},
 										}
@@ -179,11 +229,11 @@
 								var input2 = $('<input id="reportDateEnd" name="DateEnd"  placeholder="Конец" style="text-align: center"/>');
 								input1.appendTo(flexContainer);
 								input1.kendoDatePicker({
-									format: 'MM/dd/yyyy',
+									format: 'MM.dd.yyyy',
 								});
 								input2.appendTo(flexContainer);
 								input2.kendoDatePicker({
-									format: 'MM/dd/yyyy',
+									format: 'MM.dd.yyyy',
 								});
 								flexContainer.appendTo(container);
 							}
@@ -239,16 +289,6 @@
 					type: "POST",
 					contentType: "application/json; charset=utf-8",
 				},
-				create: {
-					url: "/ServicesHistory/Create",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				update: {
-					url: "/ServicesHistory/Update",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
 				destroy: {
 					url: "/ServicesHistory/Delete",
 					type: "POST",
@@ -268,40 +308,8 @@
 
 						return kendo.stringify(json);
 					}
-					else if (type == "create") {
-						let json = {
-							DateOfCreate: $("#schedulerDateOfCreate").data("kendoDateTimePicker").value(),
-							Employee: { Id: $("#schedulerEmployee").val() },
-							Company: { Id: $("#schedulerCompany").val() },
-							Service: { Id: $("#schedulerService").val() }
-						};
-						return kendo.stringify(json);
-					}
-					else if (type == "update") {
-						let json = {
-							Id: options.Id,
-							DateOfCreate: $("#schedulerDateOfCreate").data("kendoDateTimePicker").value(),
-							Employee: { Id: $("#schedulerEmployee").val() },
-							Company: { Id: $("#schedulerCompany").val() },
-							Service: { Id: $("#schedulerService").val() }
-						}
-						return kendo.stringify(json);
-					}
 					else if (type == "destroy") {
 						return kendo.stringify({ id: options.Id });
-					}
-				}
-			},
-			requestEnd: function (e) {
-				if (e.type == "update" || e.type == "create") {
-					$("#scheduler").data("kendoScheduler").dataSource.read();
-				}
-				if (e.type == "update" || e.type == "create" || e.type == "destroy") {
-					if (e.response.IsSuccess == true) {
-						notification.success(e.response.Message);
-					}
-					else {
-						notification.error(e.response.Message);
 					}
 				}
 			},
@@ -310,16 +318,18 @@
 				model: {
 					id: "Id",
 					fields: {
-						title: { from: "Title" },
 						start: { type: "date", from: "DateOfCreate" },
-						end: { type: "date", from: "DateOfFinish" }
+						end: { type: "date", from: "DateOfFinish" },
+						Service: { from: "Service" },
+						Company: { from: "Company" },
+						Employee: { from: "Employee" }
 					}
 				}
 			}
 		});
 		$("#scheduler").kendoScheduler({
 			dataSource: dataSource,
-			deleteWindowTitle: "123123",
+			eventTemplate: $("#event-template").html(),
 			startTime: new Date("2021/01/01 07:00"),
 			endTime: new Date("2021/12/01 18:00"),
 			showWorkHours: "none",
@@ -337,7 +347,7 @@
 					allDaySlot: false,
 					selectedDateFormat: "{0: dd.MM.yy}"
 				}],
-			dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd/M')#</u> - (#=percentage(date)#%)"),
+			dateHeaderTemplate: kendo.template("<u>#=kendo.toString(date, 'dd.M')#</u> - (#=percentage(date)#%)"),
 			messages: {
 				deleteWindowTitle: "@Resource.ButtonDelete",
 				cancel: "Нет",
@@ -349,7 +359,7 @@
 				window: {
 					title: "@Resource.SchedulerFormHeader",
 					width: "650px",
-					height: "400px",
+					height: "auto",
 					scrollable: false
 				}
 			},
@@ -359,171 +369,191 @@
 			edit: function (e) {
 				$("#schedulerForm").kendoForm({
 					orientation: "vertical",
+					visible: true,
+					width: "100%",
 					buttonsTemplate: "",
-					items: [
-						{
-							field: "DateOfCreate", label: "@Resource.LabelDateOfBegin",
-							editor: function (container, options) {
-								let input = $('<input id="schedulerDateOfCreate" type="datetime" name="DateOfCreate" />');
-								input.appendTo(container);
-								input.kendoDateTimePicker({
-									format: "MM/dd/yy HH:mm"
-								});
-							}
-						},
-						{
-							field: "ServiceId", label: "@Resource.LabelService",
-							editor: function (container, options) {
-								let input = $('<input id="schedulerService" name="SchedulerServiceId"/>');
-								input.appendTo(container);
-								input.kendoComboBox({
-									placeholder: "@Resource.PlaceholderService",
-									dataTextField: "Name",
-									dataValueField: "Id",
-									filter: "contains",
-									optionLabel: "None",
-									dataSource: {
-										serverFiltering: true,
-										transport: {
-											read: {
-												url: "/Service/Index/",
-												type: "POST",
-												data: {
-													CompanyName: null,
-													Page: 1,
-													PageSize: -1,
-													Status: 1
-												}
-											},
-										}
-									}
-								});
-							}
-						},
-						{
-							field: "CompanyId", label: "@Resource.LabelCompany",
-							editor: function (container, options) {
-								let input = $('<input id="schedulerCompany" name="SchedulerCompanyId"/>');
-								input.appendTo(container);
-								input.kendoComboBox({
-									placeholder: "@Resource.PlaceholderCompany",
-									dataTextField: "Name",
-									dataValueField: "Id",
-									filter: "contains",
-									dataSource: {
-										serverFiltering: true,
-										transport: {
-											read: {
-												url: "/Company/Index/",
-												type: "POST",
-												data: {
-													CompanyName: null,
-													Page: 1,
-													PageSize: -1,
-													Status: 1
-												}
-											},
-										}
-									}
-								});
-							}
-						},
-						{
-							field: "EmployeeId", label: "@Resource.LabelEmployee",
-							editor: function (container, options) {
-								let input = $('<input id="schedulerEmployee" name="SchedulerEmployeeId" />');
-								input.appendTo(container);
-								input.kendoComboBox({
-									placeholder: "@Resource.LabelEmployee",
-									dataTextField: "FullName",
-									dataValueField: "Id",
-									filter: "contains",
-									dataSource: {
-										serverFiltering: true,
-										transport: {
-											read: {
-												url: "/Employee/Index/",
-												type: "POST",
-												data: {
-													CompanyName: null,
-													Page: 1,
-													PageSize: -1,
-													Status: 1
-												}
-											},
-										}
-									}
-								});
-							}
-						},
-					]
 				});
 
+				$("#shedulerSubmitFormInputEmployee").kendoComboBox({
+					placeholder: "@Resource.LabelEmployee",
+					dataTextField: "FullName",
+					dataValueField: "Id",
+					filter: "contains",
+					dataSource: {
+						serverFiltering: true,
+						transport: {
+							read: {
+								url: "/Employee/Index/",
+								type: "POST",
+								data: {
+									CompanyName: null,
+									Page: 1,
+									PageSize: -1,
+									Status: 0
+								}
+							},
+						}
+					}
+				});
+
+				$("#shedulerSubmitFormInputCompany").kendoComboBox({
+					placeholder: "@Resource.LabelCompany",
+					dataTextField: "Name",
+					dataValueField: "Id",
+					filter: "contains",
+					dataSource: {
+						serverFiltering: true,
+						transport: {
+							read: {
+								url: "/Company/Index/",
+								type: "POST",
+								data: {
+									CompanyName: null,
+									Page: 1,
+									PageSize: -1,
+									Status: 0
+								}
+							},
+						}
+					}
+				});
+
+				$("#shedulerSubmitFormInputService").kendoComboBox({
+					placeholder: "@Resource.LabelService",
+					dataTextField: "Name",
+					dataValueField: "Id",
+					filter: "contains",
+					dataSource: {
+						serverFiltering: true,
+						transport: {
+							read: {
+								url: "/Service/Index/",
+								type: "POST",
+								data: {
+									CompanyName: null,
+									Page: 1,
+									PageSize: -1,
+									Status: 0
+								},
+							}
+
+						}
+					}
+				});
+
+				$("#shedulerSubmitFormInputDateOfCreate").kendoDateTimePicker({
+					format: "MM.dd.yy HH:mm",
+					timeFormat: "HH:mm",
+					interval: 15
+				});
 				// Validation
 				$("#schedulerForm").validate({
 					ignore: [],
 					rules: {
 						DateOfCreate: {
-							required: true,
-							dateFilter: true
+							required: true
 						},
-						SchedulerEmployeeId: {
+						Employee: {
 							cmbIsRequired: true
 						},
-						SchedulerCompanyId: {
+						Company: {
 							cmbIsRequired: true
 						},
-						SchedulerServiceId: {
+						Service: {
 							cmbIsRequired: true
 						}
 					},
 					messages: {
 						DateOfCreate: {
-							required: "@Resource.ValidationMessageInputRequired",
-							dateFilter: "@Resource.ValidationMessageDateNonCorrect"
+							required: "@Resource.ValidationMessageInputRequired"
 						},
-						SchedulerEmployeeId: {
+						Employee: {
 							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
 						},
-						SchedulerCompanyId: {
+						Company: {
 							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
 						},
-						SchedulerServiceId: {
+						Service: {
 							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
 						}
+					},
+					submitHandler: function () {
+						var data = {
+							Id: $("#shedulerSubmitFormInputId").val(),
+							DateOfCreate: $("#shedulerSubmitFormInputDateOfCreate").data("kendoDateTimePicker").value(),
+							Employee: { Id: $("#shedulerSubmitFormInputEmployee").val() },
+							Company: { Id: $("#shedulerSubmitFormInputCompany").val() },
+							Service: { Id: $("#shedulerSubmitFormInputService").val() }
+						}
+
+						let IsEditEvent = (e.event.Id > 0);
+						if (!IsEditEvent) {
+							$.ajax({
+								url: "/ServicesHistory/Create",
+								type: "POST",
+								contentType: "application/json; charset=utf-8",
+								data: JSON.stringify(data),
+								success: function (json) {
+									if (json.IsSuccess) {
+										notification.success(json.Message);
+
+										let scheduler = $("#scheduler").data("kendoScheduler");
+										scheduler.dataSource.read();
+										scheduler.cancelEvent();
+									}
+									else {
+										notification.error(json.Message);
+									}
+								}
+							});
+						}
+						else {
+							$.ajax({
+								url: "/ServicesHistory/Update",
+								type: "POST",
+								contentType: "application/json; charset=utf-8",
+								data: JSON.stringify(data),
+								success: function (json) {
+									if (json.IsSuccess) {
+										notification.success(json.Message);
+
+										let scheduler = $("#scheduler").data("kendoScheduler");
+										scheduler.dataSource.read();
+										scheduler.cancelEvent();
+									}
+									else {
+										notification.error(json.Message);
+									}
+								}
+							});
+						}
+
 					},
 					focusInvalid: true,
 					errorClass: "validationFormMessage",
 					errorElement: 'p',
 					errorPlacement: function (error, element) {
-
 						error.insertAfter(element.closest('div'));
 					}
 				});
 
-				// Fill form fields
+				// Fill current fields and date
 				if (e.event.Id > 0) {
-					$("#schedulerDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
-					$("#schedulerCompany").data("kendoComboBox").value(e.event.Company.Id);
-					$("#schedulerService").data("kendoComboBox").value(e.event.Service.Id);
-					$("#schedulerEmployee").data("kendoComboBox").value(e.event.Employee.Id);
+					$("#shedulerSubmitFormInputId").val(e.event.Id);
+					$("#shedulerSubmitFormInputDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
+					$("#shedulerSubmitFormInputCompany").data("kendoComboBox").value(e.event.Company.Id);
+					$("#shedulerSubmitFormInputService").data("kendoComboBox").value(e.event.Service.Id);
+					$("#shedulerSubmitFormInputEmployee").data("kendoComboBox").value(e.event.Employee.Id);
 				}
 				else {
-					$("#schedulerDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
+					$("#shedulerSubmitFormInputDateOfCreate").data("kendoDateTimePicker").value(e.event.start);
 				}
 
 				let buttonsContainer = e.container.find(".k-edit-buttons");
-				let cancelButton = buttonsContainer.find(".k-scheduler-cancel");
-				let saveButton = buttonsContainer.find(".k-scheduler-update");
-				let deleteButton = buttonsContainer.find(".k-scheduler-delete");
-				cancelButton.text("@Resource.ButtonCancellation");
-				saveButton.text("@Resource.ButtonSave");
-				deleteButton.text("@Resource.ButtonDelete");
-				saveButton.click(function () {
-					if (e.event.Id > 0) {
-						let sheduler = $("#scheduler").data("kendoScheduler");
-						sheduler.dataSource.at(sheduler.dataSource.indexOf(e.event)).set();
-					}
+				buttonsContainer.empty();
+
+				$("#schedulerFormSubmitButtonCancel").on("click", function () {
+					$("#scheduler").data("kendoScheduler").cancelEvent();
 				});
 			}
 		});

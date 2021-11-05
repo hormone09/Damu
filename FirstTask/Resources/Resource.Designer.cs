@@ -871,6 +871,15 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Первышено максимальное количество символов: 20.
+        /// </summary>
+        public static string ValidationMessageMaxLenght {
+            get {
+                return ResourceManager.GetString("ValidationMessageMaxLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Поле должно содержать минимальное количество симолов:.
         /// </summary>
         public static string ValidationMessageMinLenght {

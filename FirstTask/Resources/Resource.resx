@@ -389,6 +389,9 @@
   <data name="ValidationMessageInputRequired" xml:space="preserve">
     <value>Это поле является обязательным!</value>
   </data>
+  <data name="ValidationMessageMaxLenght" xml:space="preserve">
+    <value>Первышено максимальное количество символов: 20</value>
+  </data>
   <data name="ValidationMessageMinLenght" xml:space="preserve">
     <value>Поле должно содержать минимальное количество симолов:</value>
   </data>
