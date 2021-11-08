@@ -46,6 +46,12 @@ $(document).ready(function () {
 		}
 	});
 
+	$.validator.addMethod("dateTimeFilter", function (value, element) {
+		let regex = new RegExp("^[0-9]{2}.[0-9]{2}.[0-9]{2} [0-9]{2}:[0-9]{2}$");
+
+		return regex.test(value);
+	});
+
 	$.validator.addMethod("pastDate", function (value, element) {
 		let today = new Date();
 		let userDateInArray = value.split('/');
@@ -60,11 +66,5 @@ $(document).ready(function () {
 			return false;
 		else
 			return true;
-	});
-
-	$.validator.addMethod("comboBoxField", function (value, element) {
-		var boxId = element.id;
-		alert(boxId);
-		return false;
 	});
 })

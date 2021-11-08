@@ -266,6 +266,9 @@
   <data name="LabelDateOfBegin" xml:space="preserve">
     <value>Дата начала работы</value>
   </data>
+  <data name="LabelDeleteAction" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
   <data name="LabelEmployee" xml:space="preserve">
     <value>Сотрудник</value>
   </data>
@@ -382,6 +385,9 @@
   </data>
   <data name="ValidationMessageDateNonCorrect" xml:space="preserve">
     <value>Дата не может быть больше действующей!</value>
+  </data>
+  <data name="ValidationMessageDateTimeNonCorrect" xml:space="preserve">
+    <value>Укажите дату в правильном формате, затем время.</value>
   </data>
   <data name="ValidationMessageFormatError" xml:space="preserve">
     <value>Укажите данные в формате:</value>

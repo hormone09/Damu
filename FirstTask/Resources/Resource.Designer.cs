@@ -502,6 +502,15 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Удаление.
+        /// </summary>
+        public static string LabelDeleteAction {
+            get {
+                return ResourceManager.GetString("LabelDeleteAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Сотрудник.
         /// </summary>
         public static string LabelEmployee {
@@ -849,6 +858,15 @@ namespace FirstTask.Resources {
         public static string ValidationMessageDateNonCorrect {
             get {
                 return ResourceManager.GetString("ValidationMessageDateNonCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Укажите дату в правильном формате, затем время..
+        /// </summary>
+        public static string ValidationMessageDateTimeNonCorrect {
+            get {
+                return ResourceManager.GetString("ValidationMessageDateTimeNonCorrect", resourceCulture);
             }
         }
         

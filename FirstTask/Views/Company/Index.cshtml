@@ -17,7 +17,7 @@
 		controls.FormDialog = $("#companyFormDialog").data("kendoDialog");
 
 		$("#companyWarningWindow").kendoDialog({
-			closable: false, visible: false, title: false
+			closable: false, visible: false, title: "@Resource.LabelDeleteAction"
 		});
 		controls.DeleteDialog = $("#companyWarningWindow").data("kendoDialog");
 
@@ -59,7 +59,7 @@
 					contentType: "application/json; charset=utf-8",
 				},
 				parameterMap: function (options) {
-					let name = $("#companyNameFilter").val();
+					let name = controls.NameFilter.value();
 					var data = {
 						CompanyName: name,
 						Page: options.page,
@@ -170,7 +170,6 @@
 			scrollable: true,
 		});
 		controls.Grid = $("#companyGrid").data("kendoGrid");
-
 		// Click
 
 		$("body").on("click", "#companyInsertButton", function () {
@@ -224,6 +223,7 @@
 		});
 		$("#companyInputDateOfBegin").kendoDatePicker({
 			format: 'dd.MM.yyyy',
+			culture: "ru-RU"
 		});
 
 		controls.FormValidator = $("#companiesForm").validate({
@@ -326,7 +326,7 @@
 			controls.FormValidator.resetForm();
 			controls.Form[0].reset();
 		$("#companyFormDialog").data("kendoDialog").close();
-	});
+		});
 	});
 </script>
 
@@ -352,15 +352,11 @@
 	</div>
 
 	<div id="companyWarningWindow" class="confirmation-block">
-		<h2>@Resource.DeleteWarningMessage</h2>
+		<h4>@Resource.DeleteWarningMessage</h4>
 
-		<div class="row" style="text-align: center">
-			<div class="col-6">
-				<button type="submit" id="companyButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
-			</div>
-			<div class="col-5">
-				<button type="button" id="companyButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
-			</div>
+		<div class="button-block">
+			<button type="submit" id="companyButtonDeleteAgree" class="btn-primary">@Resource.ButtonAgree</button>
+			<button type="button" id="companyButtonDeleteAgainst" class="btn-default">@Resource.ButtonAgainst</button>
 		</div>
 	</div>
 </div>

@@ -27,21 +27,16 @@
 		@Html.Partial("_PartialEmployeeForm")
 	</div>
 
-	<div id="employeeWarningWindow">
-		<h2>@Resource.DeleteWarningMessage</h2>
+	<div id="employeeWarningWindow" class="confirmation-block">
+		<h4>@Resource.DeleteWarningMessage</h4>
 
-		<div class="row" style="text-align: center">
-			<div class="col-6">
-				<button type="submit" id="employeeButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
-			</div>
-			<div class="col-5">
-				<button type="button" id="employeeButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
-			</div>
+		<div class="button-block">
+			<button type="submit" id="employeeButtonDeleteAgree" class="btn-primary">@Resource.ButtonAgree</button>
+			<button type="button" id="employeeButtonDeleteAgainst" class="btn-default">@Resource.ButtonAgainst</button>
 		</div>
 	</div>
-</div>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
 	$(document).ready(function () {
 
@@ -57,7 +52,7 @@
 		controls.FormDialog = $("#employeeFormDialog").data("kendoDialog");
 
 		$("#employeeWarningWindow").kendoDialog({
-			closable: false, visible: false, title: false
+			closable: false, visible: false, title: "@Resource.LabelDeleteAction"
 		});
 		controls.DeleteDialog = $("#employeeWarningWindow").data("kendoDialog");
 
@@ -312,10 +307,12 @@
 
 		$("#employeeInputBirthdayDate").kendoDatePicker({
 			format: 'dd.MM.yyyy',
+			culture: "ru-RU"
 		});
 
 		$("#employeeInputDateOfBegin").kendoDatePicker({
 			format: 'dd.MM.yyyy',
+			culture: "ru-RU"
 		});
 
 		$("#employeeInputPhone").kendoMaskedTextBox({
@@ -445,4 +442,4 @@
 		$("#employeeFormDialog").data("kendoDialog").close();
 	});
 	});
-</script>
+	</script>

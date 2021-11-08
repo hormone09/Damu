@@ -3,47 +3,47 @@
 <form id="serviceProvidedForm" class="submit-form">
 	<h2 id="serviceProvidedFormTitle"></h2>
 	<input type="hidden" name="Id" id="serviceProvidedInputId" />
-	<div class="container">
+	<div class="container submit-form-fields">
 
 		<div class="row">
-				<div class="col align-self-start">
-					<label for="Phone">@Resource.LabelCompany</label>
-				</div>
-				<div class="col align-self-center">
-					<input type="text" name="Company" id="serviceProvidedCmbCompany" placeholder="@Resource.PlaceholderCompany" />
-					<span></span>
-				</div>
+			<div class="col-4">
+				<label for="Phone">@Resource.LabelCompany</label>
 			</div>
-			<div class="row">
-				<div class="col align-self-start">
-					<label for="Phone">@Resource.LabelService</label>
-				</div>
-				<div class="col align-self-center">
-					<input type="text" name="Service" id="serviceProvidedCmbService" placeholder="@Resource.PlaceholderCompany" />
-					<span></span>
-				</div>
+			<div class="col-7">
+				<input type="text" name="Company" id="serviceProvidedCmbCompany" placeholder="@Resource.PlaceholderCompany" />
+				<span></span>
 			</div>
-			<div class="row">
-				<div class="col align-self-start">
-					<label for="Price">@Resource.LabelPrice</label>
-				</div>
-				<div class="col align-self-center">
-					<input type="text" name="Price" id="serviceProvidedInputPrice" placeholder="@Resource.PlaceholderPrice" />
-					<span></span>
-				</div>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<label for="Phone">@Resource.LabelService</label>
 			</div>
-			<div class="row">
-				<div class="col align-self-start">
-					<label for="name">@Resource.LabelDateOfBegin</label>
-				</div>
-				<div class="col align-self-center">
-					<input type="text" name="DateOfBegin" id="serviceProvidedInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
-					<span></span>
-				</div>
+			<div class="col-7">
+				<input type="text" name="Service" id="serviceProvidedCmbService" placeholder="@Resource.PlaceholderCompany" />
+				<span></span>
 			</div>
-			<div class="button-block">
-					<button type="submit" id="serviceProvidedFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
-					<button id="serviceProvidedFormButtonCancel" type="button" class="btn-default">@Resource.ButtonCancellation</button>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<label for="Price">@Resource.LabelPrice</label>
 			</div>
+			<div class="col-7">
+				<input type="text" name="Price" id="serviceProvidedInputPrice" placeholder="@Resource.PlaceholderPrice" />
+				<span></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<label for="name">@Resource.LabelDateOfBegin</label>
+			</div>
+			<div class="col-7">
+				<input type="text" name="DateOfBegin" id="serviceProvidedInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
+				<span></span>
+			</div>
+		</div>
+	</div>
+	<div class="button-block">
+		<button type="submit" id="serviceProvidedFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
+		<button id="serviceProvidedFormButtonCancel" type="button" class="btn-default">@Resource.ButtonCancellation</button>
 	</div>
 </form>

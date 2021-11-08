@@ -29,16 +29,12 @@
 		@Html.Partial("_PartialServiceProvidedForm")
 	</div>
 
-	<div id="serviceProvidedWarningWindow">
-		<h2>@Resource.DeleteWarningMessage</h2>
+	<div id="serviceProvidedWarningWindow" class="confirmation-block">
+		<h4>@Resource.DeleteWarningMessage</h4>
 
-		<div class="row" style="text-align: center">
-			<div class="col-6">
-				<button type="submit" id="serviceProvidedButtonDeleteAgree" class="btn-success" ">@Resource.ButtonAgree</button>
-			</div>
-			<div class="col-5">
-				<button type="button" id="serviceProvidedButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
-			</div>
+		<div class="button-block">
+			<button type="submit" id="serviceProvidedButtonDeleteAgree" class="btn-primary">@Resource.ButtonAgree</button>
+			<button type="button" id="serviceProvidedButtonDeleteAgainst" class="btn-default">@Resource.ButtonAgainst</button>
 		</div>
 	</div>
 </div>
@@ -59,7 +55,7 @@
 		controls.FormDialog = $("#serviceProvidedFormDialog").data("kendoDialog");
 
 		$("#serviceProvidedWarningWindow").kendoDialog({
-			closable: false, visible: false, title: false
+			closable: false, visible: false, title: "@Resource.LabelDeleteAction"
 		});
 		controls.DeleteDialog = $("#serviceProvidedWarningWindow").data("kendoDialog");
 
@@ -347,6 +343,7 @@
 
 		$("#serviceProvidedInputDateOfBegin").kendoDatePicker({
 			format: 'dd.MM.yyyy',
+			culture: "ru-RU"
 		});
 
 

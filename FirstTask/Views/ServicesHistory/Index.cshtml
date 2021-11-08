@@ -8,19 +8,6 @@
 
 	<div id="scheduler"></div>
 
-	<div id="schedulerSubmitFormWarningWindow" class="confirmation-block">
-		<h2>@Resource.DeleteWarningMessage</h2>
-
-		<div class="row" style="text-align: center">
-			<div class="col-6">
-				<button type="submit" id="schedulerSubmitFormButtonDeleteAgree" class="btn-success">@Resource.ButtonAgree</button>
-			</div>
-			<div class="col-5">
-				<button type="button" id="schedulerSubmitFormButtonDeleteAgainst" class="btn-danger">@Resource.ButtonAgainst</button>
-			</div>
-		</div>
-	</div>
-
 	<div id="reportWindow">
 		<form id="reportForm"></form>
 	</div>
@@ -40,33 +27,47 @@
 </script>
 
 <script id="schedulerEditor" type="text/x-kendo-template">
-	<div class="container">
-		<form id="schedulerForm" class="scheduler-submit-form">
-			<div>
-				<input type="hidden" id="shedulerSubmitFormInputId"/>
+	<form id="schedulerForm" class="submit-form">
+		<div class="submit-form-fields">
+			<input type="hidden" id="shedulerSubmitFormInputId"/>
+			<div class="row">
+				<div class="col-4">
+					<label for="DateOfCreate">@Resource.LabelDateOfBegin</label>
+				</div>
+				<div class="col-7">
+					<input type="text" name="DateOfCreate" id="shedulerSubmitFormInputDateOfCreate" name="DateOfCreate"/>
+				</div>
 			</div>
-			<div>
-				<label for="DateOfCreate">@Resource.LabelDateOfBegin</label>
-				<input type="text" name="DateOfCreate" id="shedulerSubmitFormInputDateOfCreate" name="DateOfCreate"/>
+			<div class="row">
+				<div class="col-4">
+					<label for="Service">@Resource.LabelService</label>
+				</div>
+				<div class="col-7">
+					<input type="text" name="Service" id="shedulerSubmitFormInputCompany" name="Service"/>
+				</div>
 			</div>
-			<div>
-				<label for="Service">@Resource.LabelService</label>
-				<input type="text" name="Service" id="shedulerSubmitFormInputCompany" name="Service"/>
+			<div class="row">
+				<div class="col-4">
+					<label for="Company">@Resource.LabelCompany</label>
+				</div>
+				<div class="col-7">
+					<input type="text" name="Company" id="shedulerSubmitFormInputService" name="Company"/>
+				</div>
 			</div>
-			<div>
-				<label for="Company">@Resource.LabelCompany</label>
-				<input type="text" name="Company" id="shedulerSubmitFormInputService" name="Company"/>
+			<div class="row">
+				<div class="col-4">
+					<label for="Employee">@Resource.LabelEmployee</label>
+				</div>
+				<div class="col-7">
+					<input type="text" name="Employee" id="shedulerSubmitFormInputEmployee" name="Employee"/>
+				</div>
 			</div>
-			<div>
-				<label for="Employee">@Resource.LabelEmployee</label>
-				<input type="text" name="Employee" id="shedulerSubmitFormInputEmployee" name="Employee"/>
-			</div>
-			<div class="button-block">
-					<button type="submit" class="btn-primary">@Resource.ButtonSave</button>
-					<button type="button" id="schedulerFormSubmitButtonCancel" class="btn-default">@Resource.ButtonCancellation</button>
-			</div>
-		</form>
-	</div>
+		</div>
+		<div class="button-block">
+			<button type="submit" class="btn-primary">@Resource.ButtonSave</button>
+			<button type="button" id="schedulerFormSubmitButtonCancel" class="btn-default">@Resource.ButtonCancellation</button>
+		</div>
+	</form>
 </script>
 
 <script type="text/javascript">
@@ -78,12 +79,8 @@
 
 		//REPORT
 		$("#schedulerSubmitFormWarningWindow").kendoDialog({
-			width: 300,
-			closable: false,
-			visible: false,
+			closable: false, visible: false, title: "@Resource.LabelDeleteAction", height: "500px"
 		});
-		var deleteDialog = $("#schedulerSubmitFormWarningWindow").data("kendoDialog");
-
 
 		$("#reportWindow").kendoDialog({
 			modal: true,
@@ -230,10 +227,12 @@
 								input1.appendTo(flexContainer);
 								input1.kendoDatePicker({
 									format: 'MM.dd.yyyy',
+									culture: "ru-RU"
 								});
 								input2.appendTo(flexContainer);
 								input2.kendoDatePicker({
 									format: 'MM.dd.yyyy',
+									culture: "ru-RU"
 								});
 								flexContainer.appendTo(container);
 							}
@@ -328,6 +327,7 @@
 			}
 		});
 		$("#scheduler").kendoScheduler({
+			culture: "ru-RU",
 			dataSource: dataSource,
 			eventTemplate: $("#event-template").html(),
 			startTime: new Date("2021/01/01 07:00"),
@@ -358,8 +358,8 @@
 				template: $("#schedulerEditor").html(),
 				window: {
 					title: "@Resource.SchedulerFormHeader",
-					width: "650px",
-					height: "auto",
+					height: "450px",
+					width: "500px",
 					scrollable: false
 				}
 			},
@@ -370,7 +370,7 @@
 				$("#schedulerForm").kendoForm({
 					orientation: "vertical",
 					visible: true,
-					width: "100%",
+					width: "80%",
 					buttonsTemplate: "",
 				});
 
@@ -444,14 +444,16 @@
 				$("#shedulerSubmitFormInputDateOfCreate").kendoDateTimePicker({
 					format: "MM.dd.yy HH:mm",
 					timeFormat: "HH:mm",
-					interval: 15
+					interval: 15,
+					culture: "ru-RU",
 				});
 				// Validation
 				$("#schedulerForm").validate({
 					ignore: [],
 					rules: {
 						DateOfCreate: {
-							required: true
+							required: true,
+							dateTimeFilter: true
 						},
 						Employee: {
 							cmbIsRequired: true
@@ -465,7 +467,8 @@
 					},
 					messages: {
 						DateOfCreate: {
-							required: "@Resource.ValidationMessageInputRequired"
+							required: "@Resource.ValidationMessageInputRequired",
+							dateTimeFilter: "@Resource.ValidationMessageDateTimeNonCorrect"
 						},
 						Employee: {
 							cmbIsRequired: "@Resource.ValidationMessageInputRequired"
@@ -558,21 +561,29 @@
 			}
 		});
 
-		$('.k-nav-today').text("@Resource.ButtonToday");
-		$(".k-nav-today").on("click", function () {
+		let buttonToday = $('.k-nav-today');
+		buttonToday.text("@Resource.ButtonToday");
+		buttonToday.prop('title', '');
+
+		buttonToday.on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 		});
 
-		$(".k-nav-prev").on("click", function () {
+		let buttonPrev = $('.k-nav-prev');
+		buttonPrev.prop('title', '');
+		buttonPrev.on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 		});
 
-		$(".k-nav-next").on("click", function () {
+		let buttonNext = $('.k-nav-next');
+		buttonNext.prop('title', '');
+		buttonNext.on("click", function () {
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 			$("#scheduler").data("kendoScheduler").dataSource.read();
 		});
+
 		$(".k-event-delete").on("click", function () {
 			alert("delete");
 		});

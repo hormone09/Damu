@@ -184,31 +184,28 @@ h1{
 .k-button:hover{
 	background-color: white;
 }
-.confirmation-block h2{
+.confirmation-block{
+	text-align: center;
+}
+.confirmation-block h4{
 	padding: 15px 0px;
+	margin: 25px 0px;
+	font-size: 15px;
 }
-.scheduler-submit-form{
-	margin: 0% 10%;
-	width: 80%;
+.confirmation-block .button-block{
+	text-align: right;
 }
-.scheduler-submit-form div{
-	margin: 15px 0px;
+#schedulerForm{
+	margin: 0px;
 }
-.scheduler-submit-form .button-block{
-	display: flex;
-	justify-content: space-between;
-}
-	.scheduler-submit-form .button-block button {
-		margin: 3px 5px;
-	}
 .submit-form .button-block {
+	border-top: 1px solid gray;
+	margin: 10px 0px;
 	padding: 10px 0px;
-	display: flex;
-	width: 100%;
-	margin: 1% 0%;
-	justify-content: space-between;
+	text-align: right;
 }
 .submit-form .row {
+	white-space: nowrap;
 	padding: 5px 0px;
 	border-radius: 3px;
 }
@@ -246,9 +243,6 @@ h1{
 	height: 25px;
 	background-image: none;
 }
-.k-calendar {
-	font-size: 12px;
-}
 .k-dialog {
 	padding: 0px;
 	margin: 0px;
@@ -260,6 +254,12 @@ h1{
 .submit-form {
 	padding: 5px;
 	margin: 0 auto;
+	height: 450px;
+}
+.submit-form-fields {
+	height: 320px;
+	overflow: auto;
+	overflow-x: hidden;
 }
 
 	.submit-form label {
@@ -283,7 +283,7 @@ h1{
 
 	.submit-form .k-textbox{
 		width: 250px;
-		text-align: center;
+		text-align: left;
 	}
 	.submit-form .k-maskedtextbox {
 		width: 130px;
@@ -291,7 +291,11 @@ h1{
 	}
 	.submit-form .k-datepicker, .submit-form .k-numerictextbox {
 		font-size: 12px;
-		width: 100px;
+		width: 110px;
+	}
+	.submit-form .k-datetimepicker{
+		width: 180px;
+		font-size: 12px;
 	}
 	.submit-form .k-combobox {
 		width: 200px;
@@ -323,8 +327,8 @@ form .row {
 	}
 
 	to {
-		background-color: #42b3c2;
-		border: 1px solid #42b3c2;
+		background-color: silver;
+		border: 1px solid darkgray;
 		color: white;
 	}
 }

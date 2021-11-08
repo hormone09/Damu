@@ -3,7 +3,7 @@
 <form id="companiesForm" class="submit-form">
 	<h2 id="companyFormTitle"></h2>
 	<input type="hidden" name="Id" id="companyInputId" />
-	<div class="container">
+	<div class="container submit-form-fields">
 		<div class="row">
 			<div class="col-4">
 				<label for="name">@Resource.LabelName</label>
@@ -18,7 +18,6 @@
 			</div>
 			<div class="col-7">
 				<input type="text" name="BIN" id="companyInputBIN" placeholder="@Resource.PlaceholderBIN" />
-				<span></span>
 			</div>
 		</div>
 		<div class="row">
@@ -27,7 +26,6 @@
 			</div>
 			<div class="col-7">
 				<input type="text" name="Phone" id="companyInputPhone" placeholder="@Resource.PlaceholderPhone" />
-				<span></span>
 			</div>
 		</div>
 		<div class="row">
@@ -36,12 +34,11 @@
 			</div>
 			<div class="col-7">
 				<input type="text" name="DateOfBegin" id="companyInputDateOfBegin" placeholder="@Resource.PlaceholderDateOfBegin" />
-				<span></span>
 			</div>
 		</div>
-		<div>
-			<button type="submit" id="companyFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
-			<button id="companyFormButtonCancel" type="button" class="btn-default">@Resource.ButtonCancellation</button>
-		</div>
+	</div>
+	<div class="button-block">
+		<button type="submit" id="companyFormButtonSubmit" class="btn-primary">@Resource.ButtonSave</button>
+		<button id="companyFormButtonCancel" type="button" class="btn-default">@Resource.ButtonCancellation</button>
 	</div>
 </form>
