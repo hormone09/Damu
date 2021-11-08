@@ -29,11 +29,8 @@ namespace FirstTask.Managers
 
 		public List<CompanyModel> List(CompanyViewQuery queryView)
 		{
-			if(queryView.Page == null)
-			{
-				queryView.Page = 1;
-				queryView.PageSize = 20;
-			}
+			queryView.Page = queryView.Page ?? 1;
+			queryView.PageSize = queryView.PageSize ?? 20;
 
 			var query = mapper.Map<CompanyQueryList>(queryView);
 			var entities = companyRep.List(query);
@@ -87,36 +84,15 @@ namespace FirstTask.Managers
 
 		public MessageHandler Delete(int id)
 		{
-			string connectionString = ConfigurationManager.AppSettings["connection"];
-
-			using (SqlConnection connection = new SqlConnection(connectionString))
+			try
 			{
-				connection.Open();
+				companyRep.Remove(id);
 
-				SqlTransaction transaction = connection.BeginTransaction();
-
-				SqlCommand command = connection.CreateCommand();
-				command.Transaction = transaction;
-
-				try
-				{
-					command.CommandText = "UPDATE ServiceProvided SET Status = @Status WHERE CompanyId = @CompanyId";
-					command.Parameters.Add(new SqlParameter { Value = id, ParameterName = "CompanyId" });
-					command.Parameters.Add(new SqlParameter { Value = Statuses.Disabled, ParameterName = "Status" });
-					command.ExecuteNonQuery();
-
-					command.CommandText = "UPDATE Companies SET Status = @Status WHERE Id = @CompanyId";
-					command.ExecuteNonQuery();
-
-					transaction.Commit(); 
-					
-					return new MessageHandler(true, Resource.DeleteSuccess);
-				}
-				catch(Exception ex)
-				{
-					transaction.Rollback();
-					throw ex;
-				}
+				return new MessageHandler(true, Resource.DeleteSuccess);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
 			}
 		}
 

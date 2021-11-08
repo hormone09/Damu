@@ -25,11 +25,8 @@ namespace FirstTask.Managers
 		}
 		public List<EmployeeModel> List(EmployeeViewQuery queryView)
 		{
-			if (queryView.Page == null)
-			{
-				queryView.Page = 1;
-				queryView.PageSize = 20;
-			}
+			queryView.Page = queryView.Page ?? 1;
+			queryView.PageSize = queryView.PageSize ?? 20;
 
 			var query = mapper.Map<EmployeeQueryList>(queryView);
 			var entities = emloyeeRep.List(query);

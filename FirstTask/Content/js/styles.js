@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-	$('.k-dialog ').width(500);
+	$('.k-dialog ').width(600);
 
 	// GRID Translater
 	setTimeout(() => {

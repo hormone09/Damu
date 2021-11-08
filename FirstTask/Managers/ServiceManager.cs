@@ -27,11 +27,8 @@ namespace FirstTask.Managers
 
 		public List<ServiceModel> List(ServiceViewQuery queryView)
 		{
-			if (queryView.Page == null)
-			{
-				queryView.Page = 1;
-				queryView.PageSize = 20;
-			}
+			queryView.Page = queryView.Page ?? 1;
+			queryView.PageSize = queryView.Page ?? 20;
 
 			var query = mapper.Map<ServiceQueryList>(queryView);
 			var serviceEntities = serviceRepository.List(query);
@@ -86,38 +83,16 @@ namespace FirstTask.Managers
 
 		public MessageHandler Delete(int id)
 		{
-			string connectionString = ConfigurationManager.AppSettings["connection"];
-
-			using (SqlConnection connection = new SqlConnection(connectionString))
+			try
 			{
-				connection.Open();
+				serviceRepository.Remove(id);
 
-				SqlTransaction transaction = connection.BeginTransaction();
-				SqlCommand command = connection.CreateCommand();
-
-				command.Transaction = transaction;
-
-				try
-				{
-					command.CommandText = "UPDATE ServiceProvided SET Status = @Status WHERE ServiceId = @ServiceId";
-					command.Parameters.Add(new SqlParameter { Value = Statuses.Disabled, ParameterName = "Status" });
-					command.Parameters.Add(new SqlParameter { Value = id, ParameterName = "ServiceId" });
-					command.ExecuteNonQuery();
-
-					command.CommandText = "UPDATE Services SET Status = @Status WHERE Id = @ServiceId";
-					command.ExecuteNonQuery();
-
-					transaction.Commit();
-
-					return new MessageHandler(true, Resource.DeleteSuccess);
-				}
-				catch (Exception ex)
-				{
-					transaction.Rollback();
-					throw ex;
-				}
+				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-				
+			catch(Exception ex)
+			{
+				throw ex;
+			}
 		}
 
 		public MessageHandler Activate(int id)

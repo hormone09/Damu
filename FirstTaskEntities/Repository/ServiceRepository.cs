@@ -73,10 +73,32 @@ namespace FirstTaskEntities.Repository
 
 		public void Remove(int id)
 		{
-			using (var connection = new SqlConnection(connectionString))
+			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Status = @Status, DateOfFinish = @DateOfFinish WHERE Id = @Id";
-				connection.Query<Service>(query, new { Id = id, Status = Statuses.Disabled,  DateOfFinish = DateTime.Now});
+				connection.Open();
+
+				SqlTransaction transaction = connection.BeginTransaction();
+				SqlCommand command = connection.CreateCommand();
+
+				command.Transaction = transaction;
+
+				try
+				{
+					command.CommandText = "UPDATE ServiceProvided SET Status = @Status WHERE ServiceId = @ServiceId";
+					command.Parameters.Add(new SqlParameter { Value = Statuses.Disabled, ParameterName = "Status" });
+					command.Parameters.Add(new SqlParameter { Value = id, ParameterName = "ServiceId" });
+					command.ExecuteNonQuery();
+
+					command.CommandText = "UPDATE Services SET Status = @Status WHERE Id = @ServiceId";
+					command.ExecuteNonQuery();
+
+					transaction.Commit();
+				}
+				catch (Exception ex)
+				{
+					transaction.Rollback();
+					throw ex;
+				}
 			}
 		}
 

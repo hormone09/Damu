@@ -30,11 +30,8 @@ namespace FirstTask.Managers
 
 		public List<ServiceHistoryModel> List(ServicesHistoryViewQuery queryView)
 		{
-			if (queryView.Page == null)
-			{
-				queryView.Page = 1;
-				queryView.PageSize = 20;
-			}
+			queryView.Page = queryView.Page ?? 1;
+			queryView.PageSize = queryView.PageSize ?? 20;
 
 			queryView.Status = Statuses.Active;
 			queryView.DateBegin = queryView.DateBegin.Date;
