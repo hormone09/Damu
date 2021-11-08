@@ -148,6 +148,7 @@
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
 								$("#companyInputId").val(dataItem.Id);
+								$("#companyInputStatus").val(dataItem.Status);
 								$("#companyInputName").data("kendoTextBox").value(dataItem.Name);
 								$("#companyInputBIN").data("kendoMaskedTextBox").value(dataItem.BIN);
 								$("#companyInputPhone").data("kendoMaskedTextBox").value(dataItem.Phone);
@@ -268,6 +269,7 @@
 		submitHandler: function (e) {
 			let data = {
 				Id: $("#companyInputId").val(),
+				Status: $("#companyInputStatus").val(),
 				Name: $("#companyInputName").data("kendoTextBox").value(),
 				BIN: $("#companyInputBIN").data("kendoMaskedTextBox").value().replace(/[^0-9]/g, ''),
 				Phone: $("#companyInputPhone").data("kendoMaskedTextBox").value().replace(/[^0-9]/g, ''),

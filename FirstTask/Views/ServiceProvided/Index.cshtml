@@ -227,8 +227,9 @@
 							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
+								
 								$("#serviceProvidedInputId").val(dataItem.Id);
+								$("#serviceProvidedInputStatus").val(dataItem.Status);
 								$("#serviceProvidedCmbCompany").data("kendoComboBox").value(dataItem.Company.Id);
 								$("#serviceProvidedCmbService").data("kendoComboBox").value(dataItem.Service.Id);
 								$("#serviceProvidedInputPrice").data("kendoNumericTextBox").value(dataItem.ServicePrice);
@@ -390,6 +391,7 @@
 						let currentServiceDate = new Date(parseInt(cmbService.DateOfBegin.replace(/[^0-9]/g, ''))).toLocaleDateString();
 						let data = {
 							Id: $("#serviceProvidedInputId").val(),
+							Status: $("#serviceProvidedInputStatus").val(),
 							ServicePrice: $("#serviceProvidedInputPrice").data("kendoNumericTextBox").value(),
 							Company: { Id: cmbCompany.Id, Name: cmbCompany.Name, Phone: cmbCompany.Phone, BIN: cmbCompany.BIN, DateOfBegin: currentCompanyDate },
 							Service: { Id: cmbService.Id, Name: cmbService.Name, Code: cmbService.Code, Price: cmbService.Price, DateOfBegin: currentServiceDate },

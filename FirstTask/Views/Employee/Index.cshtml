@@ -209,8 +209,9 @@
 							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
+								
 								$("#employeeInputId").val(dataItem.Id);
+								$("#employeeInputStatus").val(dataItem.Status);
 								$("#employeeInputFullName").data("kendoTextBox").value(dataItem.FullName);
 								$("#employeeInputPersonalNumber").data("kendoMaskedTextBox").value(dataItem.PersonalNumber);
 								$("#employeeInputPhone").data("kendoMaskedTextBox").value(dataItem.Phone);
@@ -381,6 +382,7 @@
 				let currentDate = new Date(parseInt(cmbCompany.DateOfBegin.replace(/[^0-9]/g, ''))).toLocaleDateString();
 				let data = {
 					Id: $("#employeeInputId").val(),
+					Status: $("#employeeInputStatus").val(),
 					FullName: $("#employeeInputFullName").data("kendoTextBox").value(),
 					Company: { Id: cmbCompany.Id, Name: cmbCompany.Name, Phone: cmbCompany.Phone, BIN: cmbCompany.BIN, DateOfBegin: currentDate },
 					PersonalNumber: $("#employeeInputPersonalNumber").data("kendoMaskedTextBox").value().replace(/[^0-9]/g, ''),

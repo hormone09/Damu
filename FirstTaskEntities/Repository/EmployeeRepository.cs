@@ -71,9 +71,9 @@ namespace FirstTaskEntities.Repository
 			using (var connection = new SqlConnection(connectionString))
 			{
 				string query = "UPDATE Employee SET DateOfFinish = @DateOfFinish, DateOfBegin = @DateOfBegin, PersonalNumber = @PersonalNumber, FullName = @FullName, " +
-					"BirthdayDate = @BirthdayDate, Phone = @Phone, CompanyId = @CompanyId WHERE Id = @Id";
+					"BirthdayDate = @BirthdayDate, Phone = @Phone, CompanyId = @CompanyId, Status = @Status WHERE Id = @Id";
 				connection.Query<Employee>(query, new { Id = employee.Id, Phone = employee.Phone, PersonalNumber = employee.PersonalNumber, CompanyId = employee.CompanyId,
-					FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, DateOfBegin = employee.DateOfBegin, DateOfFinish = employee.DateOfFinish});
+					FullName = employee.FullName, BirthdayDate = employee.BirthdayDate, DateOfBegin = employee.DateOfBegin, DateOfFinish = employee.DateOfFinish, Status = employee.Status});
 			}
 		}
 

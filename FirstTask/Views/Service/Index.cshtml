@@ -181,6 +181,7 @@
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
 								$("#serviceInputId").val(dataItem.Id);
+								$("#serviceInputStatus").val(dataItem.Status);
 								$("#serviceInputName").data("kendoTextBox").value(dataItem.Name);
 								$("#serviceInputCode").data("kendoMaskedTextBox").value(dataItem.Code);
 								$("#serviceInputPrice").data("kendoNumericTextBox").value(dataItem.Price);
@@ -301,6 +302,7 @@
 			submitHandler: function (e) {
 				let data = {
 					Id: $("#serviceInputId").val(),
+					Status: $("#serviceInputStatus").val(),
 					Name: $("#serviceInputName").data("kendoTextBox").value(),
 					Price: $("#serviceInputPrice").data("kendoNumericTextBox").value(),
 					Code: $("#serviceInputCode").data("kendoMaskedTextBox").value(),

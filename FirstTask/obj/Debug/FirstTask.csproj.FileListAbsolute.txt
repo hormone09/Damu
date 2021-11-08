@@ -471,3 +471,4 @@ C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.resou
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\bin\ru\System.Web.WebPages.Razor.resources.dll
 C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.Resources.Resource.resources
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTask\obj\Debug\FirstTask.csproj.CopyComplete

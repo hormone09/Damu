@@ -65,9 +65,9 @@ namespace FirstTaskEntities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, DateOfFinish = @DateOfFinish, Price = @Price WHERE Id = @Id";
+				string query = "UPDATE Services SET Name = @Name, Code = @Code, DateOfBegin = @Date, DateOfFinish = @DateOfFinish, Price = @Price, Status = @Status WHERE Id = @Id";
 				connection.Query<Service>(query, new { Id = service.Id, Name = service.Name, Code = service.Code, 
-					Date = service.DateOfBegin, DateOfFinish = service.DateOfFinish, Price = service.Price });
+					Date = service.DateOfBegin, DateOfFinish = service.DateOfFinish, Price = service.Price, Status = service.Status });
 			}
 		}
 

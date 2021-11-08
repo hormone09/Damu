@@ -24,7 +24,7 @@ namespace FirstTaskEntities.Repository
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<ServiceHistory>("SELECT * FROM ServicesHistory WHERE DateOfCreate >= @DateBegin AND DateOfCreate <= @DateEnd AND Status = @Status", new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status }).ToList();
+				return connection.Query<ServiceHistory>("SELECT * FROM ServicesHistory WHERE DateOfCreate >= @DateBegin AND CONVERT(date, DateOfCreate) <= @DateEnd AND Status = @Status", new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status }).ToList();
 			}
 		}
 		public void Update(ServiceHistory entity)

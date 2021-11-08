@@ -56,6 +56,9 @@ namespace FirstTask.Managers
 			if (model.DateOfBegin > DateTime.Now)
 				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
+			if ((int)model.Status < 1)
+				throw new Exception("Сервер не получил статус записи!");
+
 			var entity = mapper.Map<ServiceProvided>(model);
 			entity.CompanyId = (int)model.Company.Id;
 			entity.ServiceId = (int)model.Service.Id;
