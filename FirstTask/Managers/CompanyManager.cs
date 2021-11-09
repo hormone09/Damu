@@ -7,11 +7,8 @@ using FirstTaskEntities.Enums;
 using FirstTaskEntities.Models;
 using FirstTaskEntities.Query;
 using FirstTaskEntities.Repository;
-
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 
 namespace FirstTask.Managers
 {
@@ -32,19 +29,26 @@ namespace FirstTask.Managers
 			queryView.Page = queryView.Page ?? 1;
 			queryView.PageSize = queryView.PageSize ?? 20;
 
+			if(queryView.SortingType != null && !SortingTypeHandler.Ckeck(typeof(CompanyModel), queryView.SortingType))
+				throw new Exception(Resource.ExceptionSortingType);
+
+			if ((int)queryView.Status < 0 && (int)queryView.Status > 2)
+				throw new Exception(Resource.ExceptionStatus);
+
 			var query = mapper.Map<CompanyQueryList>(queryView);
 			var entities = companyRep.List(query);
 			var models = mapper.Map<List<CompanyModel>>(entities);
 
 			return models;
 		}
+
 		public MessageHandler Edit(CompanyModel model)
 		{
 			if (model.DateOfBegin > DateTime.Now)
 				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			if ((int)model.Status < 1)
-				throw new Exception("Сервер не получил статус записи!");
+				throw new Exception(Resource.ExceptionStatus);
 
 			var entity = mapper.Map<Company>(model);
 			
@@ -76,9 +80,9 @@ namespace FirstTask.Managers
 
 				return new MessageHandler(true, Resource.AddSuccess);
 			}
-			catch (Exception exception)
+			catch (Exception ex)
 			{
-				throw exception;
+				throw ex;
 			}
 		}
 

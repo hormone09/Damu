@@ -8,6 +8,9 @@ namespace FirstTaskEntities.Query
 {
 	public class CompanyQueryList : QueryListBase
 	{
+		/// <summary>
+		/// Название компании
+		/// </summary>
 		public string CompanyName { get; set; }
 	}
 }

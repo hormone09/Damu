@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html >
+﻿@using FirstTask.Resources
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -7,10 +8,6 @@
 	<title>@ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
-	@using FirstTask.Handlers;
-	@{
-		var localizer = new LocalizHandler();
-	}
 
 	<link href="~/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="~/Content/kendoui.for.jquery.2021.3.914.trial/styles/kendo.common.min.css" rel="stylesheet" />
@@ -30,19 +27,19 @@
 
 		<ul class="nav">
 			<li class="nav-item">
-				<a href="/Company/Index" class="nav-link">@localizer.GetValue("HeadingCompanies")</a>
+				<a href="/Company/Index" class="nav-link">@Resource.HeadingCompanies</a>
 			</li>
 			<li class="nav-item">
-				<a href="/Service/Index" class="nav-link">@localizer.GetValue("HeadingServices")</a>
+				<a href="/Service/Index" class="nav-link">@Resource.HeadingServices</a>
 			</li>
 			<li class="nav-item">
-				<a href="/ServiceProvided/Index" class="nav-link">@localizer.GetValue("HeadingServicesProvided")</a>
+				<a href="/ServiceProvided/Index" class="nav-link">@Resource.HeadingServicesProvided</a>
 			</li>
 			<li class="nav-item">
-				<a href="/Employee/Index" class="nav-link">@localizer.GetValue("HeadingEmployee")</a>
+				<a href="/Employee/Index" class="nav-link">@Resource.HeadingEmployee</a>
 			</li>
 			<li class="nav-item">
-				<a href="/ServicesHistory/Index" class="nav-link">@localizer.GetValue("HeadingServicesHistory")</a>
+				<a href="/ServicesHistory/Index" class="nav-link">@Resource.HeadingServicesHistory</a>
 			</li>
 		</ul>
 	</nav>

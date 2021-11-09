@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 using FirstTask.Managers;
 using FirstTask.Models;
 using FirstTask.ViewQueris;
@@ -54,7 +55,9 @@ namespace FirstTask.Controllers
 		[HttpGet]
 		public ActionResult GetReport(ReportViewQuery query)
 		{
+			string pathString = ConfigurationManager.AppSettings["ReportSourcePath"];
 			query.Path = Server.MapPath("~/Content/Reports/ServicesHistoryReport.mrt");
+
 			var report = manager.GetReport(query);
 
 			return report;

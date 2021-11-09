@@ -12,6 +12,7 @@ using Stimulsoft.Report;
 using Stimulsoft.Report.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace FirstTask.Managers
 {

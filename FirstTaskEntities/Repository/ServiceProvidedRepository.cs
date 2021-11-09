@@ -21,7 +21,7 @@ namespace FirstTaskEntities.Repository
 			if (queryList is ServiceProvidedQueryList)
 				query = (ServiceProvidedQueryList)queryList;
 			else
-				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+				throw new TypeUnloadedException();
 
 			string where = "WHERE Status = @Status";
 			string orderType;

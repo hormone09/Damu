@@ -295,6 +295,24 @@ namespace FirstTask.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Тип сортировки задан неверно, модель не содержит такого поля!.
+        /// </summary>
+        public static string ExceptionSortingType {
+            get {
+                return ResourceManager.GetString("ExceptionSortingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сервер не получил статус записи!.
+        /// </summary>
+        public static string ExceptionStatus {
+            get {
+                return ResourceManager.GetString("ExceptionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Организация:.
         /// </summary>
         public static string FilterCompany {

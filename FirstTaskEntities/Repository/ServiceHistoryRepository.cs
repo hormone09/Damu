@@ -20,7 +20,7 @@ namespace FirstTaskEntities.Repository
 			if (queryList is ServiceHistoryQueryList)
 				query = (ServiceHistoryQueryList)queryList;
 			else
-				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+				throw new TypeUnloadedException();
 
 			using (var connection = new SqlConnection(connectionString))
 			{

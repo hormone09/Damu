@@ -22,7 +22,7 @@ namespace FirstTaskEntities.Repository
 			if (queryList is CompanyQueryList)
 				query = (CompanyQueryList)queryList;
 			else
-				throw new Exception("Некорректный тип обьекта с набором параметров SQL-запроса!");
+				throw new TypeUnloadedException();
 
 			string where = string.Empty;
 			string limit = string.Empty;
@@ -30,11 +30,8 @@ namespace FirstTaskEntities.Repository
 
 			if (query.Status == Statuses.Active || query.Status == Statuses.Disabled)
 				where = "WHERE Status = @Status";
-			else if (query.Status != Statuses.Active && query.Status != Statuses.Disabled && query.Status == 0)
-				where = "WHERE Status = 1 OR Status = 2";
-			else
-				throw new Exception("Некорректный номер статуса записи!");
-
+			else if (query.Status == 0)
+				where = "WHERE Status IN(1,2)";
 
 			if (string.IsNullOrEmpty(query.SortingType))
 				orderType = "Id";

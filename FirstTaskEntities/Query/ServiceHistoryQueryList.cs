@@ -9,12 +9,12 @@ namespace FirstTaskEntities.Query
 	public class ServiceHistoryQueryList : QueryListBase
 	{
 		/// <summary>
-		/// Дата начала недели, выбранной в расписании
+		/// Верхняя временная граница для выгрузки записей
 		/// </summary>
 		public DateTime DateBegin { get; set; }
 
 		/// <summary>
-		/// Дата конца недели, выбранной в расписании
+		/// Нижняя временная граница для выгрузки записей
 		/// </summary>
 		public DateTime DateEnd { get; set; }
 	}

@@ -130,46 +130,44 @@
 
 		controls.FormHeader = $("#serviceProvidedFormTitle");
 
-		let dataSource = new kendo.data.DataSource({
-			pageSize: 20,
-			transport: {
-				read: {
-					url: "/ServiceProvided/Index",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				parameterMap: function (options) {
-					var data = {
-						Page: options.page,
-						PageSize: options.pageSize,
-						Status: controls.StatusesFilter.value(),
-						SortingType: controls.SortingTypeFilter.value(),
-						CompanyId: controls.CompanyFilter.value(),
-						ServiceId: controls.ServiceFilter.value()
-					}
-					return kendo.stringify(data);
-				}
-			},
-			schema: {
-				total: function (response) {
-					if (response.length > 0)
-						return response[0].TotalRows;
-					else
-						return 1;
-				},
-				model: {
-					fields: {
-						DateOfBegin: { type: "date" }
-					}
-				}
-			},
-			page: "Page",
-			serverPaging: true,
-			serverSorting: true,
-		});
-
 		$("#serviceProvidedGrid").kendoGrid({
-			dataSource: dataSource,
+			dataSource: {
+				pageSize: 20,
+				transport: {
+					read: {
+						url: "/ServiceProvided/Index",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+					},
+					parameterMap: function (options) {
+						var data = {
+							Page: options.page,
+							PageSize: options.pageSize,
+							Status: controls.StatusesFilter.value(),
+							SortingType: controls.SortingTypeFilter.value(),
+							CompanyId: controls.CompanyFilter.value(),
+							ServiceId: controls.ServiceFilter.value()
+						}
+						return kendo.stringify(data);
+					}
+				},
+				schema: {
+					total: function (response) {
+						if (response.length > 0)
+							return response[0].TotalRows;
+						else
+							return 1;
+					},
+					model: {
+						fields: {
+							DateOfBegin: { type: "date" }
+						}
+					}
+				},
+				page: "Page",
+				serverPaging: true,
+				serverSorting: true,
+			},
 			columns: [
 				{ field: "Id", title: "Id", width: "1%", hidden: true },
 				{ field: "Company.Id", title: "Id", width: "1%", hidden: true },
@@ -261,6 +259,7 @@
 		});
 
 		$("body").on("click", "#serviceProvidedSearchButton", function () {
+			controls.Grid.dataSource.page(1);
 			controls.Grid.dataSource.read();
 		});
 
@@ -376,7 +375,7 @@
 					cmbIsRequired: "@Resource.ValidationMessageInputRequired"
 				},
 				Service: {
-					cmbIsRequired: "@Resource.ValidationMessageInputRequired"
+					cmbIsRequired: "@Resource.ValidationMessageMaxLenght"
 				},
 				DateOfBegin: {
 						required: "@Resource.ValidationMessageInputRequired",
@@ -398,44 +397,23 @@
 							DateOfBegin: $("#serviceProvidedInputDateOfBegin").data("kendoDatePicker").value()
 						}
 
-					if (data.Id == 0) {
-						$.ajax({
-							url: "/ServiceProvided/Add",
-							type: "POST",
-							contentType: "application/json; charset=utf-8",
-							data: JSON.stringify(data),
-							success: function (json) {
-								if (json.IsSuccess) {
-									controls.Form[0].reset();
-									controls.FormDialog.close();
-									controls.Notification.success(json.Message);
-									controls.Grid.dataSource.read();
-								}
-								else {
-									controls.Notification.error(json.Message);
-								}
+					$.ajax({
+						url: data.Id == 0 ? "/ServiceProvided/Add" : "/ServiceProvided/Edit",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+						data: JSON.stringify(data),
+						success: function (json) {
+							if (json.IsSuccess) {
+								controls.Form[0].reset();
+								controls.FormDialog.close();
+								controls.Notification.success(json.Message);
+								controls.Grid.dataSource.read();
 							}
-						});
-					}
-					else {
-						$.ajax({
-							url: "/ServiceProvided/Edit",
-							type: "POST",
-							contentType: "application/json; charset=utf-8",
-							data: JSON.stringify(data),
-							success: function (json) {
-								if (json.IsSuccess) {
-									controls.Form[0].reset();
-									controls.FormDialog.close();
-									controls.Notification.success(json.Message);
-									controls.Grid.dataSource.read();
-								}
-								else {
-									controls.Notification.error(json.Message);
-								}
+							else {
+								controls.Notification.error(json.Message);
 							}
-						});
-					}
+						}
+					});
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",

@@ -26,7 +26,7 @@ $(document).ready(function () {
 	);
 
 	$.validator.addMethod(
-		"pattern",
+		"textMask",
 		function (value, element, regexp) {
 			var re = new RegExp(regexp);
 			return this.optional(element) || re.test(value);

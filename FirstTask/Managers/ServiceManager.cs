@@ -28,7 +28,13 @@ namespace FirstTask.Managers
 		public List<ServiceModel> List(ServiceViewQuery queryView)
 		{
 			queryView.Page = queryView.Page ?? 1;
-			queryView.PageSize = queryView.Page ?? 20;
+			queryView.PageSize = queryView.PageSize ?? 20;
+
+			if (queryView.SortingType != null && !SortingTypeHandler.Ckeck(typeof(ServiceModel), queryView.SortingType))
+				throw new Exception(Resource.ExceptionSortingType);
+
+			if ((int)queryView.Status < 0 && (int)queryView.Status > 2)
+				throw new Exception(Resource.ExceptionStatus);
 
 			var query = mapper.Map<ServiceQueryList>(queryView);
 			var serviceEntities = serviceRepository.List(query);
@@ -39,12 +45,11 @@ namespace FirstTask.Managers
 
 		public MessageHandler Edit(ServiceModel model)
 		{
-
 			if (model.DateOfBegin > DateTime.Now)
 				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
 			if ((int)model.Status < 1)
-				throw new Exception("Сервер не получил статус записи!");
+				throw new Exception(Resource.ExceptionStatus);
 
 			var entity = mapper.Map<Service>(model);
 

@@ -84,46 +84,44 @@
 
 			controls.FormHeader = $("#serviceFormTitle");
 
-	let dataSource = new kendo.data.DataSource({
-		pageSize: 20,
-		transport: {
-			read: {
-				url: "/Service/Index",
-				type: "POST",
-				contentType: "application/json; charset=utf-8",
-			},
-			parameterMap: function (options) {
-				let name = $("#serviceNameFilter").val();
-				var data = {
-					ServiceName: name,
-					Page: options.page,
-					PageSize: options.pageSize,
-					Status: controls.StatusesFilter.value(),
-					SortingType: controls.SortingTypeFilter.value()
-				}
-				return kendo.stringify(data);
-			}
-		},
-		schema: {
-			total: function (response) {
-				if (response.length > 0)
-					return response[0].TotalRows;
-				else
-					return 1;
-			},
-			model: {
-				fields: {
-					DateOfBegin: { type: "date" }
-				}
-			}
-		},
-		page: "Page",
-		serverPaging: true,
-		serverSorting: true,
-	});
-
 		$("#serviceGrid").kendoGrid({
-			dataSource: dataSource,
+			dataSource: {
+				pageSize: 20,
+				transport: {
+					read: {
+						url: "/Service/Index",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+					},
+					parameterMap: function (options) {
+						let name = $("#serviceNameFilter").val();
+						var data = {
+							ServiceName: name,
+							Page: options.page,
+							PageSize: options.pageSize,
+							Status: controls.StatusesFilter.value(),
+							SortingType: controls.SortingTypeFilter.value()
+						}
+						return kendo.stringify(data);
+					}
+				},
+				schema: {
+					total: function (response) {
+						if (response.length > 0)
+							return response[0].TotalRows;
+						else
+							return 1;
+					},
+					model: {
+						fields: {
+							DateOfBegin: { type: "date" }
+						}
+					}
+				},
+				page: "Page",
+				serverPaging: true,
+				serverSorting: true,
+			},
 			columns: [
 				{ field: "Id", title: "Id", width: "5%", hidden: true },
 				{ field: "Name", title: "@Resource.LabelName", width: "15%" },
@@ -212,6 +210,7 @@
 		});
 
 		$("body").on("click", "#serviceSearchButton", function () {
+			controls.Grid.dataSource.page(1);
 			controls.Grid.dataSource.read();
 		});
 
@@ -277,7 +276,7 @@
 				},
 				Code: {
 					required: true,
-					pattern: "^[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$"
+					textMask: "^[A-z]{1}[0-9]{2}.[0-9]{3}.[0-9]{3}$"
 				}
 			},
 			messages: {
@@ -296,7 +295,7 @@
 				},
 				Code: {
 					required: "@Resource.ValidationMessageInputRequired",
-					pattern: "@Resource.ValidationMessageFormatError 'X00.000.000'"
+					textMask: "@Resource.ValidationMessageFormatError 'X00.000.000'"
 				}
 			},
 			submitHandler: function (e) {
@@ -309,44 +308,23 @@
 					DateOfBegin: $("#serviceInputDateOfBegin").data("kendoDatePicker").value()
 				}
 
-				if (data.Id == 0) {
-					$.ajax({
-						url: "/Service/Add",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess) {
-								controls.Form[0].reset();
-								controls.FormDialog.close();
-								controls.Notification.success(json.Message);
-								controls.Grid.dataSource.read();
-							}
-							else {
-								controls.Notification.error(json.Message);
-							}
+				$.ajax({
+					url: data.Id == 0 ? "/Service/Add" : "/Service/Edit",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess) {
+							controls.Form[0].reset();
+							controls.FormDialog.close();
+							controls.Notification.success(json.Message);
+							controls.Grid.dataSource.read();
 						}
-					});
-				}
-				else {
-					$.ajax({
-						url: "/Service/Edit",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess) {
-								controls.Form[0].reset();
-								controls.FormDialog.close();
-								controls.Notification.success(json.Message);
-								controls.Grid.dataSource.read();
-							}
-							else {
-								controls.Notification.error(json.Message);
-							}
+						else {
+							controls.Notification.error(json.Message);
 						}
-					});
-				}
+					}
+				});
 			},
 			focusInvalid: true,
 			errorClass: "validationFormMessage",

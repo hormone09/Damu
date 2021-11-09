@@ -196,6 +196,12 @@
   <data name="EmployeeNameLength" xml:space="preserve">
     <value>Имя сотрудника должно содержать более 10 символов!</value>
   </data>
+  <data name="ExceptionSortingType" xml:space="preserve">
+    <value>Тип сортировки задан неверно, модель не содержит такого поля!</value>
+  </data>
+  <data name="ExceptionStatus" xml:space="preserve">
+    <value>Сервер не получил статус записи!</value>
+  </data>
   <data name="FilterCompany" xml:space="preserve">
     <value>Организация:</value>
   </data>

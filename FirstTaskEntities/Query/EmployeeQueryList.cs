@@ -8,8 +8,19 @@ namespace FirstTaskEntities.Query
 {
 	public class EmployeeQueryList : QueryListBase
 	{
+		/// <summary>
+		/// Идентификатор компании, к которой относится сотрудник
+		/// </summary>
 		public int? CompanyId { get; set; }
+
+		/// <summary>
+		/// Полное имя
+		/// </summary>
 		public string FullName { get; set; }
+
+		/// <summary>
+		/// Дата начала работы
+		/// </summary>
 		public DateTime DateOfBegin { get; set; }
 	}
 }

@@ -8,7 +8,14 @@ namespace FirstTaskEntities.Query
 {
 	public class ServiceProvidedQueryList : QueryListBase
 	{
+		/// <summary>
+		/// Идентификатор организации, оказывающей услугу
+		/// </summary>
 		public int? CompanyId { get; set; }
+
+		/// <summary>
+		/// Идентификатор оказываемой услуги
+		/// </summary>
 		public int? ServiceId { get; set; }
 	}
 }

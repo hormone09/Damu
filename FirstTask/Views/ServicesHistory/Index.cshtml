@@ -73,9 +73,11 @@
 <script type="text/javascript">
 
 	$(document).ready(function () {
-		var notifElement = $("#schedulerNotifications");
-		notifElement.kendoNotification();
-		var notification = notifElement.data("kendoNotification")
+
+		var controls = {};
+
+		$("#schedulerNotifications").kendoNotification();
+		controls.Notification = $("#schedulerNotifications").data("kendoNotification")
 
 		//REPORT
 		$("#schedulerSubmitFormWarningWindow").kendoDialog({
@@ -89,18 +91,17 @@
 			visible: false,
 			title: false,
 		});
-
-		var reportWindow = $("#reportWindow").data("kendoDialog");
+		controls.ReportDialog = $("#reportWindow").data("kendoDialog");
 
 		$("body").on("click", "#reportWindowButton", function () {
-			reportWindow.open();
+			controls.ReportDialog.open();
 		});
 
 		$("body").on("click", "#reportCloseWindow", function () {
-			reportWindow.close();
+			controls.ReportDialog.close();
 		});
 
-		var formReport = $("#reportForm").kendoForm({
+		controls.ReportForm = $("#reportForm").kendoForm({
 			visible: true,
 			items: [
 				{
@@ -261,7 +262,7 @@
 			buttonsTemplate: "<button class='btn-primary' type='submit'>@Resource.ButtonPrint</button> <button class='btn-default' id='reportCloseWindow' type='button'>@Resource.ButtonCancellation</button>"
 		});
 
-		formReport.bind("submit", function (e) {
+		controls.ReportForm.bind("submit", function (e) {
 			e.preventDefault();
 			let url = window.location.href;
 
@@ -278,57 +279,56 @@
 		});
 
 		// SCHEDULER
-		var dataSource = new kendo.data.SchedulerDataSource({
-			sync: function () {
-				this.read();
-			},
-			transport: {
-				read: {
-					url: "/ServicesHistory/Index",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				destroy: {
-					url: "/ServicesHistory/Delete",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				parameterMap: function (options, type) {
-					let scheduler = $("#scheduler").data("kendoScheduler");
-					let timeZone = scheduler._model.formattedShortDate.split('- ').join('');
-					let timeZoneArray = timeZone.split(' ');
-					let dateBegin = new Date(timeZoneArray[0]).toLocaleDateString();
-					let dateEnd = new Date(timeZoneArray[1]).toLocaleDateString();
-					if (type == "read") {
-						let json = {
-							DateBegin: dateBegin,
-							DateEnd: dateEnd
-						};
-
-						return kendo.stringify(json);
-					}
-					else if (type == "destroy") {
-						return kendo.stringify({ id: options.Id });
-					}
-				}
-			},
-			batch: false,
-			schema: {
-				model: {
-					id: "Id",
-					fields: {
-						start: { type: "date", from: "DateOfCreate" },
-						end: { type: "date", from: "DateOfFinish" },
-						Service: { from: "Service" },
-						Company: { from: "Company" },
-						Employee: { from: "Employee" }
-					}
-				}
-			}
-		});
 		$("#scheduler").kendoScheduler({
 			culture: "ru-RU",
-			dataSource: dataSource,
+			dataSource: {
+				sync: function () {
+					this.read();
+				},
+				transport: {
+					read: {
+						url: "/ServicesHistory/Index",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+					},
+					destroy: {
+						url: "/ServicesHistory/Delete",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+					},
+					parameterMap: function (options, type) {
+						let scheduler = $("#scheduler").data("kendoScheduler");
+						let timeZone = scheduler._model.formattedShortDate.split('- ').join('');
+						let timeZoneArray = timeZone.split(' ');
+						let dateBegin = new Date(timeZoneArray[0]).toLocaleDateString();
+						let dateEnd = new Date(timeZoneArray[1]).toLocaleDateString();
+						if (type == "read") {
+							let json = {
+								DateBegin: dateBegin,
+								DateEnd: dateEnd
+							};
+
+							return kendo.stringify(json);
+						}
+						else if (type == "destroy") {
+							return kendo.stringify({ id: options.Id });
+						}
+					}
+				},
+				batch: false,
+				schema: {
+					model: {
+						id: "Id",
+						fields: {
+							start: { type: "date", from: "DateOfCreate" },
+							end: { type: "date", from: "DateOfFinish" },
+							Service: { from: "Service" },
+							Company: { from: "Company" },
+							Employee: { from: "Employee" }
+						}
+					}
+				}
+			},
 			eventTemplate: $("#event-template").html(),
 			startTime: new Date("2021/01/01 07:00"),
 			endTime: new Date("2021/12/01 18:00"),
@@ -498,14 +498,14 @@
 								data: JSON.stringify(data),
 								success: function (json) {
 									if (json.IsSuccess) {
-										notification.success(json.Message);
+										controls.Notification.success(json.Message);
 
 										let scheduler = $("#scheduler").data("kendoScheduler");
 										scheduler.dataSource.read();
 										scheduler.cancelEvent();
 									}
 									else {
-										notification.error(json.Message);
+										controls.Notification.error(json.Message);
 									}
 								}
 							});
@@ -518,14 +518,14 @@
 								data: JSON.stringify(data),
 								success: function (json) {
 									if (json.IsSuccess) {
-										notification.success(json.Message);
+										controls.Notification.success(json.Message);
 
 										let scheduler = $("#scheduler").data("kendoScheduler");
 										scheduler.dataSource.read();
 										scheduler.cancelEvent();
 									}
 									else {
-										notification.error(json.Message);
+										controls.Notification.error(json.Message);
 									}
 								}
 							});
@@ -560,28 +560,29 @@
 				});
 			}
 		});
+		controls.Scheduler = $("#scheduler").data("kendoScheduler");
 
 		let buttonToday = $('.k-nav-today');
 		buttonToday.text("@Resource.ButtonToday");
 		buttonToday.prop('title', '');
 
 		buttonToday.on("click", function () {
-			$("#scheduler").data("kendoScheduler").dataSource.read();
-			$("#scheduler").data("kendoScheduler").dataSource.read();
+			controls.Scheduler.dataSource.read();
+			controls.Scheduler.dataSource.read();
 		});
 
 		let buttonPrev = $('.k-nav-prev');
 		buttonPrev.prop('title', '');
 		buttonPrev.on("click", function () {
-			$("#scheduler").data("kendoScheduler").dataSource.read();
-			$("#scheduler").data("kendoScheduler").dataSource.read();
+			controls.Scheduler.dataSource.read();
+			controls.Scheduler.dataSource.read();
 		});
 
 		let buttonNext = $('.k-nav-next');
 		buttonNext.prop('title', '');
 		buttonNext.on("click", function () {
-			$("#scheduler").data("kendoScheduler").dataSource.read();
-			$("#scheduler").data("kendoScheduler").dataSource.read();
+			controls.Scheduler.dataSource.read();
+			controls.Scheduler.dataSource.read();
 		});
 
 		$(".k-event-delete").on("click", function () {

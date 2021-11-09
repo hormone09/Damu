@@ -27,6 +27,84 @@ namespace DapperTest
 
 		static void Main(string[] args)
 		{
+			while(true)
+			{
+				Console.WriteLine("Желаете ли вы удалить все существуещее записи?\n Да/Нет");
+
+				var userResponse = Console.ReadLine();
+
+				if(userResponse.Equals("Да"))
+				{
+					bool IsSuccessRemoved = RemoveData();
+
+					if(IsSuccessRemoved)
+						FillDataBase();
+
+					break;
+				}
+				else if(userResponse.Equals("Нет"))
+				{
+					FillDataBase();
+
+					break;
+				}
+				else
+				{
+					Console.WriteLine("Введите корректный ответ!");
+				}
+			}
+
+			Console.ReadKey();
+		}
+
+		static bool RemoveData()
+		{
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+
+				SqlTransaction transaction = connection.BeginTransaction();
+
+				SqlCommand command = connection.CreateCommand();
+				command.Transaction = transaction;
+
+				try
+				{
+					command.CommandText = "DELETE FROM ServicesHistory";
+					command.ExecuteNonQuery();
+
+					command.CommandText = "DELETE FROM ServiceProvided";
+					command.ExecuteNonQuery();
+
+					command.CommandText = "DELETE FROM Employee";
+					command.ExecuteNonQuery();
+
+					command.CommandText = "DELETE FROM Companies";
+					command.ExecuteNonQuery();
+
+					command.CommandText = "DELETE FROM Services";
+					command.ExecuteNonQuery();
+
+					transaction.Commit();
+
+					Console.WriteLine("Данные удалены из БД!");
+
+					return true;
+				}
+				catch (Exception ex)
+				{
+					transaction.Rollback();
+					Console.WriteLine($"Не удалось удалить данные из БД! \n Ошибка: {ex.Message}");
+
+					return false;
+				}
+			}
+		}
+
+		static void FillDataBase()
+		{
+			Console.WriteLine("Начало загрузки данных!");
+
 			AddServices();
 			Thread.Sleep(2000);
 			Console.WriteLine("Сервисы загружены!");
@@ -41,20 +119,19 @@ namespace DapperTest
 			Console.WriteLine("Оказываемые услуги загружены!");
 			AddHistory();
 			Console.WriteLine("История загружена!");
-
-			Console.ReadKey();
 		}
+
 		static void AddCompanies()
 		{
-			for (int i = 0; i < 150; i++)
+			for (int i = 0; i < Randomizer.CompanisCount; i++)
 			{
 				var obj = new Company
 				{
-					Phone = "87076405699",
-					BIN = "123456789101",
-					DateOfBegin = DateTime.Now,
-					Name = $"Компания {i}",
-					Status = Statuses.Active,
+					Phone = Randomizer.GetPhone(),
+					BIN = Randomizer.GetPersonalNumber(),
+					DateOfBegin = Randomizer.GetDate(),
+					Name = Randomizer.GetCompanyName(i),
+					Status = (int)Statuses.Active,
 				};
 
 				companyRep.Add(obj);
@@ -63,15 +140,15 @@ namespace DapperTest
 
 		static void AddServices()
 		{
-			for (int i = 0; i < 150; i++)
+			for (int i = 0; i < Randomizer.ServicesCount; i++)
 			{
 				var obj = new Service
 				{
-					Code = "x11.111.111",
-					DateOfBegin = DateTime.Parse("12.10.2021"),
-					Name = $"Service number {i}",
-					Price = 500 + (i*24),
-					Status = Statuses.Active
+					Code = Randomizer.GetServiceCode(),
+					DateOfBegin = Randomizer.GetDate(),
+					Name = Randomizer.GetServiceName(i),
+					Price = Randomizer.GetPrice(),
+					Status = (int)Statuses.Active
 				};
 
 				serviceRep.Add(obj);
@@ -92,9 +169,9 @@ namespace DapperTest
 				{
 					CompanyId = companyId,
 					ServiceId = serviceId,
-					DateOfBegin = DateTime.Parse("15.10.2021"),
-					Status = Statuses.Active,
-					ServicePrice = 500 + (i * 57)
+					DateOfBegin = Randomizer.GetDate(),
+					Status = (int)Statuses.Active,
+					ServicePrice = Randomizer.GetPrice()
 				};
 
 				serviceProvidedRep.Add(obj);
@@ -112,12 +189,12 @@ namespace DapperTest
 				var obj = new Employee
 				{
 					CompanyId = companyId,
-					BirthdayDate = DateTime.Now,
-					DateOfBegin = DateTime.Now,
-					FullName = $"Employee Number {i}",
-					PersonalNumber = "123456789101",
-					Phone = "87012730270",
-					Status = Statuses.Active
+					BirthdayDate = DateTime.Parse("11.11.1980"),
+					DateOfBegin = Randomizer.GetDate(),
+					FullName = Randomizer.GetFullName(),
+					PersonalNumber = Randomizer.GetPersonalNumber(),
+					Phone = Randomizer.GetPhone(),
+					Status = (int)Statuses.Active
 				};
 
 				employeeRep.Add(obj);
@@ -131,7 +208,7 @@ namespace DapperTest
 			int[] employeeMas = employeeRep.List(new EmployeeQueryList { Skip = 0, Limit = 100000, Status = Statuses.Active }).Select(x => x.Id).ToArray();
 			Random random = new Random();
 
-			for (int i = 0; i < 1; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				var companyId = companiesMas[random.Next(0, companiesMas.Length - 1)];
 				var serviceId = servicesMas[random.Next(0, servicesMas.Length - 1)];
@@ -143,7 +220,7 @@ namespace DapperTest
 					ServiceId = serviceId,
 					DateOfCreate = DateTime.Now,
 					DateOfDelete = null,
-					Status = Statuses.Active
+					Status = (int)Statuses.Active
 				};
 
 				serviceHistoryRep.Add(obj);

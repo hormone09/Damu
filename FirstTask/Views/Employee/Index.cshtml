@@ -17,7 +17,7 @@
 			<div id="employeeSortingTypes" class="sorting-filter"></div>
 			<p>@Resource.FilterCompany</p>
 			<div id="employeeCompanyFilter" class="cmb-filter"></div>
-			<p>@Resource.FilterName</p>
+			<p>@Resource.FilterFullName</p>
 			<input type="text" name="FilterName" id="employeeNameFilter" class="filter-name"/>
 			<button type="button" id="employeeSearchButton">@Resource.ButtonSearch</button>
 		</div>
@@ -103,54 +103,52 @@
 		controls.CompanyFilter = $("#employeeCompanyFilter").data("kendoComboBox");
 
 		$("#employeeNameFilter").kendoTextBox({
-			placeholder: "@Resource.PlaceholderName"
+			placeholder: "@Resource.PlaceholderFullName"
 		});
 		controls.NameFilter = $("#employeeNameFilter").data("kendoTextBox");
 
 		controls.FormHeader = $("#employeeFormTitle");
 
-		let dataSource = new kendo.data.DataSource({
-			pageSize: 20,
-			transport: {
-				read: {
-					url: "/Employee/Index",
-					type: "POST",
-					contentType: "application/json; charset=utf-8",
-				},
-				parameterMap: function (options) {
-					let name = $("#employeeNameFilter").val();
-					var data = {
-						FullName: name,
-						Page: options.page,
-						PageSize: options.pageSize,
-						Status: controls.StatusesFilter.value(),
-						SortingType: controls.SortingTypeFilter.value(),
-						CompanyId: controls.CompanyFilter.value()
-					}
-					return kendo.stringify(data);
-				}
-			},
-			schema: {
-				total: function (response) {
-					if (response.length > 0)
-						return response[0].TotalRows;
-					else
-						return 1;
-				},
-				model: {
-					fields: {
-						DateOfBegin: { type: "date" },
-						BirthdayDate: { type: "date" }
-					}
-				}
-			},
-			page: "Page",
-			serverPaging: true,
-			serverSorting: true,
-		});
-
 		$("#employeeGrid").kendoGrid({
-			dataSource: dataSource,
+			dataSource: {
+				pageSize: 20,
+				transport: {
+					read: {
+						url: "/Employee/Index",
+						type: "POST",
+						contentType: "application/json; charset=utf-8",
+					},
+					parameterMap: function (options) {
+						let name = $("#employeeNameFilter").val();
+						var data = {
+							FullName: name,
+							Page: options.page,
+							PageSize: options.pageSize,
+							Status: controls.StatusesFilter.value(),
+							SortingType: controls.SortingTypeFilter.value(),
+							CompanyId: controls.CompanyFilter.value()
+						}
+						return kendo.stringify(data);
+					}
+				},
+				schema: {
+					total: function (response) {
+						if (response.length > 0)
+							return response[0].TotalRows;
+						else
+							return 1;
+					},
+					model: {
+						fields: {
+							DateOfBegin: { type: "date" },
+							BirthdayDate: { type: "date" }
+						}
+					}
+				},
+				page: "Page",
+				serverPaging: true,
+				serverSorting: true,
+			},
 			columns: [
 				{ field: "Id", title: "Id", width: "1%", hidden: true },
 				{ field: "Company.Id", title: "Id", width: "1%", hidden: true },
@@ -245,6 +243,7 @@
 		});
 
 		$("body").on("click", "#employeeSearchButton", function () {
+			controls.Grid.dataSource.page(1);
 			controls.Grid.dataSource.read();
 		});
 
@@ -330,14 +329,14 @@
 			},
 			PersonalNumber: {
 				required: true,
-				pattern: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
+				textMask: "^[0-9]{3}-[0-9]{3}-[0-9]{3}-[0-9]{3}$"
 			},
 			Company: {
 				cmbIsRequired: true
 			},
 			Phone: {
 				required: true,
-				pattern: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+				textMask: "^[0-9]-[(]?[0-9]{3}[)]?-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
 			},
 			DateOfBegin: {
 				required: true,
@@ -357,11 +356,11 @@
 			},
 			PersonalNumber: {
 				required: "@Resource.ValidationMessageInputRequired",
-				pattern: "@Resource.ValidationMessageFormatError:'XXX-XXX-XXX-XXX'"
+				textMask: "@Resource.ValidationMessageFormatError'XXX-XXX-XXX-XXX'"
 			},
 			Phone: {
 				required: "@Resource.ValidationMessageInputRequired",
-				pattern: "@Resource.ValidationMessageFormatError:'X-(XXX)-XXX-XX-XX'"
+				textMask: "@Resource.ValidationMessageFormatError'X-(XXX)-XXX-XX-XX'"
 			},
 			Company: {
 				cmbIsRequired: "@Resource.ValidationMessageInputRequired"
@@ -391,44 +390,23 @@
 					DateOfBegin: $("#employeeInputDateOfBegin").data("kendoDatePicker").value()
 				}
 
-				if (data.Id == 0) {
-					$.ajax({
-						url: "/Employee/Add",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess) {
-								controls.Form[0].reset();
-								controls.FormDialog.close();
-								controls.Notification.success(json.Message);
-								controls.Grid.dataSource.read();
-							}
-							else {
-								controls.Notification.error(json.Message);
-							}
+				$.ajax({
+					url: data.Id == 0 ? "/Employee/Add" : "/Employee/Edit",
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					data: JSON.stringify(data),
+					success: function (json) {
+						if (json.IsSuccess) {
+							controls.Form[0].reset();
+							controls.FormDialog.close();
+							controls.Notification.success(json.Message);
+							controls.Grid.dataSource.read();
 						}
-					});
-				}
-				else {
-					$.ajax({
-						url: "/Employee/Edit",
-						type: "POST",
-						contentType: "application/json; charset=utf-8",
-						data: JSON.stringify(data),
-						success: function (json) {
-							if (json.IsSuccess) {
-								controls.Form[0].reset();
-								controls.FormDialog.close();
-								controls.Notification.success(json.Message);
-								controls.Grid.dataSource.read();
-							}
-							else {
-								controls.Notification.error(json.Message);
-							}
+						else {
+							controls.Notification.error(json.Message);
 						}
-					});
-				}
+					}
+				});
 		},
 		focusInvalid: true,
 		errorClass: "validationFormMessage",

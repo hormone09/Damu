@@ -215,11 +215,11 @@
     <Compile Include="Controllers\ServiceProvidedController.cs" />
     <Compile Include="Controllers\ServicesHistoryController.cs" />
     <Compile Include="Enums\ReportTypesEnum.cs" />
-    <Compile Include="Handlers\LocalizHandler.cs" />
     <Compile Include="Handlers\MessageHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\SortingTypeHandler.cs" />
     <Compile Include="Managers\CompanyManager.cs" />
     <Compile Include="Managers\EmployeeManager.cs" />
     <Compile Include="Managers\ServiceManager.cs" />
