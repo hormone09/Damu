@@ -1,0 +1,7 @@
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\bin\Debug\Dapper.dll
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\obj\Debug\Entities.csproj.AssemblyReference.cache
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\obj\Debug\Entities.csproj.CoreCompileInputs.cache
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\bin\Debug\Entities.dll
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\bin\Debug\Entities.pdb
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\obj\Debug\Entities.dll
+C:\Users\Domu\Desktop\Code\_FirstTask\FirstTaskEntities\obj\Debug\Entities.pdb

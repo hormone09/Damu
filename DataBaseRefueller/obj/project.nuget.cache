@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "dPfuM5IrEDMdkUx7QXgT56BbP1lMOAlDWX9vVsCYT6eqy1JCZnBxh9yp/0M89Q31UzWAiNpUUs4nsJ8Ye2QRAA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Domu\\Desktop\\Code\\_FirstTask\\DataBaseRefueller\\DataBaseRefueller.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Domu\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512"
+  ],
+  "logs": []
+}
