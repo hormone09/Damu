@@ -12,7 +12,7 @@ namespace ServiceRegister.Handlers
 			bool IsHasClientSortingType = false;
 
 			foreach (PropertyInfo property in properties)
-				if (property.Name.Equals(sortignType))
+				if (property.Name.Equals(sortignType) || sortignType.Equals(property.Name + " DESC"))
 					IsHasClientSortingType = true;
 
 			return IsHasClientSortingType;

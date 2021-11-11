@@ -1,5 +1,6 @@
 ﻿using Entities.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceRegister.Models
 {
@@ -13,21 +14,26 @@ namespace ServiceRegister.Models
 		/// <summary>
 		/// Оказанная услуга
 		/// </summary>
+		[Required]
 		public ServiceModel Service { get; set; }
 
 		/// <summary>
 		/// Организация, выполнившая услугу
 		/// </summary>
+		[Required]
 		public CompanyModel Company { get; set; }
 
 		/// <summary>
 		/// Сотрудник, выполнивший услугу
 		/// </summary>
+		[Required]
 		public EmployeeModel Employee { get; set; }
 
 		/// <summary>
 		/// Дата создания записи - дата начала оказания услуг
 		/// </summary>
+		/// 
+		[Required]
 		public DateTime? DateOfCreate { get; set; }
 
 		/// <summary>

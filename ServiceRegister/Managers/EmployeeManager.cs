@@ -15,12 +15,14 @@ namespace ServiceRegister.Managers
 {
 	public class EmployeeManager
 	{
-		private CompanyRepository companyRep = new CompanyRepository();
-		private EmployeeRepository emloyeeRep = new EmployeeRepository();
+		private CompanyRepository companyRep;
+		private EmployeeRepository emloyeeRep;
 		private IMapper mapper;
 
-		public EmployeeManager(IMapper mapper)
+		public EmployeeManager(IMapper mapper, CompanyRepository companyRep, EmployeeRepository employeeRep)
 		{
+			this.companyRep = companyRep;
+			this.emloyeeRep = employeeRep;
 			this.mapper = mapper;
 		}
 		public List<EmployeeModel> List(EmployeeViewQuery queryView)
@@ -37,13 +39,6 @@ namespace ServiceRegister.Managers
 			var query = mapper.Map<EmployeeQueryList>(queryView);
 			var entities = emloyeeRep.List(query);
 			var models = mapper.Map<List<EmployeeModel>>(entities);
-
-			foreach (var el in models)
-			{
-				var companyId = entities.First(x => x.Id == el.Id).CompanyId;
-				var companyEntity = companyRep.Find(companyId);
-				el.Company = mapper.Map<CompanyModel>(companyEntity);
-			}
 
 			return models;
 		}
@@ -63,7 +58,6 @@ namespace ServiceRegister.Managers
 				throw new Exception(Resource.ExceptionStatus);
 
 			var entity = mapper.Map<Employee>(model);
-			entity.CompanyId = (int)model.Company.Id;
 
 			try
 			{
@@ -71,9 +65,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.EditSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -98,9 +92,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.AddSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -132,9 +126,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 	}

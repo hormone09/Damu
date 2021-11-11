@@ -14,7 +14,7 @@ namespace Entities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<ServiceHistory> List(object queryList)
+		public List<ServiceHistory> List(QueryListBase queryList)
 		{
 			ServiceHistoryQueryList query;
 			if (queryList is ServiceHistoryQueryList)
@@ -24,15 +24,29 @@ namespace Entities.Repository
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<ServiceHistory>("SELECT * FROM ServicesHistory WHERE DateOfCreate >= @DateBegin AND CONVERT(date, DateOfCreate) <= @DateEnd AND Status = @Status", new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status }).ToList();
+				string join = "INNER JOIN Companies ON Companies.Id = ServicesHistory.CompanyId INNER JOIN Services ON Services.Id = ServicesHistory.ServiceId INNER JOIN Employee ON Employee.Id = ServicesHistory.EmployeeId";
+				string sql = $"SELECT * FROM ServicesHistory {join} WHERE DateOfCreate >= @DateBegin AND CONVERT(date, DateOfCreate) <= @DateEnd AND ServicesHistory.Status = @Status"; 
+				object sqlParams = new { DateBegin = query.DateBegin, DateEnd = query.DateEnd, Status = query.Status };
+				return connection.Query<ServiceHistory, Company, Service, Employee, ServiceHistory>(
+					sql, 
+					(history, company, service, employee) =>
+					{
+						history.Company = company;
+						history.Service = service;
+						history.Employee = employee;
+
+						return history;
+					},
+					sqlParams
+					).ToList();
 			}
 		}
 		public void Update(ServiceHistory entity)
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "UPDATE ServicesHistory SET CompanyId = @CompanyId, ServiceId = @ServiceId, EmployeeId = @EmployeeId WHERE Id = @Id";
-				connection.Query(query, new { Id = entity.Id, CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete});
+				string query = "UPDATE ServicesHistory SET CompanyId = @CompanyId, DateOfCreate = @DateOfCreate, DateOfFinish = @DateOfFinish, ServiceId = @ServiceId, EmployeeId = @EmployeeId WHERE Id = @Id";
+				connection.Query(query, new { Id = entity.Id, CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfFinish = entity.DateOfFinish, DateOfDelete = entity.DateOfDelete});
 			}
 		}
 
@@ -40,8 +54,8 @@ namespace Entities.Repository
 		{
 			using (var connection = new SqlConnection(connectionString))
 			{
-				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfDelete, @Status)";
-				connection.Query(query, new { CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
+				string query = "INSERT INTO ServicesHistory (CompanyId, ServiceId, EmployeeId, DateOfCreate, DateOfFinish, DateOfDelete, Status) VALUES (@CompanyId, @ServiceId, @EmployeeId, @DateOfCreate, @DateOfFinish, @DateOfDelete, @Status)";
+				connection.Query(query, new { CompanyId = entity.CompanyId, ServiceId = entity.ServiceId, EmployeeId = entity.EmployeeId, DateOfCreate = entity.DateOfCreate, DateOfFinish = entity.DateOfFinish, DateOfDelete = entity.DateOfDelete, Status = entity.Status });
 			}
 		}
 

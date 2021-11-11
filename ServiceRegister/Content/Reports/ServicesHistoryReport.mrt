@@ -194,7 +194,7 @@ WHERE CONVERT(date, DateOfCreate) &gt;= CONVERT(date, @DateBegin) AND CONVERT(da
             </Text5>
             <Text6 Ref="11" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4,2.2,4,0.6</ClientRectangle>
+              <ClientRectangle>4,2.2,14,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
@@ -206,7 +206,7 @@ WHERE CONVERT(date, DateOfCreate) &gt;= CONVERT(date, @DateBegin) AND CONVERT(da
             </Text6>
             <Text7 Ref="12" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4,1.6,4,0.6</ClientRectangle>
+              <ClientRectangle>4,1.6,14,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
@@ -218,7 +218,7 @@ WHERE CONVERT(date, DateOfCreate) &gt;= CONVERT(date, @DateBegin) AND CONVERT(da
             </Text7>
             <Text8 Ref="13" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4,2.8,4,0.6</ClientRectangle>
+              <ClientRectangle>4,2.8,14,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Margins>0,0,0,0</Margins>
@@ -472,10 +472,10 @@ WHERE CONVERT(date, DateOfCreate) &gt;= CONVERT(date, @DateBegin) AND CONVERT(da
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Отчет</ReportAlias>
-  <ReportChanged>10/27/2021 3:51:31 PM</ReportChanged>
+  <ReportChanged>11/11/2021 3:19:57 PM</ReportChanged>
   <ReportCreated>10/19/2021 2:01:01 PM</ReportCreated>
   <ReportFile>C:\Users\Domu\Desktop\ServicesHistoryReport.mrt</ReportFile>
-  <ReportGuid>d375d86944764903ae61b1709d007426</ReportGuid>
+  <ReportGuid>311881c168d5452c93e9ceb8417ca6b1</ReportGuid>
   <ReportName>Отчет</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2013.1.1600</ReportVersion>

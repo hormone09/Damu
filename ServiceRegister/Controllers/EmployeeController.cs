@@ -23,7 +23,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(EmployeeViewQuery query)
+		public JsonResult List(EmployeeViewQuery query)
 		{
 			var result = manager.List(query);
 
@@ -31,7 +31,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Add(EmployeeModel model)
+		public JsonResult Add([Bind(Exclude = "Status")] EmployeeModel model)
 		{
 			if (!ModelState.IsValid)
 			{

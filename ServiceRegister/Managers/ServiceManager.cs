@@ -16,12 +16,12 @@ namespace ServiceRegister.Managers
 {
 	public class ServiceManager
 	{
-		private ServiceRepository serviceRepository = new ServiceRepository();
-		private ServiceProvidedRepository serviceProvidedRepository = new ServiceProvidedRepository();
+		private ServiceRepository serviceRep;
 		private IMapper mapper;
 
-		public ServiceManager(IMapper mapper)
+		public ServiceManager(IMapper mapper, ServiceRepository serviceRep)
 		{
+			this.serviceRep = serviceRep;
 			this.mapper = mapper;
 		}
 
@@ -37,7 +37,7 @@ namespace ServiceRegister.Managers
 				throw new Exception(Resource.ExceptionStatus);
 
 			var query = mapper.Map<ServiceQueryList>(queryView);
-			var serviceEntities = serviceRepository.List(query);
+			var serviceEntities = serviceRep.List(query);
 			var serviceModels = mapper.Map<List<ServiceModel>>(serviceEntities);
 
 			return serviceModels;
@@ -55,13 +55,13 @@ namespace ServiceRegister.Managers
 
 			try
 			{
-				serviceRepository.Update(entity);
+				serviceRep.Update(entity);
 
 				return new MessageHandler(true, Resource.EditSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -76,13 +76,13 @@ namespace ServiceRegister.Managers
 
 			try
 			{
-				serviceRepository.Add(entity);
+				serviceRep.Add(entity);
 
 				return new MessageHandler(true, Resource.AddSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -90,13 +90,13 @@ namespace ServiceRegister.Managers
 		{
 			try
 			{
-				serviceRepository.Remove(id);
+				serviceRep.Remove(id);
 
 				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-			catch(Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -104,19 +104,19 @@ namespace ServiceRegister.Managers
 		{
 			try
 			{
-				var entity = serviceRepository.Find(id);
+				var entity = serviceRep.Find(id);
 
 				entity.Status = (int)Statuses.Active;
 				entity.DateOfBegin = DateTime.Now;
 				entity.DateOfFinish = null;
 
-				serviceRepository.Update(entity);
+				serviceRep.Update(entity);
 
 				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 	}

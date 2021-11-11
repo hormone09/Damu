@@ -17,8 +17,12 @@ namespace ServiceRegister.App_Start
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
 
-			CreateMap<ServiceProvided, ServiceProvidedModel>();
-			CreateMap<ServiceProvidedModel, ServiceProvided>();
+			CreateMap<ServiceProvided, ServiceProvidedModel>()
+				.ForMember(x => x.Company, opt => opt.MapFrom(x => x.Company))
+				.ForMember(x => x.Service, opt => opt.MapFrom(x => x.Service));
+			CreateMap<ServiceProvidedModel, ServiceProvided>()
+				.ForMember(x => x.Company, opt => opt.MapFrom(x => x.Company))
+				.ForMember(x => x.Service, opt => opt.MapFrom(x => x.Service));
 			CreateMap<ServiceProvidedViewQuery, ServiceProvidedQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
@@ -34,6 +38,10 @@ namespace ServiceRegister.App_Start
 			CreateMap<EmployeeViewQuery, EmployeeQueryList>()
 				.ForMember("Skip", opt => opt.MapFrom(x => (x.Page - 1) * x.PageSize))
 				.ForMember("Limit", opt => opt.MapFrom(x => x.PageSize));
+
+			CreateMap<ServiceHistory, ServiceHistoryModel>();
+			CreateMap<ServiceHistoryModel, ServiceHistory>()
+				.ForMember(x => x.Status, y => y.MapFrom(src => 1));
 
 			CreateMap<ServicesHistoryViewQuery, ServiceHistoryQueryList>();
 		}

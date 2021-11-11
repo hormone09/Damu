@@ -381,7 +381,7 @@
     <value>По названию</value>
   </data>
   <data name="SortingByPriceDown" xml:space="preserve">
-    <value>По убиыванию цены</value>
+    <value>По убыванию цены</value>
   </data>
   <data name="SortingByPriceUp" xml:space="preserve">
     <value>По возрастанию цены</value>

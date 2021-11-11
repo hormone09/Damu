@@ -14,13 +14,12 @@ namespace ServiceRegister.Managers
 {
 	public class CompanyManager
 	{
-		private CompanyRepository companyRep = new CompanyRepository();
-		private ServiceProvidedRepository serviceProvidedRepository = new ServiceProvidedRepository();
-
+		private CompanyRepository companyRep;
 		private IMapper mapper;
 
-		public CompanyManager(IMapper mapper)
+		public CompanyManager(IMapper mapper, CompanyRepository companyRep)
 		{
+			this.companyRep = companyRep;
 			this.mapper = mapper;
 		}
 
@@ -58,9 +57,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.EditSuccess);
 			}
-			catch (Exception exception)
+			catch (Exception)
 			{
-				throw exception;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -80,9 +79,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.AddSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -94,9 +93,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.DeleteSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -114,9 +113,9 @@ namespace ServiceRegister.Managers
 
 				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 	}

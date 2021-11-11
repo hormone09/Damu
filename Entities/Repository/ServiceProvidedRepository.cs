@@ -14,7 +14,7 @@ namespace Entities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<ServiceProvided> List(object queryList)
+		public List<ServiceProvided> List(QueryListBase queryList)
 		{
 			ServiceProvidedQueryList query;
 
@@ -23,23 +23,45 @@ namespace Entities.Repository
 			else
 				throw new TypeUnloadedException();
 
-			string where = "WHERE Status = @Status";
+			string where = "WHERE ServiceProvided.Status = @Status";
 			string orderType;
+			string limit = string.Empty;
 
 			if (string.IsNullOrEmpty(query.SortingType))
-				orderType = "Id";
+				orderType = "ServiceProvided.Id";
 			else
-				orderType = query.SortingType;
+			{
+				orderType = $"ServiceProvided.{query.SortingType}";
+			}
 
 			if (query.CompanyId != null)
-				where += " AND CompanyId = @CompanyId";
+				where += " AND ServiceProvided.CompanyId = @CompanyId";
 
 			if (query.ServiceId != null)
-				where += " AND ServiceId = @ServiceId";
+				where += " AND ServiceProvided.ServiceId = @ServiceId";
+
+			if (query.Limit > 0)
+				limit = " FETCH NEXT @Limit ROWS ONLY";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<ServiceProvided>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM ServiceProvided {where} ORDER BY {orderType} OFFSET @Skip ROWS FETCH NEXT @Limit ROWS ONLY", query).ToList();
+				string join = "INNER JOIN Companies ON Companies.Id = ServiceProvided.CompanyId INNER JOIN Services ON Services.Id = ServiceProvided.ServiceId";
+				string sql = $"SELECT *, COUNT(ServiceProvided.Id) OVER() AS TotalRows FROM ServiceProvided {join} {where} ORDER BY {orderType} OFFSET @Skip ROWS{limit}";
+
+				var result =  connection.Query<ServiceProvided, Company, Service, ServiceProvided>(
+					sql,
+					(provided, company, service) =>
+					{
+						provided.Service = service;
+						provided.Company = company;
+						provided.TotalRows = service.TotalRows;
+
+						return provided;
+					},
+					query
+					).ToList();
+
+				return result;
 			}
 		}
 

@@ -1,5 +1,8 @@
 ﻿using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
+
+using ServiceRegister.Handlers;
 using ServiceRegister.Managers;
 using ServiceRegister.Models;
 using ServiceRegister.ViewQueris;
@@ -21,7 +24,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(ServicesHistoryViewQuery queryView)
+		public JsonResult List(ServicesHistoryViewQuery queryView)
 		{
 			var models = manager.List(queryView);
 

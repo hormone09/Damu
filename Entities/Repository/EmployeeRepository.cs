@@ -15,7 +15,7 @@ namespace Entities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Employee> List(object queryList)
+		public List<Employee> List(QueryListBase queryList)
 		{
 			EmployeeQueryList query;
 
@@ -29,27 +29,41 @@ namespace Entities.Repository
 			string orderType;
 
 			if (query.Status == Statuses.Active || query.Status == Statuses.Disabled)
-				where = "WHERE Status = @Status";
+				where = "WHERE Employee.Status = @Status";
 			else if (query.Status == 0)
-				where = "WHERE Status IN(1,2)";
+				where = "WHERE Employee.Status IN(1,2)";
 
 			if (string.IsNullOrEmpty(query.SortingType))
-				orderType = "Id";
+				orderType = "Employee.Id";
 			else
-				orderType = query.SortingType;
+			{
+				orderType = $"Employee.{query.SortingType}";
+			}	
 
 			if (!string.IsNullOrEmpty(query.FullName))
-				where += " AND FullName LIKE '%" + query.FullName + "%'";
+				where += " AND Employee.FullName LIKE '%" + query.FullName + "%'";
 
 			if (query.CompanyId != null)
-				where += " AND CompanyId = @CompanyId";
+				where += " AND Employee.CompanyId = @CompanyId";
 
 			if (query.Limit > 0)
 				limit = " FETCH NEXT @Limit ROWS ONLY";
 
 			using (var connection = new SqlConnection(connectionString))
 			{
-				return connection.Query<Employee>($"SELECT *, COUNT(*) OVER() AS TotalRows FROM Employee {where} ORDER BY {orderType} OFFSET @Skip ROWS{limit}", query).ToList();
+				string join = "INNER JOIN Companies ON Companies.Id = Employee.CompanyId";
+				string sql = $"SELECT *, COUNT(*) OVER() AS TotalRows FROM Employee {join} {where} ORDER BY {orderType} OFFSET @Skip ROWS{limit} ";
+
+				return connection.Query<Employee, Company, Employee>(
+					sql,
+					(employee, company) =>
+					{
+						employee.TotalRows = company.TotalRows;
+						employee.Company = company;
+						return employee;
+					},
+					query
+					).ToList();
 			}
 		}
 

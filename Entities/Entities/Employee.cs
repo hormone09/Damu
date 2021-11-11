@@ -50,5 +50,8 @@ namespace Entities.Models
 
 		[NotMapped]
 		public int TotalRows { get; set; }
+
+		[NotMapped]
+		public Company Company { get; set; }
 	}
 }

@@ -22,7 +22,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(ServiceViewQuery query)
+		public JsonResult List(ServiceViewQuery query)
 		{
 			var result = manager.List(query);
 
@@ -30,7 +30,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Add(ServiceModel model)
+		public JsonResult Add([Bind(Exclude = "Status")]ServiceModel model)
 		{
 			if (!ModelState.IsValid)
 			{

@@ -844,7 +844,7 @@ namespace ServiceRegister.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на По убиыванию цены.
+        ///   Ищет локализованную строку, похожую на По убыванию цены.
         /// </summary>
         public static string SortingByPriceDown {
             get {

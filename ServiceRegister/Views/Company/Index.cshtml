@@ -55,7 +55,7 @@
 				pageSize: 20,
 				transport: {
 					read: {
-						url: "/Company/Index",
+						url: "/Company/List",
 						type: "POST",
 						contentType: "application/json; charset=utf-8",
 					},
@@ -295,8 +295,7 @@
 		focusInvalid: true,
 		errorClass: "validationFormMessage",
 		errorElement: 'p',
-		errorPlacement: function (error, element) {
-			console.log(error, element)
+			errorPlacement: function (error, element) {
 			error.insertAfter(element.closest('div'));
 		}
 	});

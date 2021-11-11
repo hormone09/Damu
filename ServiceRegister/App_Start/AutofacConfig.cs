@@ -32,6 +32,13 @@ namespace ServiceRegister.App_Start
 			builder.RegisterType<ServiceHistoryManager>().AsSelf();
 			builder.RegisterModule<AutoFacModule>();
 
+			// repository
+			builder.RegisterType<ServiceRepository>().AsSelf();
+			builder.RegisterType<ServiceProvidedRepository>().AsSelf();
+			builder.RegisterType<ServiceHistoryRepository>().AsSelf();
+			builder.RegisterType<EmployeeRepository>().AsSelf();
+			builder.RegisterType<CompanyRepository>().AsSelf();
+
 			// создаем новый контейнер с теми зависимостями, которые определены выше
 			var container = builder.Build();
 

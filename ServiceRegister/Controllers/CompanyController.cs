@@ -22,7 +22,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Index(CompanyViewQuery query)
+		public JsonResult List(CompanyViewQuery query)
 		{
 			var result = manager.List(query);
 
@@ -30,7 +30,7 @@ namespace ServiceRegister.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult Add(CompanyModel model)
+		public JsonResult Add([Bind(Exclude = "Status")]CompanyModel model)
 		{
 			if (!ModelState.IsValid)
 			{

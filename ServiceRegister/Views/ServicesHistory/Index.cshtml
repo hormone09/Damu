@@ -94,18 +94,18 @@
 			</div>
 			<div class="row">
 				<div class="col-4">
-					<label for="Service">@Resource.LabelService</label>
+					<label for="Service">@Resource.LabelCompany</label>
 				</div>
 				<div class="col-7">
-					<input type="text" name="Service" id="shedulerSubmitFormInputCompany" name="Service"/>
+					<input type="text" name="Company" id="shedulerSubmitFormInputCompany" name="Service"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-4">
-					<label for="Company">@Resource.LabelCompany</label>
+					<label for="Company">@Resource.LabelService</label>
 				</div>
 				<div class="col-7">
-					<input type="text" name="Company" id="shedulerSubmitFormInputService" name="Company"/>
+					<input type="text" name="Service" id="shedulerSubmitFormInputService" name="Company"/>
 				</div>
 			</div>
 			<div class="row">
@@ -156,10 +156,11 @@
 		});
 
 		$("#reportForm").kendoForm({
-			title: false,
+			visible: true,
 			buttonsTemplate: ""
 		});
 		controls.ReportForm = $("#reportForm");
+		controls.ReportFormInputs = {};
 
 		$("#reportFormCompanyCmb").kendoComboBox({
 			placeholder: "@Resource.PlaceholderCompany",
@@ -170,7 +171,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Company/Index/",
+						url: "/Company/List/",
 						type: "POST",
 						data: {
 							CompanyName: null,
@@ -191,6 +192,7 @@
 				}
 			}
 		});
+		controls.ReportFormInputs.Company = $("#reportFormCompanyCmb").data("kendoComboBox");
 
 		$("#reportFormServiceCmb").kendoComboBox({
 			placeholder: "@Resource.PlaceholderCompany",
@@ -201,7 +203,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Service/Index/",
+						url: "/Service/List/",
 						type: "POST",
 						data: {
 							CompanyName: null,
@@ -222,6 +224,7 @@
 				}
 			}
 		});
+		controls.ReportFormInputs.Service = $("#reportFormServiceCmb").data("kendoComboBox");
 
 		$("#reportFormEmployeeCmb").kendoComboBox({
 			placeholder: "@Resource.PlaceholderEmployee",
@@ -232,7 +235,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Employee/Index/",
+						url: "/Employee/List/",
 						type: "POST",
 						data: {
 							CompanyName: null,
@@ -253,16 +256,19 @@
 				}
 			}
 		});
+		controls.ReportFormInputs.Employee = $("#reportFormEmployeeCmb").data("kendoComboBox");
 
 		$("#reportFormDateStart").kendoDatePicker({
-			format: 'MM.dd.yyyy',
+			format: 'dd.MM.yyyy',
 			culture: "ru-RU"
 		});
+		controls.ReportFormInputs.DateStart = $("#reportFormDateStart").data("kendoDatePicker");
 
 		$("#reportFormDateEnd").kendoDatePicker({
-			format: 'MM.dd.yyyy',
+			format: 'dd.MM.yyyy',
 			culture: "ru-RU"
 		});
+		controls.ReportFormInputs.DateEnd = $("#reportFormDateEnd").data("kendoDatePicker");
 
 		$("#reportFormReportType").kendoDropDownList({
 			dataTextField: "text",
@@ -275,20 +281,30 @@
 				{ text: "XML", value: 4 },
 				{ text: "PNG", value: 5 },
 			]
-		})
-
+		});
+		controls.ReportFormInputs.Type = $("#reportFormReportType");
 
 		controls.ReportForm.bind("submit", function (e) {
 			e.preventDefault();
 
-			var date1 = $("#reportFormDateStart").val();
-			var date2 = $("#reportFormDateEnd").val();
-			var companyId = $("#reportFormCompanyCmb").val();
-			var serviceId = $("#reportFormServiceCmb").val();
-			var employeeId = $("#reportFormEmployeeCmb").val();
-			var type = $("#reportFormReportType").val();
+			var inputs = controls.ReportFormInputs;
 
-			window.open("GetReport/?DateBegin=" + date1 + "&DateEnd=" + date2 + "&CompanyId=" + companyId + "&ServiceId=" + serviceId + "&EmployeeId=" + employeeId + "&Type=" + type);
+			var data = {
+				DateBegin: inputs.DateStart.value() != null ? inputs.DateStart.value().toLocaleDateString("en-EN") : null,
+				DateEnd: inputs.DateEnd.value() != null ? inputs.DateEnd.value().toLocaleDateString("en-EN") : null,
+				Company: inputs.Company.dataItem(),
+				Service: inputs.Service.dataItem(),
+				Employee: inputs.Employee.dataItem(),
+				Type: inputs.Type.val()
+			}
+			console.log(data.DateBegin, data.DateEnd);
+
+			let companyRequest = `Company.Id=${data.Company != null ? data.Company.Id : 0}&Company.Name=${data.Company != null ? data.Company.Name : null}`;
+			let serviceRequest = `Service.Id=${data.Service != null ? data.Service.Id : 0}&Service.Name=${data.Service != null ? data.Service.Name : null}`;
+			let employeeRequest = `Employee.Id=${data.Employee != null ? data.Employee.Id : 0}&Employee.FullName=${data.Employee != null ? data.Employee.FullName : 0}`;
+
+
+			window.open(`GetReport/?DateBegin=${data.DateBegin}&DateEnd=${data.DateEnd}&${companyRequest}&${serviceRequest}&${employeeRequest}&Type=${data.Type}`);
 
 			controls.ReportForm[0].reset();
 			$("#reportWindow").data("kendoDialog").close();
@@ -303,7 +319,7 @@
 				},
 				transport: {
 					read: {
-						url: "/ServicesHistory/Index",
+						url: "/ServicesHistory/List",
 						type: "POST",
 						contentType: "application/json; charset=utf-8",
 					},
@@ -400,7 +416,7 @@
 						serverFiltering: true,
 						transport: {
 							read: {
-								url: "/Employee/Index/",
+								url: "/Employee/List/",
 								type: "POST",
 								data: {
 									CompanyName: null,
@@ -422,7 +438,7 @@
 						serverFiltering: true,
 						transport: {
 							read: {
-								url: "/Company/Index/",
+								url: "/Company/List/",
 								type: "POST",
 								data: {
 									CompanyName: null,
@@ -444,7 +460,7 @@
 						serverFiltering: true,
 						transport: {
 							read: {
-								url: "/Service/Index/",
+								url: "/Service/List/",
 								type: "POST",
 								data: {
 									CompanyName: null,
@@ -459,7 +475,7 @@
 				});
 
 				$("#shedulerSubmitFormInputDateOfCreate").kendoDateTimePicker({
-					format: "MM.dd.yy HH:mm",
+					format: "dd.MM.yy HH:mm",
 					timeFormat: "HH:mm",
 					interval: 15,
 					culture: "ru-RU",
@@ -501,10 +517,11 @@
 						var data = {
 							Id: $("#shedulerSubmitFormInputId").val(),
 							DateOfCreate: $("#shedulerSubmitFormInputDateOfCreate").data("kendoDateTimePicker").value(),
-							Employee: { Id: $("#shedulerSubmitFormInputEmployee").val() },
-							Company: { Id: $("#shedulerSubmitFormInputCompany").val() },
-							Service: { Id: $("#shedulerSubmitFormInputService").val() }
+							Employee: $("#shedulerSubmitFormInputEmployee").data("kendoComboBox").dataItem() ,
+							Company: $("#shedulerSubmitFormInputCompany").data("kendoComboBox").dataItem(),
+							Service: $("#shedulerSubmitFormInputService").data("kendoComboBox").dataItem()
 						}
+						console.log($("#shedulerSubmitFormInputDateOfCreate").data("kendoDateTimePicker").value());
 
 						let IsEditEvent = (e.event.Id > 0);
 						if (!IsEditEvent) {
@@ -600,10 +617,6 @@
 		buttonNext.on("click", function () {
 			controls.Scheduler.dataSource.read();
 			controls.Scheduler.dataSource.read();
-		});
-
-		$(".k-event-delete").on("click", function () {
-			alert("delete");
 		});
 	});
 </script>

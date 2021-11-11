@@ -1,16 +1,12 @@
-﻿using Entities.Models;
-
-using System;
+﻿using Entities.Query;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Interfaces
 {
 	public interface IRepository<T>
 	{
-		List<T> List(object queryList);
+		// Базовый класс
+		List<T> List(QueryListBase queryList);
 		void Add(T instanse);
 		void Update(T instanse);
 		void Remove(int id);

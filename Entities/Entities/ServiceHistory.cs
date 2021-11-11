@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -27,12 +28,27 @@ namespace Entities.Models
 		public DateTime DateOfCreate { get; set; }
 
 		/// <summary>
+		/// Дата окончания выполнения услуги
+		/// </summary>
+		public DateTime? DateOfFinish { get; set; }
+
+		/// <summary>
 		/// Дата удаления записи
 		/// </summary>
 		public DateTime? DateOfDelete { get; set; }
+
 		/// <summary>
 		/// Статус записи в БД
 		/// </summary>
 		public int Status { get; set; }
+
+		[NotMapped]
+		public Company Company { get; set; }
+
+		[NotMapped]
+		public Service Service { get; set; }
+
+		[NotMapped]
+		public Employee Employee { get; set; }
 	}
 }

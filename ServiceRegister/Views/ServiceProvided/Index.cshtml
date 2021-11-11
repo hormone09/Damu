@@ -91,7 +91,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Company/Index/",
+						url: "/Company/List/",
 						type: "POST",
 						data: {
 							CompanyName: name,
@@ -114,7 +114,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Service/Index/",
+						url: "/Service/List/",
 						type: "POST",
 						data: {
 							CompanyName: name,
@@ -135,7 +135,7 @@
 				pageSize: 20,
 				transport: {
 					read: {
-						url: "/ServiceProvided/Index",
+						url: "/ServiceProvided/List",
 						type: "POST",
 						contentType: "application/json; charset=utf-8",
 					},
@@ -225,7 +225,7 @@
 							text: "@Resource.ButtonEdit",
 							click: function (e) {
 								var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-								
+
 								$("#serviceProvidedInputId").val(dataItem.Id);
 								$("#serviceProvidedInputStatus").val(dataItem.Status);
 								$("#serviceProvidedCmbCompany").data("kendoComboBox").value(dataItem.Company.Id);
@@ -302,7 +302,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Company/Index/",
+						url: "/Company/List/",
 						type: "POST",
 						data: {
 							CompanyName: null,
@@ -324,7 +324,7 @@
 				serverFiltering: true,
 				transport: {
 					read: {
-						url: "/Service/Index/",
+						url: "/Service/List/",
 						type: "POST",
 						data: {
 							CompanyName: null,

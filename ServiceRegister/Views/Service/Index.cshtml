@@ -89,7 +89,7 @@
 				pageSize: 20,
 				transport: {
 					read: {
-						url: "/Service/Index",
+						url: "/Service/List",
 						type: "POST",
 						contentType: "application/json; charset=utf-8",
 					},
@@ -330,7 +330,7 @@
 			errorClass: "validationFormMessage",
 			errorElement: 'p',
 			errorPlacement: function (error, element) {
-				console.log(error, element)
+
 				error.insertAfter(element.closest('div'));
 			}
 		});

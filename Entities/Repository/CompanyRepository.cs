@@ -15,7 +15,7 @@ namespace Entities.Repository
 	{
 		private string connectionString = ConfigurationManager.AppSettings["connection"];
 
-		public List<Company> List(object queryList)
+		public List<Company> List(QueryListBase queryList)
 		{
 			CompanyQueryList query;
 

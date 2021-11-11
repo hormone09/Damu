@@ -15,13 +15,16 @@ namespace ServiceRegister.Managers
 {
 	public class ServiceProvidedManager
 	{
-		private ServiceProvidedRepository providedRepository = new ServiceProvidedRepository();
-		private CompanyRepository companyRepository = new CompanyRepository();
-		private ServiceRepository servicesRepository = new ServiceRepository();
+		private ServiceProvidedRepository providedRep;
+		private CompanyRepository companyRep;
+		private ServiceRepository servicesRep;
 		private IMapper mapper;
 
-		public ServiceProvidedManager(IMapper mapper)
+		public ServiceProvidedManager(IMapper mapper, ServiceProvidedRepository providedRep, CompanyRepository companyRep, ServiceRepository servicesRep)
 		{
+			this.providedRep = providedRep;
+			this.companyRep = companyRep;
+			this.servicesRep = servicesRep;
 			this.mapper = mapper;
 		}
 		
@@ -37,19 +40,8 @@ namespace ServiceRegister.Managers
 				throw new Exception(Resource.ExceptionStatus);
 
 			var query = mapper.Map<ServiceProvidedQueryList>(queryView);
-			var entities = providedRepository.List(query);
+			var entities = providedRep.List(query);
 			var models = mapper.Map<List<ServiceProvidedModel>>(entities);
-
-			foreach(var el in models)
-			{
-				var entity = entities.First(x => x.Id == el.Id);
-
-				var companyEntity = companyRepository.Find(entity.CompanyId);
-				var serviceEntity = servicesRepository.Find(entity.ServiceId);
-
-				el.Company = mapper.Map<CompanyModel>(companyEntity);
-				el.Service = mapper.Map<ServiceModel>(serviceEntity);
-			}
 
 			return models;
 		}
@@ -63,23 +55,22 @@ namespace ServiceRegister.Managers
 				throw new Exception(Resource.ExceptionStatus);
 
 			var entity = mapper.Map<ServiceProvided>(model);
-			entity.CompanyId = (int)model.Company.Id;
-			entity.ServiceId = (int)model.Service.Id;
 
 			try
 			{
-				providedRepository.Update(entity);
+				providedRep.Update(entity);
 
 				return new MessageHandler(true, Resource.EditSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
 		public MessageHandler Add(ServiceProvidedModel model)
 		{
+			// Сопоставить с организацией
 			if (model.DateOfBegin > DateTime.Now)
 				return new MessageHandler(false, Resource.DateOfBeginNonCorrect);
 
@@ -90,13 +81,13 @@ namespace ServiceRegister.Managers
 
 			try
 			{
-				providedRepository.Add(entity);
+				providedRep.Add(entity);
 
 				return new MessageHandler(true, Resource.AddSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 
@@ -104,7 +95,7 @@ namespace ServiceRegister.Managers
 		{
 			try
 			{
-				providedRepository.Remove(id);
+				providedRep.Remove(id);
 
 				return new MessageHandler(true, Resource.DeleteSuccess);
 			}
@@ -118,19 +109,19 @@ namespace ServiceRegister.Managers
 		{
 			try
 			{
-				var entity = providedRepository.Find(id);
+				var entity = providedRep.Find(id);
 
 				entity.Status = (int)Statuses.Active;
 				entity.DateOfBegin = DateTime.Now;
 				entity.DateOfFinish = null;
 
-				providedRepository.Update(entity);
+				providedRep.Update(entity);
 
 				return new MessageHandler(true, Resource.ActivateSuccess);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				throw ex;
+				return new MessageHandler(false, Resource.DatabaseError);
 			}
 		}
 	}

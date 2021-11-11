@@ -13,19 +13,24 @@ using Stimulsoft.Report.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceRegister.Managers
 {
 	public class ServiceHistoryManager
 	{
-		private ServiceHistoryRepository historyRep = new ServiceHistoryRepository();
-		private CompanyRepository companyRep = new CompanyRepository();
-		private EmployeeRepository emloyeeRep = new EmployeeRepository();
-		private ServiceRepository servicesRep = new ServiceRepository();
+		private ServiceHistoryRepository historyRep;
+		private CompanyRepository companyRep;
+		private EmployeeRepository emloyeeRep;
+		private ServiceRepository servicesRep;
 		private IMapper mapper;
 
-		public ServiceHistoryManager(IMapper mapper)
+		public ServiceHistoryManager(IMapper mapper, ServiceHistoryRepository historyRep, CompanyRepository companyRep, EmployeeRepository employeeRep, ServiceRepository servicesRep)
 		{
+			this.historyRep = historyRep;
+			this.companyRep = companyRep;
+			this.emloyeeRep = employeeRep;
+			this.servicesRep = servicesRep;
 			this.mapper = mapper;
 		}
 
@@ -38,42 +43,19 @@ namespace ServiceRegister.Managers
 			queryView.DateBegin = queryView.DateBegin.Date;
 			queryView.DateEnd = queryView.DateEnd.Date;
 			var query = mapper.Map<ServiceHistoryQueryList>(queryView);
-			var entities = historyRep.List(query); 
-			var models = new List<ServiceHistoryModel>();
-
-			foreach (var el in entities)
-			{
-				var companyEntity = companyRep.Find(el.CompanyId);
-				var employeeEntity = emloyeeRep.Find(el.EmployeeId);
-				var serviceEntity = servicesRep.Find(el.ServiceId);
-
-				var model = new ServiceHistoryModel();
-				model.Id = el.Id;
-				model.Company = mapper.Map<CompanyModel>(companyEntity);
-				model.Service = mapper.Map<ServiceModel>(serviceEntity);
-				model.Employee = mapper.Map<EmployeeModel>(employeeEntity);
-				model.DateOfCreate = el.DateOfCreate;
-				model.DateOfFinish = el.DateOfCreate.AddMinutes(15.00);
-
-				models.Add(model);
-			}
+			var entities = historyRep.List(query);
+			var models = mapper.Map<List<ServiceHistoryModel>>(entities);
 
 			return models;
 		}
 
 		public MessageHandler Add(ServiceHistoryModel model)
 		{
-			if (model.Company.Id == null || model.Service.Id == null || model.Employee.Id == null || model.DateOfCreate == null)
-				return new MessageHandler(false, Resource.FormError);
+			if (!Validator.TryValidateObject(model, new System.ComponentModel.DataAnnotations.ValidationContext(model), new List<ValidationResult>()))
+				return new MessageHandler(false, Resource.ValidationMessageFormatError);
 
-			var entity = new ServiceHistory
-			{
-				DateOfCreate = (DateTime)model.DateOfCreate,
-				CompanyId = (int)model.Company.Id,
-				EmployeeId = (int)model.Employee.Id,
-				ServiceId = (int)model.Service.Id,
-				Status = (int)Statuses.Active
-			};
+			model.DateOfFinish = ((DateTime)model.DateOfCreate).AddMinutes(15.00);
+			var entity = mapper.Map<ServiceHistory>(model);
 
 			try
 			{
@@ -89,18 +71,11 @@ namespace ServiceRegister.Managers
 
 		public MessageHandler Update(ServiceHistoryModel model)
 		{
-			if (model.Company.Id == null || model.Service.Id == null || model.Employee.Id == null || model.DateOfCreate == null)
-				return new MessageHandler(false, Resource.FormError);
+			if (!Validator.TryValidateObject(model, new System.ComponentModel.DataAnnotations.ValidationContext(model), new List<ValidationResult>()))
+				return new MessageHandler(false, Resource.ValidationMessageFormatError);
 
-			var entity = new ServiceHistory
-			{
-				Id = model.Id,
-				DateOfCreate = (DateTime)model.DateOfCreate,
-				CompanyId = (int)model.Company.Id,
-				EmployeeId = (int)model.Employee.Id,
-				ServiceId = (int)model.Service.Id,
-				Status = (int)Statuses.Active
-			};
+			model.DateOfFinish = ((DateTime)model.DateOfCreate).AddMinutes(15.00);
+			var entity = mapper.Map<ServiceHistory>(model);
 
 			try
 			{
@@ -136,24 +111,31 @@ namespace ServiceRegister.Managers
 				query.DateEnd = query.DateBegin;
 
 			string filterEmpty = "'Все'";
-			string hasFilter = "Задана";
 			string companyName = filterEmpty, serviceName = filterEmpty, employeeName = filterEmpty;
 
-			if (query.ServiceId != null && query.ServiceId > 0)
-				serviceName = hasFilter;
-			if (query.EmployeeId != null && query.EmployeeId > 0)
-				employeeName = hasFilter;
-			if (query.CompanyId != null && query.CompanyId > 0)
-				companyName = hasFilter;
+			if (query.Service != null && query.Service.Id > 0)
+				serviceName = query.Service.Name;
+			else
+				query.Service = new ServiceModel();
+
+			if (query.Employee != null && query.Employee.Id > 0)
+				employeeName = query.Employee.FullName;
+			else
+				query.Employee = new EmployeeModel();
+
+			if (query.Company != null && query.Company.Id > 0)
+				companyName = query.Company.Name;
+			else
+				query.Company = new CompanyModel();
 
 			var report = new StiReport();
 			report.Load(query.Path);
 
 			report["DateBegin"] = query.DateBegin;
 			report["DateEnd"] = query.DateEnd;
-			report["CompanyId"] = query.CompanyId;
-			report["EmployeeId"] = query.EmployeeId;
-			report["ServiceId"] = query.ServiceId;
+			report["CompanyId"] = query.Company.Id;
+			report["EmployeeId"] = query.Employee.Id;
+			report["ServiceId"] = query.Service.Id;
 			report.Dictionary.Variables["ServiceFilter"].Value = serviceName;
 			report.Dictionary.Variables["CompanyFilter"].Value = companyName;
 			report.Dictionary.Variables["EmployeeFilter"].Value = employeeName;
